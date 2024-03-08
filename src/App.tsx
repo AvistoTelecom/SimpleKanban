@@ -1,11 +1,13 @@
-import './App.css'
 import {Routes, Route} from 'react-router-dom'
 import {KanbanPage} from './KanbanPage'
-
+import {NavBar} from './NavBar'
 export const App = (): React.JSX.Element => {
   return (
-    <Routes>
-      <Route path="/" element={<KanbanPage />} />
-    </Routes>
+    <>
+      <NavBar></NavBar>
+      <Routes>
+        <Route path="/" element={<KanbanPage />} />
+      </Routes>
+    </>
   )
 }
