@@ -6,7 +6,7 @@ interface NavBarProps {
 
 export const NavBar: FunctionComponent<NavBarProps> = (props) => {
   return (
-    <nav className="navbar bg-base-100">
+    <nav className="navbar bg-base-300">
       <button
         type="button"
         className="btn btn-ghost text-xl"

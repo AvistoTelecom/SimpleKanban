@@ -15,7 +15,7 @@ export const KanbanPage: FunctionComponent = () => {
   return (
     <>
       <NavBar handleNavBar={handleNavBar} />
-      <main className="flex w-full space-x-2 p-2">
+      <main className="flex-grow flex w-full space-x-2 p-2 bg-base-300">
         <KanbanArea />
         {sidePanelOpen && <SidePanel />}
       </main>
