@@ -1,16 +1,14 @@
-import {FunctionComponent} from 'react'
-import {KanbanArea} from './KanbanArea'
-import {SidePanel} from './SidePanel'
-import {useState} from 'react'
-import {NavBar} from './NavBar'
+import { FunctionComponent, useState } from 'react';
+import { KanbanArea } from './KanbanArea';
+import { SidePanel } from './SidePanel';
+import { NavBar } from './NavBar';
 
 export const KanbanPage: FunctionComponent = () => {
-  const [sidePanelOpen, setSidePanelOpen] = useState<boolean>(false)
+  const [sidePanelOpen, setSidePanelOpen] = useState<boolean>(false);
 
-  const handleNavBar = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(event.currentTarget.getAttribute('value'))
-    setSidePanelOpen(!sidePanelOpen)
-  }
+  const handleNavBar = () => {
+    setSidePanelOpen(!sidePanelOpen);
+  };
 
   return (
     <>
@@ -20,5 +18,5 @@ export const KanbanPage: FunctionComponent = () => {
         {sidePanelOpen && <SidePanel />}
       </main>
     </>
-  )
-}
+  );
+};

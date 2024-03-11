@@ -1,16 +1,16 @@
-import {FunctionComponent} from 'react'
+import { FunctionComponent, MouseEvent } from 'react';
 
 interface NavBarProps {
-  handleNavBar: (event: React.MouseEvent<HTMLButtonElement>) => void
+  handleNavBar: (event: MouseEvent<HTMLButtonElement>) => void;
 }
 
-export const NavBar: FunctionComponent<NavBarProps> = (props) => {
+export const NavBar: FunctionComponent<NavBarProps> = ({ handleNavBar }) => {
   return (
     <nav className="navbar bg-base-300">
       <button
         type="button"
         className="btn btn-ghost text-xl"
-        onClick={props.handleNavBar}
+        onClick={handleNavBar}
         value="tag"
       >
         Tags
@@ -18,11 +18,11 @@ export const NavBar: FunctionComponent<NavBarProps> = (props) => {
       <button
         type="button"
         className="btn btn-ghost text-xl"
-        onClick={props.handleNavBar}
+        onClick={handleNavBar}
         value="user"
       >
         Users
       </button>
     </nav>
-  )
-}
+  );
+};

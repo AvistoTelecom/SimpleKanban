@@ -1,5 +1,5 @@
-import {FunctionComponent} from 'react'
+import { FunctionComponent } from 'react';
 
 export const TicketForm: FunctionComponent = () => {
-  return <div className="bg-base-300 rounded-box  min-w-44">TicketForm</div>
-}
+  return <div className="bg-base-200 rounded-box h-full">TicketForm</div>;
+};

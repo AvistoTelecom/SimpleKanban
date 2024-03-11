@@ -1,4 +1,4 @@
-import type {Config} from 'tailwindcss'
+import type { Config } from 'tailwindcss';
 
 export default {
   content: ['index.html', './src/**/*.{html,js,ts,jsx,tsx}'],
@@ -9,4 +9,4 @@ export default {
   daisyui: {
     themes: ['dim'],
   },
-} satisfies Config
+} satisfies Config;
