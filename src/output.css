@@ -1058,10 +1058,6 @@ html {
   display: flex;
 }
 
-.hidden {
-  display: none;
-}
-
 .min-h-80 {
   min-height: 20rem;
 }

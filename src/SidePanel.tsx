@@ -1,10 +1,11 @@
+import {FunctionComponent} from 'react'
 import {TicketForm} from './TicketForm'
 
-export const SidePanel = (): React.JSX.Element => {
+export const SidePanel: FunctionComponent = () => {
   return (
-    <div className="w-full bg-neutral rounded-box p-2">
+    <div className={`w-full bg-neutral rounded-box p-2`}>
       sidepanel
-      <TicketForm></TicketForm>
+      <TicketForm />
     </div>
   )
 }
