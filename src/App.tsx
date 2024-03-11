@@ -1,11 +1,14 @@
-import './App.css'
-import {Routes, Route} from 'react-router-dom'
-import {KanbanPage} from './KanbanPage'
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { KanbanPage } from './components/KanbanPage';
+import { FunctionComponent } from 'react';
 
-export const App = () => {
+export const App: FunctionComponent = () => {
   return (
-    <Routes>
-      <Route path="/" element={<KanbanPage />} />
-    </Routes>
-  )
-}
+    <div className="min-h-screen flex flex-col">
+      <Routes>
+        <Route path="/" element={<KanbanPage />} />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </div>
+  );
+};
