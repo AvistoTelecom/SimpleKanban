@@ -4,7 +4,7 @@ import { FunctionComponent } from 'react';
 
 export const App: FunctionComponent = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="h-screen flex flex-col">
       <Routes>
         <Route path="/" element={<KanbanPage />} />
         <Route path="*" element={<Navigate to="/" />} />

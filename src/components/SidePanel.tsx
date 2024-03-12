@@ -1,10 +1,10 @@
 import { FunctionComponent } from 'react';
-import { TicketForm } from './TicketForm';
+import { UserTable } from './UserTable';
 
 export const SidePanel: FunctionComponent = () => {
   return (
-    <div className={`w-full bg-base-100 rounded-box p-2`}>
-      <TicketForm />
+    <div className="w-full h-full bg-base-100 rounded-box p-2">
+      <UserTable />
     </div>
   );
 };
