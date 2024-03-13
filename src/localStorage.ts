@@ -125,6 +125,39 @@ export class LocalStorageUtil {
     return tagToAdd.name;
   };
 
+  static deleteTag = (tagName: string) => {
+    const storedTickets = this.getItem('tickets');
+    const storedUser = this.getItem('tags');
+    storedTickets.map((currTicket: TicketStorage) => {
+      if (currTicket.tagName == tagName) {
+        currTicket.tagName = null;
+      }
+    });
+    this.setItem(
+      'tags',
+      JSON.stringify(
+        storedUser.filter((currTag: Tag) => {
+          currTag.name != tagName;
+        })
+      )
+    );
+  };
+
+  static updateTag = (oldTag: Tag, newTag: Tag) => {
+    const storedUser = this.getItem('tags');
+    this.setItem(
+      'tags',
+      JSON.stringify(
+        storedUser.map((currTag: Tag) => {
+          if (currTag.name === oldTag.name) {
+            return newTag;
+          }
+          return currTag;
+        })
+      )
+    );
+  };
+
   // Ticket
 
   static getParents = (ticketId: number): TicketStorage[] => {
