@@ -12,7 +12,6 @@ interface UserEntryProps {
   ) => void;
 }
 
-// TODO : manage image
 export const UserTableEntry: FunctionComponent<UserEntryProps> = ({
   user,
   handleDeleteUser,
@@ -35,13 +34,14 @@ export const UserTableEntry: FunctionComponent<UserEntryProps> = ({
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key == 'Enter') {
+      e.currentTarget.blur();
       handleNameSubmit();
     }
   };
 
   return (
     <tr>
-      <td className="w-1/3">
+      <td>
         <input
           type="text"
           placeholder="Type here"
@@ -55,10 +55,10 @@ export const UserTableEntry: FunctionComponent<UserEntryProps> = ({
           onKeyDown={handleKeyPress}
         />
       </td>
-      <td className="w-1/3">
+      <td>
         <ImageInput user={user} handleUpdateUser={handleUpdateUser} />
       </td>
-      <td className="w-1/3">
+      <td>
         <button
           type="button"
           onClick={() => handleDeleteUser(user.id)}

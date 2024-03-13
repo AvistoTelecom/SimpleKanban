@@ -11,7 +11,7 @@ export const UserTableCreateRow: FunctionComponent<UserTableCreateRowProps> = ({
   const [username, setUsername] = useState('');
   const [image, setImage] = useState<string>(DEFAULT_PROFILE_PICTURE);
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeImage = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const uploadedImage: File = e.target.files[0];
       const reader = new FileReader();
@@ -30,7 +30,7 @@ export const UserTableCreateRow: FunctionComponent<UserTableCreateRowProps> = ({
 
   const handleSumbit = () => {
     if (username.length === 0) {
-      return; // TODO : maybe error message
+      return;
     }
     handleAddUser({ name: username, image: image } as User);
     setImage(DEFAULT_PROFILE_PICTURE);
@@ -45,13 +45,13 @@ export const UserTableCreateRow: FunctionComponent<UserTableCreateRowProps> = ({
             <input
               type="text"
               placeholder="Enter a name..."
-              className="input input-bordered input-s w-full max-w-xs"
+              className="input input-bordered input-sm w-full max-w-xs"
               onChange={handleChangeUsername}
               value={username}
             />
           </label>
         </th>
-        <th className="">
+        <th>
           <label className="avatar w-12 h-12 cursor-pointer hover:text-primary">
             <div className="mask mask-squircle">
               <img src={image} alt="Avatar" />
@@ -59,7 +59,7 @@ export const UserTableCreateRow: FunctionComponent<UserTableCreateRowProps> = ({
             <input
               type="file"
               className="hidden"
-              onChange={handleImageChange}
+              onChange={handleChangeImage}
               value={''}
             />
             <span className="-top-1 left-9 absolute w-5 h-5 bg-neutral rounded-full flex items-center justify-center ">

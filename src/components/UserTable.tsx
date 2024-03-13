@@ -3,6 +3,7 @@ import { UserTableEntry } from './UserTableEntry';
 import { UserTableHeader } from './UserTableHeader';
 import { UserTableCreateRow } from './UserTableCreateRow';
 
+// TODO : remove (debugging only, replace with localstorage branch model)
 export interface User {
   id: number;
   name: string;
@@ -16,7 +17,7 @@ interface UserTableProps {
 export const DEFAULT_PROFILE_PICTURE =
   'https://docs.material-tailwind.com/img/face-2.jpg';
 
-// TODO : this about how to change this
+// TODO : remove (debugging only, replace with data from localstorage)
 const usersDefault = [
   {
     id: 1,
@@ -38,7 +39,7 @@ export const UserTable: FunctionComponent<UserTableProps> = () => {
   };
 
   const handleAddUser = (user: User) => {
-    // TODO : for debbug purpose, will be replaced by localstorage function
+    // TODO : for debug purpose, will be replaced by localstorage function
     user.id = 42;
     setUsers((users) => [...users, user]);
   };
@@ -48,7 +49,7 @@ export const UserTable: FunctionComponent<UserTableProps> = () => {
     image: File | null,
     name: string | null
   ) => {
-    // TODO : debug purpose only (should be remove)
+    // TODO : debug purpose only (should use localstorage)
     const updatedUsers = users.map((user) => {
       if (user.id === id) {
         if (name != null) {
