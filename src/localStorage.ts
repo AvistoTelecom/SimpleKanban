@@ -9,11 +9,11 @@ interface TicketStorage {
   name: string;
   creationDate: Date;
   storyPoint: number;
-  assigneId: number;
-  tagName: string;
+  assigneId: number | null;
+  tagName: string | null;
   description: string;
-  parentId: number;
-  childId: number;
+  parentId: number | null;
+  childId: number | null;
   blocked: boolean;
 }
 
@@ -68,6 +68,40 @@ export class LocalStorageUtil {
     return userToAdd.id;
   };
 
+  static deleteUser = (userId: number) => {
+    const storedTickets = this.getItem('tickets');
+    const storedUser = this.getItem('users');
+    // Each ticket that is assigned to the user we want to delete is asigned to no one
+    storedTickets.map((currTicket: TicketStorage) => {
+      if (currTicket.assigneId == userId) {
+        currTicket.assigneId = null;
+      }
+    });
+    this.setItem(
+      'users',
+      JSON.stringify(
+        storedUser.filter((currUser: User) => {
+          currUser.id != userId;
+        })
+      )
+    );
+  };
+
+  static updateUser = (user: User) => {
+    const storedUser = this.getItem('users');
+    this.setItem(
+      'users',
+      JSON.stringify(
+        storedUser.map((currUser: User) => {
+          if (currUser.id === user.id) {
+            return user;
+          }
+          return currUser;
+        })
+      )
+    );
+  };
+
   // Tags
   static getTags = (): Tag[] => {
     return this.getItem('tags');
@@ -98,7 +132,7 @@ export class LocalStorageUtil {
     const curr: TicketStorage | undefined = ticketsArray.find(
       (currTicket: TicketStorage) => currTicket.id === ticketId
     );
-    if (curr === undefined) {
+    if (curr === undefined || !curr.parentId) {
       return [];
     }
     return this.getParents(curr.parentId).concat(curr);
@@ -109,7 +143,7 @@ export class LocalStorageUtil {
     const curr: TicketStorage | undefined = ticketsArray.find(
       (currTicket: TicketStorage) => currTicket.id === ticketId
     );
-    if (curr === undefined) {
+    if (curr === undefined || !curr.childId) {
       return [];
     }
     return this.getChildren(curr.childId).concat(curr);
@@ -121,8 +155,10 @@ export class LocalStorageUtil {
       name: storedTicket.name,
       creationDate: storedTicket.creationDate,
       storyPoint: storedTicket.storyPoint,
-      assigne: this.getUser(storedTicket.assigneId),
-      tag: this.getTag(storedTicket.tagName),
+      assigne: storedTicket.assigneId
+        ? this.getUser(storedTicket.assigneId)
+        : null,
+      tag: storedTicket.tagName ? this.getTag(storedTicket.tagName) : null,
       description: storedTicket.description,
       parent: null,
       child: null,
@@ -133,8 +169,12 @@ export class LocalStorageUtil {
   static getTickets = (): Ticket[] => {
     const storedTickets = this.getItem('tickets');
     return storedTickets.map((currTicket: TicketStorage) => {
-      const child = this.getTicket(currTicket.childId);
-      const parent = this.getTicket(currTicket.parentId);
+      const child = currTicket.childId
+        ? this.getTicket(currTicket.childId)
+        : null;
+      const parent = currTicket.parentId
+        ? this.getTicket(currTicket.parentId)
+        : null;
       const result = this.storageToTicket(currTicket);
       result.child = child;
       result.parent = parent;
