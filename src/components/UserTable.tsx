@@ -1,4 +1,4 @@
-import { ChangeEvent, FunctionComponent, useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { UserTableEntry } from './UserTableEntry';
 import { UserTableHeader } from './UserTableHeader';
 import { UserTableCreateRow } from './UserTableCreateRow';
@@ -31,32 +31,10 @@ const usersDefault = [
 ];
 
 export const UserTable: FunctionComponent<UserTableProps> = () => {
-  const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [users, setUsers] = useState<User[]>(usersDefault);
 
-  const handleSelect = (e: ChangeEvent<HTMLInputElement>, id: number) => {
-    const value = e.target.checked;
-    if (value) {
-      setSelectedItems((selectedItems) => [...selectedItems, id]);
-    } else {
-      setSelectedItems((selectedItems) =>
-        selectedItems.filter((item) => item !== id)
-      );
-    }
-  };
-
-  const handleSelectAll = (e: ChangeEvent<HTMLInputElement>) => {
-    const value: boolean = e.target.checked;
-    if (value) {
-      setSelectedItems(() => users.map((user) => user.id));
-    } else {
-      setSelectedItems(() => []);
-    }
-  };
-
-  const handleDelete = () => {
+  const handleDeleteUser = () => {
     // TODO : remove from local storage
-    setSelectedItems(() => []);
   };
 
   const handleAddUser = (user: User) => {
@@ -65,15 +43,38 @@ export const UserTable: FunctionComponent<UserTableProps> = () => {
     setUsers((users) => [...users, user]);
   };
 
+  const handleUpdateUser = async (
+    id: number,
+    image: File | null,
+    name: string | null
+  ) => {
+    // TODO : debug purpose only (should be remove)
+    const updatedUsers = users.map((user) => {
+      if (user.id === id) {
+        if (name != null) {
+          user.name = name;
+        }
+        if (image != null) {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            const base64string = reader.result as string;
+            user.image = base64string;
+            // Triggering the update when image is done loading
+            setUsers(users);
+          };
+          reader.readAsDataURL(image);
+        }
+        return user;
+      }
+      return user;
+    });
+    setUsers(updatedUsers);
+  };
+
   return (
     <div className="overflow-y-auto h-full">
       <table className="table table-zebra table-pin-rows">
-        <UserTableHeader
-          handleDelete={handleDelete}
-          handleSelectAll={handleSelectAll}
-          allSelected={selectedItems.length === users.length}
-          selectedItemsCounter={selectedItems.length}
-        />
+        <UserTableHeader />
         <tbody>
           {users?.length &&
             users.map((user) => {
@@ -81,8 +82,8 @@ export const UserTable: FunctionComponent<UserTableProps> = () => {
                 <UserTableEntry
                   key={user.id}
                   user={user}
-                  isSelected={selectedItems.includes(user.id)}
-                  handleSelect={handleSelect}
+                  handleDeleteUser={handleDeleteUser}
+                  handleUpdateUser={handleUpdateUser}
                 />
               );
             })}
