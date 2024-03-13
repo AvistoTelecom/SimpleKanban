@@ -1,5 +1,5 @@
 import { ChangeEvent, FunctionComponent } from 'react';
-import { User } from './UserTable';
+import { User } from './UsersTable';
 
 interface ImageInputProps {
   user: User;

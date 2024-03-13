@@ -1,7 +1,7 @@
 import { FunctionComponent, useState } from 'react';
-import { UserTableEntry } from './UserTableEntry';
-import { UserTableHeader } from './UserTableHeader';
-import { UserTableCreateRow } from './UserTableCreateRow';
+import { UsersTableEntry } from './UsersTableEntry';
+import { UsersTableHeader } from './UsersTableHeader';
+import { UsersTableCreateRow } from './UsersTableCreateRow';
 
 // TODO : remove (debugging only, replace with localstorage branch model)
 export interface User {
@@ -10,7 +10,7 @@ export interface User {
   image: string;
 }
 
-interface UserTableProps {
+interface UsersTableProps {
   users: User[];
 }
 
@@ -18,7 +18,7 @@ export const DEFAULT_PROFILE_PICTURE =
   'https://docs.material-tailwind.com/img/face-2.jpg';
 
 // TODO : remove (debugging only, replace with data from localstorage)
-const usersDefault = [
+const usersDefault: User[] = [
   {
     id: 1,
     name: 'test',
@@ -31,7 +31,7 @@ const usersDefault = [
   } as User,
 ];
 
-export const UserTable: FunctionComponent<UserTableProps> = () => {
+export const UsersTable: FunctionComponent<UsersTableProps> = () => {
   const [users, setUsers] = useState<User[]>(usersDefault);
 
   const handleDeleteUser = () => {
@@ -75,12 +75,12 @@ export const UserTable: FunctionComponent<UserTableProps> = () => {
   return (
     <div className="overflow-y-auto h-full">
       <table className="table table-zebra table-pin-rows">
-        <UserTableHeader />
+        <UsersTableHeader />
         <tbody>
           {users?.length &&
             users.map((user) => {
               return (
-                <UserTableEntry
+                <UsersTableEntry
                   key={user.id}
                   user={user}
                   handleDeleteUser={handleDeleteUser}
@@ -89,7 +89,7 @@ export const UserTable: FunctionComponent<UserTableProps> = () => {
               );
             })}
         </tbody>
-        <UserTableCreateRow handleAddUser={handleAddUser} />
+        <UsersTableCreateRow handleAddUser={handleAddUser} />
       </table>
     </div>
   );

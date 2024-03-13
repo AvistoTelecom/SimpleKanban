@@ -1,5 +1,5 @@
 import { ChangeEvent, KeyboardEvent, FunctionComponent, useState } from 'react';
-import { User } from './UserTable';
+import { User } from './UsersTable';
 import { ImageInput } from './ImageInput';
 
 interface UserEntryProps {
@@ -12,7 +12,7 @@ interface UserEntryProps {
   ) => void;
 }
 
-export const UserTableEntry: FunctionComponent<UserEntryProps> = ({
+export const UsersTableEntry: FunctionComponent<UserEntryProps> = ({
   user,
   handleDeleteUser,
   handleUpdateUser,
@@ -44,7 +44,7 @@ export const UserTableEntry: FunctionComponent<UserEntryProps> = ({
       <td>
         <input
           type="text"
-          placeholder="Type here"
+          placeholder="Name..."
           className={
             'input input-sm w-full max-w-xs' +
             (name.length === 0 ? ' input-error' : '')

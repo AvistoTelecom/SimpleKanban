@@ -1,13 +1,13 @@
 import { ChangeEvent, FunctionComponent, useState } from 'react';
-import { DEFAULT_PROFILE_PICTURE, User } from './UserTable';
+import { DEFAULT_PROFILE_PICTURE, User } from './UsersTable';
 
-interface UserTableCreateRowProps {
+interface UsersTableCreateRowProps {
   handleAddUser: (user: User) => void;
 }
 
-export const UserTableCreateRow: FunctionComponent<UserTableCreateRowProps> = ({
-  handleAddUser,
-}) => {
+export const UsersTableCreateRow: FunctionComponent<
+  UsersTableCreateRowProps
+> = ({ handleAddUser }) => {
   const [username, setUsername] = useState('');
   const [image, setImage] = useState<string>(DEFAULT_PROFILE_PICTURE);
 
@@ -28,7 +28,7 @@ export const UserTableCreateRow: FunctionComponent<UserTableCreateRowProps> = ({
     setUsername(input);
   };
 
-  const handleSumbit = () => {
+  const handleSubmit = () => {
     if (username.length === 0) {
       return;
     }
@@ -79,7 +79,7 @@ export const UserTableCreateRow: FunctionComponent<UserTableCreateRowProps> = ({
           <button
             type="button"
             className="hover:text-primary"
-            onClick={handleSumbit}
+            onClick={handleSubmit}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

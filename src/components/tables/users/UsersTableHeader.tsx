@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react';
 
-export const UserTableHeader: FunctionComponent = () => {
+export const UsersTableHeader: FunctionComponent = () => {
   return (
     <thead>
       <tr>

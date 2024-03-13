@@ -1,10 +1,19 @@
 import { FunctionComponent } from 'react';
-import { UserTable } from './UserTable';
+import { UsersTable } from './tables/users/UsersTable';
+import { TagsTable } from './tables/tags/TagsTable';
 
-export const SidePanel: FunctionComponent = () => {
+interface SidePanelProps {
+  content: string;
+}
+
+export const SidePanel: FunctionComponent<SidePanelProps> = ({ content }) => {
   return (
     <div className="w-full h-full bg-base-100 rounded-box p-2">
-      <UserTable />
+      {content === 'tag' ? (
+        <TagsTable />
+      ) : content === 'user' ? (
+        <UsersTable />
+      ) : null}
     </div>
   );
 };
