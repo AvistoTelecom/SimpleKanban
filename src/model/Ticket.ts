@@ -1,4 +1,4 @@
-export interface Ticket {
+export type Ticket = {
   id: number;
   name: string;
   creationDate: Date;
@@ -9,4 +9,4 @@ export interface Ticket {
   parentId: number | null;
   childId: number | null;
   blocked: boolean;
-}
+};
