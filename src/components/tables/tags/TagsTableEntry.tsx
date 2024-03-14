@@ -1,22 +1,41 @@
 import { ChangeEvent, FunctionComponent, KeyboardEvent, useState } from 'react';
-import { Tag } from './TagsTable';
+import { Tag } from '../../KanbanPage';
 
 interface TableEntryProps {
   tag: Tag;
+  tags: Tag[];
   handleDeleteTag: (name: string) => void;
-  handleUpdateTag: (name: string, color: string) => void;
+  handleUpdateTag: (name: string, newName: string, color: string) => void;
 }
 
 export const TagsTableEntry: FunctionComponent<TableEntryProps> = ({
   tag,
+  tags,
   handleDeleteTag,
   handleUpdateTag,
 }) => {
   const [name, setName] = useState<string>(tag.name);
   const [color, setColor] = useState<string>(tag.color);
+  const [nameError, setNameError] = useState<string>('');
+
+  const isValidTagName = (newName: string): boolean => {
+    if (newName.length === 0) {
+      setNameError("Name shouldn't be empty...");
+      return false;
+    }
+
+    const tagFound = tags.find((tag) => tag.name === newName);
+    if (tagFound && tagFound.name !== tag.name) {
+      setNameError('Name already exists...');
+      return false;
+    }
+    setNameError('');
+    return true;
+  };
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newName: string = e.target.value;
+    isValidTagName(newName);
     setName(newName);
   };
 
@@ -25,35 +44,39 @@ export const TagsTableEntry: FunctionComponent<TableEntryProps> = ({
     setColor(input);
   };
 
-  const handleNameSubmit = () => {
-    // TODO : Add verfication with other tags name (no duplicate)
-    // Maybe with explicit error message
-    if (name.length === 0) {
-      setName(tag.name);
+  const handleSubmit = () => {
+    if (!isValidTagName(name)) {
       return;
     }
-    handleUpdateTag(tag.name, name);
+    handleUpdateTag(tag.name, name, color);
   };
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key == 'Enter') {
       e.currentTarget.blur();
-      handleNameSubmit();
+      handleSubmit();
     }
   };
-
   return (
     <tr>
-      <td>
-        <input
-          type="text"
-          placeholder="Name..."
-          className="input input-sm w-full max-w-xs"
-          value={name}
-          onChange={handleNameChange}
-          onBlur={handleNameSubmit}
-          onKeyDown={handleKeyPress}
-        ></input>
+      <td className="py-6">
+        <label className="form-control w-full max-w-xs relative">
+          <input
+            type="text"
+            placeholder="Name..."
+            className={
+              'input input-sm w-full max-w-xs' +
+              (nameError.length === 0 ? '' : ' input-error')
+            }
+            value={name}
+            onChange={handleNameChange}
+            onBlur={handleSubmit}
+            onKeyDown={handleKeyPress}
+          />
+          <span className="label-text-alt text-error absolute -bottom-5 left-1 italic">
+            {nameError}
+          </span>
+        </label>
       </td>
       <td>
         <input

@@ -1,5 +1,5 @@
 import { ChangeEvent, FunctionComponent, useState } from 'react';
-import { DEFAULT_PROFILE_PICTURE, User } from './UsersTable';
+import { DEFAULT_PROFILE_PICTURE, User } from '../../KanbanPage';
 
 interface UsersTableCreateRowProps {
   handleAddUser: (user: User) => void;
@@ -10,6 +10,16 @@ export const UsersTableCreateRow: FunctionComponent<
 > = ({ handleAddUser }) => {
   const [username, setUsername] = useState('');
   const [image, setImage] = useState<string>(DEFAULT_PROFILE_PICTURE);
+  const [nameError, setNameError] = useState<string>('');
+
+  const isValidUserName = (newName: string): boolean => {
+    if (newName.length === 0) {
+      setNameError("Name shouldn't be empty...");
+      return false;
+    }
+    setNameError('');
+    return true;
+  };
 
   const handleChangeImage = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -24,12 +34,13 @@ export const UsersTableCreateRow: FunctionComponent<
   };
 
   const handleChangeUsername = (e: ChangeEvent<HTMLInputElement>) => {
-    const input: string = e.target.value;
-    setUsername(input);
+    const newName: string = e.target.value;
+    isValidUserName(newName);
+    setUsername(newName);
   };
 
   const handleSubmit = () => {
-    if (username.length === 0) {
+    if (!isValidUserName(username)) {
       return;
     }
     handleAddUser({ name: username, image: image } as User);
@@ -41,14 +52,20 @@ export const UsersTableCreateRow: FunctionComponent<
     <tfoot>
       <tr>
         <th>
-          <label>
+          <label className="form-control w-full max-w-xs relative">
             <input
               type="text"
               placeholder="Enter a name..."
-              className="input input-bordered input-sm w-full max-w-xs"
+              className={
+                'input input-bordered input-sm w-full max-w-xs' +
+                (nameError.length === 0 ? '' : ' input-error')
+              }
               onChange={handleChangeUsername}
               value={username}
             />
+            <span className="label-text-alt text-error absolute -bottom-5 left-1 italic">
+              {nameError}
+            </span>
           </label>
         </th>
         <th>

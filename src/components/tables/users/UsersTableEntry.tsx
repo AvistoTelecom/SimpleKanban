@@ -1,14 +1,14 @@
 import { ChangeEvent, KeyboardEvent, FunctionComponent, useState } from 'react';
-import { User } from './UsersTable';
 import { ImageInput } from './ImageInput';
+import { User } from '../../KanbanPage';
 
 interface UserEntryProps {
   user: User;
   handleDeleteUser: (id: number) => void;
   handleUpdateUser: (
     id: number,
-    image: File | null,
-    name: string | null
+    name: string | null,
+    image: File | null
   ) => void;
 }
 
@@ -18,42 +18,57 @@ export const UsersTableEntry: FunctionComponent<UserEntryProps> = ({
   handleUpdateUser,
 }) => {
   const [name, setName] = useState<string>(user.name);
+  const [nameError, setNameError] = useState<string>('');
+
+  const isValidUserName = (newName: string): boolean => {
+    if (newName.length === 0) {
+      setNameError("Name shouldn't be empty...");
+      return false;
+    }
+    setNameError('');
+    return true;
+  };
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newName: string = e.target.value;
+    isValidUserName(newName);
     setName(newName);
   };
 
-  const handleNameSubmit = () => {
-    if (name.length === 0) {
-      setName(user.name);
+  const handleSubmit = () => {
+    if (!isValidUserName(name)) {
       return;
     }
-    handleUpdateUser(user.id, null, name);
+    handleUpdateUser(user.id, name, null);
   };
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key == 'Enter') {
       e.currentTarget.blur();
-      handleNameSubmit();
+      handleSubmit();
     }
   };
 
   return (
     <tr>
-      <td>
-        <input
-          type="text"
-          placeholder="Name..."
-          className={
-            'input input-sm w-full max-w-xs' +
-            (name.length === 0 ? ' input-error' : '')
-          }
-          value={name}
-          onChange={handleNameChange}
-          onBlur={handleNameSubmit}
-          onKeyDown={handleKeyPress}
-        />
+      <td className="py-6">
+        <label className="form-control w-full max-w-xs relative">
+          <input
+            type="text"
+            placeholder="Name..."
+            className={
+              'input input-sm w-full max-w-xs' +
+              (name.length === 0 ? ' input-error' : '')
+            }
+            value={name}
+            onChange={handleNameChange}
+            onBlur={handleSubmit}
+            onKeyDown={handleKeyPress}
+          />
+          <span className="label-text-alt text-error absolute -bottom-5 left-1 italic">
+            {nameError}
+          </span>
+        </label>
       </td>
       <td>
         <ImageInput user={user} handleUpdateUser={handleUpdateUser} />

@@ -1,12 +1,12 @@
 import { ChangeEvent, FunctionComponent } from 'react';
-import { User } from './UsersTable';
+import { User } from '../../KanbanPage';
 
 interface ImageInputProps {
   user: User;
   handleUpdateUser: (
     id: number,
-    image: File | null,
-    name: string | null
+    name: string | null,
+    image: File | null
   ) => void;
 }
 
@@ -17,7 +17,7 @@ export const ImageInput: FunctionComponent<ImageInputProps> = ({
   const handleSumbitImage = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const uploadedImage = e.target.files[0];
-      handleUpdateUser(user.id, uploadedImage, null);
+      handleUpdateUser(user.id, null, uploadedImage);
     }
   };
 

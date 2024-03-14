@@ -1,15 +1,34 @@
 import { ChangeEvent, FunctionComponent, useState } from 'react';
-import { Tag } from './TagsTable';
+import { Tag } from '../../KanbanPage';
 
 interface TagstableCreateRowProps {
+  tags: Tag[];
   handleAddTag: (tag: Tag) => void;
 }
 
+const DEFAULT_COLOR = '#000000';
+
 export const TagstableCreateRow: FunctionComponent<TagstableCreateRowProps> = ({
   handleAddTag,
+  tags,
 }) => {
   const [name, setName] = useState('');
-  const [color, setColor] = useState('#000000');
+  const [color, setColor] = useState(DEFAULT_COLOR);
+  const [nameError, setNameError] = useState<string>('');
+
+  const isValidTagName = (newName: string): boolean => {
+    if (newName.length === 0) {
+      setNameError("Name shouldn't be empty...");
+      return false;
+    }
+
+    const tagFound = tags.find((tag) => tag.name === newName);
+    if (tagFound) {
+      setNameError('Name already exists...');
+      return false;
+    }
+    return true;
+  };
 
   const handleChangeColor = (e: ChangeEvent<HTMLInputElement>) => {
     const input: string = e.target.value;
@@ -17,26 +36,41 @@ export const TagstableCreateRow: FunctionComponent<TagstableCreateRowProps> = ({
   };
 
   const handleChangeName = (e: ChangeEvent<HTMLInputElement>) => {
-    // TODO (compare with other names to avoid duplicated tags)
-    const input = e.target.value;
-    setName(input);
+    const newName = e.target.value;
+    if (isValidTagName(newName)) {
+      setNameError('');
+    }
+    setName(newName);
   };
 
   const handleSubmit = () => {
-    // TODO
+    if (!isValidTagName(name)) {
+      return;
+    }
+    handleAddTag({ name: name, color: color } as Tag);
+    setColor(DEFAULT_COLOR);
+    setName('');
   };
 
   return (
     <tfoot>
       <tr>
         <th>
-          <input
-            type="text"
-            placeholder="Name..."
-            className="input input-bordered input-sm w-full max-w-xs"
-            value={name}
-            onChange={handleChangeName}
-          ></input>
+          <label className="form-control w-full max-w-xs relative">
+            <input
+              type="text"
+              placeholder="Name..."
+              className={
+                'input input-bordered input-sm w-full max-w-xs' +
+                (nameError.length === 0 ? '' : ' input-error')
+              }
+              value={name}
+              onChange={handleChangeName}
+            ></input>
+            <span className="label-text-alt text-error absolute -bottom-5 left-1 italic">
+              {nameError}
+            </span>
+          </label>
         </th>
         <th>
           <input
