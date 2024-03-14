@@ -26,7 +26,7 @@ export const UsersTable: FunctionComponent<UsersTableProps> = ({
       <table className="table table-zebra table-pin-rows">
         <UsersTableHeader />
         <tbody>
-          {users?.length &&
+          {users?.length > 0 &&
             users.map((user: User) => {
               return (
                 <UsersTableEntry
