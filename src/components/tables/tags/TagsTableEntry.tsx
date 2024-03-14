@@ -24,7 +24,9 @@ export const TagsTableEntry: FunctionComponent<TableEntryProps> = ({
       return false;
     }
 
-    const tagFound = tags.find((tag) => tag.name === newName);
+    const tagFound: Tag | undefined = tags.find(
+      (tag: Tag) => tag.name === newName
+    );
     if (tagFound && tagFound.name !== tag.name) {
       setNameError('Name already exists...');
       return false;

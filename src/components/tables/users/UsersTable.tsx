@@ -27,7 +27,7 @@ export const UsersTable: FunctionComponent<UsersTableProps> = ({
         <UsersTableHeader />
         <tbody>
           {users?.length &&
-            users.map((user) => {
+            users.map((user: User) => {
               return (
                 <UsersTableEntry
                   key={user.id}

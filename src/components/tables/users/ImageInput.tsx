@@ -16,7 +16,7 @@ export const ImageInput: FunctionComponent<ImageInputProps> = ({
 }) => {
   const handleSumbitImage = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      const uploadedImage = e.target.files[0];
+      const uploadedImage: File = e.target.files[0];
       handleUpdateUser(user.id, null, uploadedImage);
     }
   };

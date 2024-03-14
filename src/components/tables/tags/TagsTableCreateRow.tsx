@@ -6,14 +6,14 @@ interface TagstableCreateRowProps {
   handleAddTag: (tag: Tag) => void;
 }
 
-const DEFAULT_COLOR = '#000000';
+const DEFAULT_COLOR: string = '#000000';
 
 export const TagstableCreateRow: FunctionComponent<TagstableCreateRowProps> = ({
   handleAddTag,
   tags,
 }) => {
-  const [name, setName] = useState('');
-  const [color, setColor] = useState(DEFAULT_COLOR);
+  const [name, setName] = useState<string>('');
+  const [color, setColor] = useState<string>(DEFAULT_COLOR);
   const [nameError, setNameError] = useState<string>('');
 
   const isValidTagName = (newName: string): boolean => {
@@ -22,8 +22,10 @@ export const TagstableCreateRow: FunctionComponent<TagstableCreateRowProps> = ({
       return false;
     }
 
-    const tagFound = tags.find((tag) => tag.name === newName);
-    if (tagFound) {
+    const tagFound: Tag | undefined = tags.find(
+      (tag: Tag) => tag.name === newName
+    );
+    if (tagFound !== undefined) {
       setNameError('Name already exists...');
       return false;
     }
@@ -31,8 +33,8 @@ export const TagstableCreateRow: FunctionComponent<TagstableCreateRowProps> = ({
   };
 
   const handleChangeColor = (e: ChangeEvent<HTMLInputElement>) => {
-    const input: string = e.target.value;
-    setColor(input);
+    const newColor: string = e.target.value;
+    setColor(newColor);
   };
 
   const handleChangeName = (e: ChangeEvent<HTMLInputElement>) => {

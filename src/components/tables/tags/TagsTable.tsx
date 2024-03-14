@@ -23,7 +23,7 @@ export const TagsTable: FunctionComponent<TagsTableProps> = ({
         <TagsTableHeader />
         <tbody>
           {tags?.length > 0 &&
-            tags.map((tag) => {
+            tags.map((tag: Tag) => {
               return (
                 <TagsTableEntry
                   key={tag.name}

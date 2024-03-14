@@ -8,7 +8,7 @@ interface UsersTableCreateRowProps {
 export const UsersTableCreateRow: FunctionComponent<
   UsersTableCreateRowProps
 > = ({ handleAddUser }) => {
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState<string>('');
   const [image, setImage] = useState<string>(DEFAULT_PROFILE_PICTURE);
   const [nameError, setNameError] = useState<string>('');
 
@@ -24,9 +24,9 @@ export const UsersTableCreateRow: FunctionComponent<
   const handleChangeImage = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const uploadedImage: File = e.target.files[0];
-      const reader = new FileReader();
+      const reader: FileReader = new FileReader();
       reader.onloadend = () => {
-        const base64string = reader.result as string;
+        const base64string: string = reader.result as string;
         setImage(base64string);
       };
       reader.readAsDataURL(uploadedImage);

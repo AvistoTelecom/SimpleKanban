@@ -3,19 +3,21 @@ import { KanbanArea } from './KanbanArea';
 import { SidePanel } from './SidePanel';
 import { NavBar } from './NavBar';
 
+export const DEFAULT_PROFILE_PICTURE: string =
+  'https://docs.material-tailwind.com/img/face-2.jpg';
+
+// TODO : remove (debugging only, replace with data from localstorage)
 export interface Tag {
   name: string;
   color: string;
 }
 
+// TODO : remove (debugging only, replace with data from localstorage)
 export interface User {
   id: number;
   name: string;
   image: string;
 }
-
-export const DEFAULT_PROFILE_PICTURE =
-  'https://docs.material-tailwind.com/img/face-2.jpg';
 
 // TODO : remove (debugging only, replace with data from localstorage)
 const defaultUsers: User[] = [
@@ -31,6 +33,7 @@ const defaultUsers: User[] = [
   } as User,
 ];
 
+// TODO : remove (debugging only, replace with data from localstorage)
 const defaultTags: Tag[] = [
   {
     name: 'tag1',
@@ -48,9 +51,9 @@ const defaultTags: Tag[] = [
 
 export const KanbanPage: FunctionComponent = () => {
   const [sidePanelOpen, setSidePanelOpen] = useState<boolean>(false);
-  const [contentID, setContentID] = useState('');
-  const [users, setUsers] = useState(defaultUsers);
-  const [tags, setTags] = useState(defaultTags);
+  const [contentID, setContentID] = useState<string>('');
+  const [users, setUsers] = useState<User[]>(defaultUsers);
+  const [tags, setTags] = useState<Tag[]>(defaultTags);
 
   const handleNavBar = (e: MouseEvent<HTMLButtonElement>) => {
     const id: string = e.currentTarget.value;
@@ -71,7 +74,7 @@ export const KanbanPage: FunctionComponent = () => {
   const handleAddUser = (user: User) => {
     // TODO : Not implemented (need localstorage, only debug version)
     user.id = 42;
-    setUsers((users) => [...users, user]);
+    setUsers((users: User[]): User[] => [...users, user]);
   };
 
   const handleDeleteUser = (id: number) => {
@@ -85,15 +88,15 @@ export const KanbanPage: FunctionComponent = () => {
     image: File | null
   ) => {
     // TODO : Not implemented (need localstorage, only debug version)
-    const updatedUsers = users.map((user) => {
+    const updatedUsers: User[] = users.map((user: User) => {
       if (user.id === id) {
         if (name != null) {
           user.name = name;
         }
         if (image != null) {
-          const reader = new FileReader();
+          const reader: FileReader = new FileReader();
           reader.onloadend = () => {
-            const base64string = reader.result as string;
+            const base64string: string = reader.result as string;
             user.image = base64string;
             // Triggering the update when image is done loading
             setUsers(users);
@@ -110,7 +113,7 @@ export const KanbanPage: FunctionComponent = () => {
   const handleAddTag = (newTag: Tag) => {
     // TODO : Not implemented (need localstorage, only debug version)
     const nameAlreadyExsists: boolean = tags.some(
-      (tag) => newTag.name === tag.name
+      (tag: Tag) => newTag.name === tag.name
     );
     if (nameAlreadyExsists) {
       return;
@@ -120,7 +123,9 @@ export const KanbanPage: FunctionComponent = () => {
 
   const handleDeleteTag = (name: string) => {
     // TODO : Not implemented (need localstorage, only debug version)
-    setTags((tags) => [...tags.filter((tag) => tag.name !== name)]);
+    setTags((tags: Tag[]): Tag[] => [
+      ...tags.filter((tag) => tag.name !== name),
+    ]);
   };
 
   const handleUpdateTag = (
@@ -130,13 +135,13 @@ export const KanbanPage: FunctionComponent = () => {
   ) => {
     // TODO : Not implemented (need localstorage, only debug version)
     const nameAlreadyExsists: boolean = tags.some(
-      (tag) => tag.name === newName
+      (tag: Tag) => tag.name === newName
     );
     if (nameAlreadyExsists) {
       return;
     }
 
-    const updatedTags = tags.map((tag) => {
+    const updatedTags: Tag[] = tags.map((tag: Tag) => {
       if (tag.name === name) {
         if (newName !== null) {
           tag.name = newName;
