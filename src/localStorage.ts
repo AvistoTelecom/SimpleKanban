@@ -37,10 +37,7 @@ export class LocalStorageUtil {
     return user === undefined ? null : user;
   };
 
-  static addUser = (userToAddInfos: {
-    name: string;
-    image: string;
-  }): number => {
+  static addUser = (userToAddInfos: Omit<User, 'id'>): number => {
     const storedUsers: User[] = this.getUserList();
     let maxUserId: number = 0;
     if (storedUsers.length !== 0) {
@@ -196,17 +193,7 @@ export class LocalStorageUtil {
     return ticket === undefined ? null : ticket;
   };
 
-  static addTicket = (ticketToAddInfos: {
-    name: string;
-    creationDate: Date;
-    storyPoint: number;
-    assigneId: number | null;
-    tagName: string | null;
-    description: string;
-    parentId: number | null;
-    childId: number | null;
-    blocked: boolean;
-  }): number => {
+  static addTicket = (ticketToAddInfos: Omit<Ticket, 'id'>): number => {
     const storedTickets: Ticket[] = this.getTicketList();
     let maxTicketId: number = 0;
     if (storedTickets.length !== 0) {
