@@ -1,4 +1,4 @@
-import { ChangeEvent, FunctionComponent, useState } from 'react';
+import { ChangeEvent, FunctionComponent, KeyboardEvent, useState } from 'react';
 import { DEFAULT_PROFILE_PICTURE, User } from '../../KanbanPage';
 
 interface UsersTableCreateRowProps {
@@ -48,6 +48,13 @@ export const UsersTableCreateRow: FunctionComponent<
     setUsername('');
   };
 
+  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key == 'Enter') {
+      e.currentTarget.blur();
+      handleSubmit();
+    }
+  };
+
   return (
     <tfoot>
       <tr>
@@ -61,6 +68,7 @@ export const UsersTableCreateRow: FunctionComponent<
                 (nameError.length === 0 ? '' : ' input-error')
               }
               onChange={handleChangeUsername}
+              onKeyDown={handleKeyPress}
               value={username}
             />
             <span className="label-text-alt text-error absolute -bottom-5 left-1 italic">

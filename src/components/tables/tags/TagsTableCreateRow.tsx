@@ -1,4 +1,4 @@
-import { ChangeEvent, FunctionComponent, useState } from 'react';
+import { ChangeEvent, FunctionComponent, KeyboardEvent, useState } from 'react';
 import { Tag } from '../../KanbanPage';
 
 interface TagstableCreateRowProps {
@@ -54,6 +54,13 @@ export const TagstableCreateRow: FunctionComponent<TagstableCreateRowProps> = ({
     setName('');
   };
 
+  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key == 'Enter') {
+      e.currentTarget.blur();
+      handleSubmit();
+    }
+  };
+
   return (
     <tfoot>
       <tr>
@@ -67,6 +74,7 @@ export const TagstableCreateRow: FunctionComponent<TagstableCreateRowProps> = ({
                 (nameError.length === 0 ? '' : ' input-error')
               }
               value={name}
+              onKeyDown={handleKeyPress}
               onChange={handleChangeName}
             ></input>
             <span className="label-text-alt text-error absolute -bottom-5 left-1 italic">
