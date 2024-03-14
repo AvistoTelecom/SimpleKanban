@@ -25,12 +25,12 @@ export class LocalStorageUtil {
   }
 
   // Users
-  static getUsers = (): User[] => {
+  static getUserList = (): User[] => {
     return this.getItem('users');
   };
 
   static getUser = (userId: number): User | null => {
-    const storedUsers: User[] = this.getUsers();
+    const storedUsers: User[] = this.getUserList();
     const user: User | undefined = storedUsers.find(
       (currUser: User) => currUser.id === userId
     );
@@ -41,7 +41,7 @@ export class LocalStorageUtil {
     name: string;
     image: string;
   }): number => {
-    const storedUsers: User[] = this.getUsers();
+    const storedUsers: User[] = this.getUserList();
     let maxUserId: number = 0;
     if (storedUsers.length !== 0) {
       maxUserId = storedUsers.reduce((prevUser, currUser) =>
@@ -56,8 +56,8 @@ export class LocalStorageUtil {
   };
 
   static deleteUser = (userId: number) => {
-    const storedTickets = this.getTickets();
-    const storedUser = this.getUsers();
+    const storedTickets = this.getTicketList();
+    const storedUser = this.getUserList();
     // Unasign tickets
     this.setItem(
       'tickets',
@@ -76,7 +76,7 @@ export class LocalStorageUtil {
   };
 
   static updateUser = (user: User) => {
-    const storedUser = this.getUsers();
+    const storedUser = this.getUserList();
     this.setItem(
       'users',
       storedUser.map((currUser: User) => {
@@ -89,12 +89,12 @@ export class LocalStorageUtil {
   };
 
   // Tags
-  static getTags = (): Tag[] => {
+  static getTagList = (): Tag[] => {
     return this.getItem('tags');
   };
 
   static getTag = (tagName: string): Tag | null => {
-    const storedTags: Tag[] = this.getTags();
+    const storedTags: Tag[] = this.getTagList();
     const tag: Tag | undefined = storedTags.find(
       (currTag: Tag) => currTag.name === tagName
     );
@@ -102,7 +102,7 @@ export class LocalStorageUtil {
   };
 
   static addTag = (tagToAdd: Tag): string | null => {
-    const storedTags: Tag[] = this.getTags();
+    const storedTags: Tag[] = this.getTagList();
     if (storedTags.some((tag) => tag.name === tagToAdd.name)) {
       return null;
     }
@@ -112,8 +112,8 @@ export class LocalStorageUtil {
   };
 
   static deleteTag = (tagName: string) => {
-    const storedTickets = this.getTickets();
-    const storedUser = this.getTags();
+    const storedTickets = this.getTicketList();
+    const storedUser = this.getTagList();
     // remove this tag from tickets
     this.setItem(
       'tickets',
@@ -133,8 +133,8 @@ export class LocalStorageUtil {
   };
 
   static updateTag = (oldTag: Tag, newTag: Tag) => {
-    const storedUser = this.getTags();
-    const storedTicket = this.getTickets();
+    const storedUser = this.getTagList();
+    const storedTicket = this.getTicketList();
     // update this tag in tickets
     this.setItem(
       'tickets',
@@ -157,7 +157,7 @@ export class LocalStorageUtil {
   };
 
   // Ticket
-  static getTickets = (): Ticket[] => {
+  static getTicketList = (): Ticket[] => {
     const storedTickets: Ticket[] = this.getItem('tickets');
     const storedInProgressTickets: InProgressTicketStorage[] =
       this.getItem('inProgressTickets');
@@ -189,7 +189,7 @@ export class LocalStorageUtil {
   };
 
   static getTicket = (ticketId: number): Ticket | null => {
-    const storedTickets: Ticket[] = this.getTickets();
+    const storedTickets: Ticket[] = this.getTicketList();
     const ticket: Ticket | undefined = storedTickets.find(
       (currTicket: Ticket) => currTicket.id === ticketId
     );
@@ -207,7 +207,7 @@ export class LocalStorageUtil {
     childId: number | null;
     blocked: boolean;
   }): number => {
-    const storedTickets: Ticket[] = this.getTickets();
+    const storedTickets: Ticket[] = this.getTicketList();
     let maxTicketId: number = 0;
     if (storedTickets.length !== 0) {
       maxTicketId = storedTickets.reduce((prevTicket, currTicket) =>
@@ -222,7 +222,7 @@ export class LocalStorageUtil {
   };
 
   static deleteTicket = (ticketId: number) => {
-    const storedTickets = this.getTickets();
+    const storedTickets = this.getTicketList();
     const storedInProgress: InProgressTicketStorage[] =
       this.getItem('inProgressTickets');
     const storedDone: DoneTicketStorage[] = this.getItem('doneTickets');
@@ -258,7 +258,7 @@ export class LocalStorageUtil {
   };
 
   static updadeTicket = (ticket: Ticket) => {
-    const storedTickets = this.getTickets();
+    const storedTickets = this.getTicketList();
     this.setItem(
       'tickets',
       storedTickets.map((currTicket: Ticket) => {
@@ -271,7 +271,7 @@ export class LocalStorageUtil {
   };
 
   // InProgressTicket
-  static getInProgressTickets = (): InProgressTicket[] => {
+  static getInProgressTicketList = (): InProgressTicket[] => {
     const storedInProgressTickets: InProgressTicketStorage[] =
       this.getItem('inProgressTickets');
     return storedInProgressTickets.map(
@@ -289,7 +289,7 @@ export class LocalStorageUtil {
     inProgressTicketId: number
   ): InProgressTicket | null => {
     const storedInProgressTickets: InProgressTicket[] =
-      this.getInProgressTickets();
+      this.getInProgressTicketList();
     const inProgressTicket: InProgressTicket | undefined =
       storedInProgressTickets.find(
         (currInProgressTicket: InProgressTicket) =>
@@ -299,7 +299,7 @@ export class LocalStorageUtil {
   };
 
   // DoneTicket
-  static getDoneTickets = (): DoneTicket[] => {
+  static getDoneTicketList = (): DoneTicket[] => {
     const storedDoneTickets: DoneTicketStorage[] = this.getItem('doneTickets');
     return storedDoneTickets.map((currDoneTicket: DoneTicketStorage) => {
       const doneTicket = this.getInProgressTicket(
@@ -311,7 +311,7 @@ export class LocalStorageUtil {
   };
 
   static getDoneTicket = (doneTicketId: number): DoneTicket | null => {
-    const storedDoneTickets: DoneTicket[] = this.getDoneTickets();
+    const storedDoneTickets: DoneTicket[] = this.getDoneTicketList();
     const doneTicket: DoneTicket | undefined = storedDoneTickets.find(
       (currDoneTicket: DoneTicket) => currDoneTicket.id === doneTicketId
     );
