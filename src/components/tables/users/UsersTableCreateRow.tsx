@@ -1,0 +1,100 @@
+import { ChangeEvent, FunctionComponent, KeyboardEvent, useState } from 'react';
+import { ImageInput } from './ImageInput';
+import { DEFAULT_PROFILE_PICTURE, User } from '../../context/KanbanPageContext';
+
+type UsersTableCreateRowProps = {
+  onAddUser: (user: Omit<User, 'id'>) => void;
+};
+
+export const UsersTableCreateRow: FunctionComponent<
+  UsersTableCreateRowProps
+> = ({ onAddUser }) => {
+  const [username, setUsername] = useState<string>('');
+  const [image, setImage] = useState<string>(DEFAULT_PROFILE_PICTURE);
+  const [nameError, setNameError] = useState<string>('');
+
+  const isValidUserName = (newName: string): boolean => {
+    if (newName.length === 0) {
+      setNameError("Name shouldn't be empty...");
+      return false;
+    }
+    setNameError('');
+    return true;
+  };
+
+  const onChangeImage = (newImage: string) => {
+    setImage(newImage);
+  };
+
+  const onChangeUsername = (event: ChangeEvent<HTMLInputElement>) => {
+    const newName: string = event.target.value;
+    isValidUserName(newName);
+    setUsername(newName);
+  };
+
+  const onSubmit = () => {
+    if (!isValidUserName(username)) {
+      return;
+    }
+    onAddUser({ name: username, image: image });
+    setImage(DEFAULT_PROFILE_PICTURE);
+    setUsername('');
+  };
+
+  const onKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.currentTarget.blur();
+      onSubmit();
+    }
+  };
+
+  return (
+    <tfoot>
+      <tr>
+        <th>
+          <label className="form-control w-full max-w-xs relative">
+            <input
+              type="text"
+              placeholder="Enter a name..."
+              className={
+                'input input-bordered input-sm w-full max-w-xs' +
+                (nameError.length === 0 ? '' : ' input-error')
+              }
+              onChange={onChangeUsername}
+              onKeyDown={onKeyPress}
+              value={username}
+            />
+            <span className="label-text-alt text-error absolute -bottom-5 left-1 italic">
+              {nameError}
+            </span>
+          </label>
+        </th>
+        <th>
+          <ImageInput image={image} onChange={onChangeImage} />
+        </th>
+        <th>
+          <button
+            type="button"
+            className="hover:text-primary"
+            onClick={onSubmit}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 4.5v15m7.5-7.5h-15"
+              />
+            </svg>
+          </button>
+        </th>
+      </tr>
+    </tfoot>
+  );
+};
