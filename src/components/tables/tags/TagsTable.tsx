@@ -8,7 +8,11 @@ type TagsTableProps = {
   tagList: Tag[];
   onAddTag: (tag: Tag) => void;
   onDeleteTag: (name: string) => void;
-  onUpdateTag: (name: string, newName: string, color: string) => void;
+  onUpdateTag: (
+    name: string,
+    newName: string | null,
+    color: string | null
+  ) => void;
 };
 
 export const TagsTable: FunctionComponent<TagsTableProps> = ({

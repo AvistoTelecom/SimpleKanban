@@ -5,7 +5,11 @@ type TableEntryProps = {
   tag: Tag;
   tagList: Tag[];
   onDeleteTag: (name: string) => void;
-  onUpdateTag: (name: string, newName: string, color: string) => void;
+  onUpdateTag: (
+    name: string,
+    newName: string | null,
+    color: string | null
+  ) => void;
 };
 
 export const TagsTableEntry: FunctionComponent<TableEntryProps> = ({
@@ -15,7 +19,6 @@ export const TagsTableEntry: FunctionComponent<TableEntryProps> = ({
   onUpdateTag,
 }) => {
   const [name, setName] = useState<string>(tag.name);
-  const [color, setColor] = useState<string>(tag.color);
   const [nameError, setNameError] = useState<string>('');
 
   const isValidTagName = (newName: string): boolean => {
@@ -43,14 +46,14 @@ export const TagsTableEntry: FunctionComponent<TableEntryProps> = ({
 
   const onChangeColor = (event: ChangeEvent<HTMLInputElement>) => {
     const input: string = event.target.value;
-    setColor(input);
+    onUpdateTag(tag.name, null, input);
   };
 
   const onSubmit = () => {
     if (!isValidTagName(name)) {
       return;
     }
-    onUpdateTag(tag.name, name, color);
+    onUpdateTag(tag.name, name, null);
   };
 
   const onKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -83,7 +86,7 @@ export const TagsTableEntry: FunctionComponent<TableEntryProps> = ({
       <td>
         <input
           type="color"
-          value={color}
+          value={tag.color}
           className="rounded-md bg-neutral"
           onChange={onChangeColor}
         />
