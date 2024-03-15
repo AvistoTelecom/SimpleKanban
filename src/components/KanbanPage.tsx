@@ -1,178 +1,104 @@
-import { FunctionComponent, useState, MouseEvent } from 'react';
+import { FunctionComponent, useState, MouseEvent, useContext } from 'react';
 import { KanbanArea } from './KanbanArea';
 import { SidePanel } from './SidePanel';
 import { NavBar } from './NavBar';
+import { TagsTable } from './tables/tags/TagsTable';
+import { UsersTable } from './tables/users/UsersTable';
+import {
+  KabanPageContextType,
+  KanbanPageContext,
+  Tag,
+  User,
+} from './context/KanbanPageContext';
 
-export const DEFAULT_PROFILE_PICTURE: string =
-  'https://docs.material-tailwind.com/img/face-2.jpg';
-
-// TODO : remove (debugging only, replace with data from localstorage)
-export interface Tag {
-  name: string;
-  color: string;
-}
-
-// TODO : remove (debugging only, replace with data from localstorage)
-export interface User {
-  id: number;
-  name: string;
-  image: string;
-}
-
-// TODO : remove (debugging only, replace with data from localstorage)
-const defaultUsers: User[] = [
-  {
-    id: 1,
-    name: 'test',
-    image: DEFAULT_PROFILE_PICTURE,
-  } as User,
-  {
-    id: 2,
-    name: 'test2',
-    image: DEFAULT_PROFILE_PICTURE,
-  } as User,
-];
-
-// TODO : remove (debugging only, replace with data from localstorage)
-const defaultTags: Tag[] = [
-  {
-    name: 'tag1',
-    color: '#ff0000',
-  } as Tag,
-  {
-    name: 'tag2',
-    color: '#00ff00',
-  } as Tag,
-  {
-    name: 'tag3',
-    color: '#0000ff',
-  } as Tag,
-];
+export type SidePanelContent = 'tag' | 'user' | '';
 
 export const KanbanPage: FunctionComponent = () => {
-  const [sidePanelOpen, setSidePanelOpen] = useState<boolean>(false);
-  const [contentID, setContentID] = useState<string>('');
-  const [users, setUsers] = useState<User[]>(defaultUsers);
-  const [tags, setTags] = useState<Tag[]>(defaultTags);
+  const [isSidePanelOpen, setSidePanelOpen] = useState<boolean>(false);
+  const [contentID, setContentID] = useState<SidePanelContent>('');
+  const {
+    tagList,
+    userList,
+    addUser,
+    addTag,
+    deleteTag,
+    deleteUser,
+    updateTag,
+    updateUser,
+  } = useContext<KabanPageContextType>(KanbanPageContext);
 
-  const handleNavBar = (e: MouseEvent<HTMLButtonElement>) => {
-    const id: string = e.currentTarget.value;
+  const onNavBar = (event: MouseEvent<HTMLButtonElement>) => {
+    const id: SidePanelContent = event.currentTarget.value as SidePanelContent;
     if (contentID === '') {
-      setSidePanelOpen(!sidePanelOpen);
+      setSidePanelOpen(!isSidePanelOpen);
       setContentID(id);
       return;
     }
 
     if (contentID === id) {
-      setSidePanelOpen(!sidePanelOpen);
+      setSidePanelOpen(!isSidePanelOpen);
       setContentID('');
     } else {
       setContentID(id);
     }
   };
 
-  const handleAddUser = (user: User) => {
-    // TODO : Not implemented (need localstorage, only debug version)
-    user.id = 42;
-    setUsers((users: User[]): User[] => [...users, user]);
+  const onAddUser = (user: Omit<User, 'id'>) => {
+    addUser(user);
   };
 
-  const handleDeleteUser = (id: number) => {
-    // TODO : Not implemented (need localstorage, only debug version)
-    setUsers((users) => [...users.filter((user) => user.id !== id)]);
+  const onDeleteUser = (id: number) => {
+    deleteUser(id);
   };
 
-  const handleUpdateUser = (
+  const onUpdateUser = (
     id: number,
     name: string | null,
-    image: File | null
+    image: string | null
   ) => {
-    // TODO : Not implemented (need localstorage, only debug version)
-    const updatedUsers: User[] = users.map((user: User) => {
-      if (user.id === id) {
-        if (name != null) {
-          user.name = name;
-        }
-        if (image != null) {
-          const reader: FileReader = new FileReader();
-          reader.onloadend = () => {
-            const base64string: string = reader.result as string;
-            user.image = base64string;
-            // Triggering the update when image is done loading
-            setUsers(users);
-          };
-          reader.readAsDataURL(image);
-        }
-        return user;
-      }
-      return user;
-    });
-    setUsers(updatedUsers);
+    updateUser(id, { name: name, image: image });
   };
 
-  const handleAddTag = (newTag: Tag) => {
-    // TODO : Not implemented (need localstorage, only debug version)
-    const nameAlreadyExsists: boolean = tags.some(
-      (tag: Tag) => newTag.name === tag.name
-    );
-    if (nameAlreadyExsists) {
-      return;
-    }
-    setTags((tags) => [...tags, newTag]);
+  const onAddTag = (newTag: Tag) => {
+    addTag(newTag);
   };
 
-  const handleDeleteTag = (name: string) => {
-    // TODO : Not implemented (need localstorage, only debug version)
-    setTags((tags: Tag[]): Tag[] => [
-      ...tags.filter((tag) => tag.name !== name),
-    ]);
+  const onDeleteTag = (name: string) => {
+    deleteTag(name);
   };
 
-  const handleUpdateTag = (
+  const onUpdateTag = (
     name: string,
     newName: string | null,
     color: string | null
   ) => {
-    // TODO : Not implemented (need localstorage, only debug version)
-    const nameAlreadyExsists: boolean = tags.some(
-      (tag: Tag) => tag.name === newName
-    );
-    if (nameAlreadyExsists) {
-      return;
-    }
-
-    const updatedTags: Tag[] = tags.map((tag: Tag) => {
-      if (tag.name === name) {
-        if (newName !== null) {
-          tag.name = newName;
-        }
-
-        if (color !== null) {
-          tag.color = color;
-        }
-      }
-      return tag;
-    });
-    setTags(updatedTags);
+    updateTag(name, { name: newName, color: color });
   };
 
   return (
     <>
-      <NavBar handleNavBar={handleNavBar} />
-      <main className="flex-grow h-96 flex w-full space-x-2 p-2 bg-base-300">
+      <NavBar onNavBar={onNavBar} />
+      <main className="flex-grow h-1 flex w-full space-x-2 p-2 bg-base-300">
         <KanbanArea />
-        {sidePanelOpen && (
-          <SidePanel
-            users={users}
-            tags={tags}
-            handleAddTag={handleAddTag}
-            handleDeleteTag={handleDeleteTag}
-            handleUpdateTag={handleUpdateTag}
-            handleAddUser={handleAddUser}
-            handleDeleteUser={handleDeleteUser}
-            handleUpdateUser={handleUpdateUser}
-            content={contentID}
-          />
+        {isSidePanelOpen && (
+          <SidePanel>
+            {contentID === 'tag' && (
+              <TagsTable
+                tags={tagList}
+                onAddTag={onAddTag}
+                onDeleteTag={onDeleteTag}
+                onUpdateTag={onUpdateTag}
+              />
+            )}
+            {contentID === 'user' && (
+              <UsersTable
+                users={userList}
+                onAddUser={onAddUser}
+                onDeleteUser={onDeleteUser}
+                onUpdateUser={onUpdateUser}
+              />
+            )}
+          </SidePanel>
         )}
       </main>
     </>

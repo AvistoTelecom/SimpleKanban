@@ -1,18 +1,18 @@
 import { ChangeEvent, FunctionComponent, KeyboardEvent, useState } from 'react';
-import { Tag } from '../../KanbanPage';
+import { Tag } from '../../context/KanbanPageContext';
 
-interface TableEntryProps {
+type TableEntryProps = {
   tag: Tag;
   tags: Tag[];
-  handleDeleteTag: (name: string) => void;
-  handleUpdateTag: (name: string, newName: string, color: string) => void;
-}
+  onDeleteTag: (name: string) => void;
+  onUpdateTag: (name: string, newName: string, color: string) => void;
+};
 
 export const TagsTableEntry: FunctionComponent<TableEntryProps> = ({
   tag,
   tags,
-  handleDeleteTag,
-  handleUpdateTag,
+  onDeleteTag,
+  onUpdateTag,
 }) => {
   const [name, setName] = useState<string>(tag.name);
   const [color, setColor] = useState<string>(tag.color);
@@ -35,28 +35,28 @@ export const TagsTableEntry: FunctionComponent<TableEntryProps> = ({
     return true;
   };
 
-  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newName: string = e.target.value;
+  const onNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const newName: string = event.target.value;
     isValidTagName(newName);
     setName(newName);
   };
 
-  const handleChangeColor = (e: ChangeEvent<HTMLInputElement>) => {
-    const input: string = e.target.value;
+  const onChangeColor = (event: ChangeEvent<HTMLInputElement>) => {
+    const input: string = event.target.value;
     setColor(input);
   };
 
-  const handleSubmit = () => {
+  const onSubmit = () => {
     if (!isValidTagName(name)) {
       return;
     }
-    handleUpdateTag(tag.name, name, color);
+    onUpdateTag(tag.name, name, color);
   };
 
-  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key == 'Enter') {
-      e.currentTarget.blur();
-      handleSubmit();
+  const onKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.currentTarget.blur();
+      onSubmit();
     }
   };
   return (
@@ -71,9 +71,9 @@ export const TagsTableEntry: FunctionComponent<TableEntryProps> = ({
               (nameError.length === 0 ? '' : ' input-error')
             }
             value={name}
-            onChange={handleNameChange}
-            onBlur={handleSubmit}
-            onKeyDown={handleKeyPress}
+            onChange={onNameChange}
+            onBlur={onSubmit}
+            onKeyDown={onKeyPress}
           />
           <span className="label-text-alt text-error absolute -bottom-5 left-1 italic">
             {nameError}
@@ -85,13 +85,13 @@ export const TagsTableEntry: FunctionComponent<TableEntryProps> = ({
           type="color"
           value={color}
           className="rounded-md bg-neutral"
-          onChange={handleChangeColor}
+          onChange={onChangeColor}
         />
       </td>
       <td>
         <button
           type="button"
-          onClick={() => handleDeleteTag(tag.name)}
+          onClick={() => onDeleteTag(tag.name)}
           className="hover:text-accent"
         >
           <svg

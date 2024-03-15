@@ -1,21 +1,17 @@
 import { ChangeEvent, KeyboardEvent, FunctionComponent, useState } from 'react';
 import { ImageInput } from './ImageInput';
-import { User } from '../../KanbanPage';
+import { User } from '../../context/KanbanPageContext';
 
-interface UserEntryProps {
+type UserEntryProps = {
   user: User;
-  handleDeleteUser: (id: number) => void;
-  handleUpdateUser: (
-    id: number,
-    name: string | null,
-    image: File | null
-  ) => void;
-}
+  onDeleteUser: (id: number) => void;
+  onUpdateUser: (id: number, name: string | null, image: string | null) => void;
+};
 
 export const UsersTableEntry: FunctionComponent<UserEntryProps> = ({
   user,
-  handleDeleteUser,
-  handleUpdateUser,
+  onDeleteUser,
+  onUpdateUser,
 }) => {
   const [name, setName] = useState<string>(user.name);
   const [nameError, setNameError] = useState<string>('');
@@ -29,24 +25,28 @@ export const UsersTableEntry: FunctionComponent<UserEntryProps> = ({
     return true;
   };
 
-  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newName: string = e.target.value;
+  const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
+    const newName: string = event.target.value;
     isValidUserName(newName);
     setName(newName);
   };
 
-  const handleSubmit = () => {
+  const onSubmit = () => {
     if (!isValidUserName(name)) {
       return;
     }
-    handleUpdateUser(user.id, name, null);
+    onUpdateUser(user.id, name, null);
   };
 
-  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key == 'Enter') {
-      e.currentTarget.blur();
-      handleSubmit();
+  const onKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.currentTarget.blur();
+      onSubmit();
     }
+  };
+
+  const onChangeImage = (image: string) => {
+    onUpdateUser(user.id, null, image);
   };
 
   return (
@@ -61,9 +61,9 @@ export const UsersTableEntry: FunctionComponent<UserEntryProps> = ({
               (name.length === 0 ? ' input-error' : '')
             }
             value={name}
-            onChange={handleNameChange}
-            onBlur={handleSubmit}
-            onKeyDown={handleKeyPress}
+            onChange={onChangeName}
+            onBlur={onSubmit}
+            onKeyDown={onKeyPress}
           />
           <span className="label-text-alt text-error absolute -bottom-5 left-1 italic">
             {nameError}
@@ -71,12 +71,12 @@ export const UsersTableEntry: FunctionComponent<UserEntryProps> = ({
         </label>
       </td>
       <td>
-        <ImageInput user={user} handleUpdateUser={handleUpdateUser} />
+        <ImageInput image={user.image} onChange={onChangeImage} />
       </td>
       <td>
         <button
           type="button"
-          onClick={() => handleDeleteUser(user.id)}
+          onClick={() => onDeleteUser(user.id)}
           className="hover:text-accent"
         >
           <svg

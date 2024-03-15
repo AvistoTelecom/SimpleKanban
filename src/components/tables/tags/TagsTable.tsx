@@ -2,40 +2,40 @@ import { FunctionComponent } from 'react';
 import { TagsTableHeader } from './TagsTableHeader';
 import { TagsTableEntry } from './TagsTableEntry';
 import { TagstableCreateRow } from './TagsTableCreateRow';
-import { Tag } from '../../KanbanPage';
+import { Tag } from '../../context/KanbanPageContext';
 
-interface TagsTableProps {
+type TagsTableProps = {
   tags: Tag[];
-  handleAddTag: (tag: Tag) => void;
-  handleDeleteTag: (name: string) => void;
-  handleUpdateTag: (name: string, newName: string, color: string) => void;
-}
+  onAddTag: (tag: Tag) => void;
+  onDeleteTag: (name: string) => void;
+  onUpdateTag: (name: string, newName: string, color: string) => void;
+};
 
 export const TagsTable: FunctionComponent<TagsTableProps> = ({
   tags,
-  handleAddTag,
-  handleDeleteTag,
-  handleUpdateTag,
+  onAddTag,
+  onDeleteTag,
+  onUpdateTag,
 }) => {
   return (
     <div className="overflow-y-auto h-full">
       <table className="table table-zebra table-pin-rows">
         <TagsTableHeader />
         <tbody>
-          {tags?.length > 0 &&
+          {tags.length > 0 &&
             tags.map((tag: Tag) => {
               return (
                 <TagsTableEntry
                   key={tag.name}
                   tag={tag}
                   tags={tags}
-                  handleDeleteTag={handleDeleteTag}
-                  handleUpdateTag={handleUpdateTag}
+                  onDeleteTag={onDeleteTag}
+                  onUpdateTag={onUpdateTag}
                 />
               );
             })}
         </tbody>
-        <TagstableCreateRow handleAddTag={handleAddTag} tags={tags} />
+        <TagstableCreateRow onAddTag={onAddTag} tags={tags} />
       </table>
     </div>
   );

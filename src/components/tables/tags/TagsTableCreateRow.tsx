@@ -1,19 +1,17 @@
 import { ChangeEvent, FunctionComponent, KeyboardEvent, useState } from 'react';
-import { Tag } from '../../KanbanPage';
+import { DEFAULT_TAG_COLOR, Tag } from '../../context/KanbanPageContext';
 
-interface TagstableCreateRowProps {
+type TagstableCreateRowProps = {
   tags: Tag[];
-  handleAddTag: (tag: Tag) => void;
-}
-
-const DEFAULT_COLOR: string = '#000000';
+  onAddTag: (tag: Tag) => void;
+};
 
 export const TagstableCreateRow: FunctionComponent<TagstableCreateRowProps> = ({
-  handleAddTag,
+  onAddTag,
   tags,
 }) => {
   const [name, setName] = useState<string>('');
-  const [color, setColor] = useState<string>(DEFAULT_COLOR);
+  const [color, setColor] = useState<string>(DEFAULT_TAG_COLOR);
   const [nameError, setNameError] = useState<string>('');
 
   const isValidTagName = (newName: string): boolean => {
@@ -32,32 +30,32 @@ export const TagstableCreateRow: FunctionComponent<TagstableCreateRowProps> = ({
     return true;
   };
 
-  const handleChangeColor = (e: ChangeEvent<HTMLInputElement>) => {
-    const newColor: string = e.target.value;
+  const onChangeColor = (event: ChangeEvent<HTMLInputElement>) => {
+    const newColor: string = event.target.value;
     setColor(newColor);
   };
 
-  const handleChangeName = (e: ChangeEvent<HTMLInputElement>) => {
-    const newName = e.target.value;
+  const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
+    const newName = event.target.value;
     if (isValidTagName(newName)) {
       setNameError('');
     }
     setName(newName);
   };
 
-  const handleSubmit = () => {
+  const onSubmit = () => {
     if (!isValidTagName(name)) {
       return;
     }
-    handleAddTag({ name: name, color: color } as Tag);
-    setColor(DEFAULT_COLOR);
+    onAddTag({ name: name, color: color });
+    setColor(DEFAULT_TAG_COLOR);
     setName('');
   };
 
-  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key == 'Enter') {
-      e.currentTarget.blur();
-      handleSubmit();
+  const onKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.currentTarget.blur();
+      onSubmit();
     }
   };
 
@@ -74,8 +72,8 @@ export const TagstableCreateRow: FunctionComponent<TagstableCreateRowProps> = ({
                 (nameError.length === 0 ? '' : ' input-error')
               }
               value={name}
-              onKeyDown={handleKeyPress}
-              onChange={handleChangeName}
+              onKeyDown={onKeyPress}
+              onChange={onChangeName}
             ></input>
             <span className="label-text-alt text-error absolute -bottom-5 left-1 italic">
               {nameError}
@@ -87,14 +85,14 @@ export const TagstableCreateRow: FunctionComponent<TagstableCreateRowProps> = ({
             type="color"
             value={color}
             className="rounded-md bg-neutral cursor-pointer"
-            onChange={handleChangeColor}
+            onChange={onChangeColor}
           />
         </th>
         <th>
           <button
             type="button"
             className="hover:text-primary"
-            onClick={handleSubmit}
+            onClick={onSubmit}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
