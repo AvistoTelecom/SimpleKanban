@@ -1,6 +1,6 @@
-import { Ticket } from './Ticket';
+import { TodoTicket } from './TodoTicket';
 
-export type InProgressTicket = Ticket & {
+export type InProgressTicket = TodoTicket & {
   blocked: false;
   startDate: Date;
 };

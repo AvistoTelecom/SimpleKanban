@@ -1,12 +1,5 @@
-export type Ticket = {
-  id: number;
-  name: string;
-  creationDate: Date;
-  storyPoint: number;
-  assigneId: number | null;
-  tagName: string | null;
-  description: string;
-  parentId: number | null;
-  childId: number | null;
-  blocked: boolean;
-};
+import { DoneTicket } from './DoneTicket';
+import { InProgressTicket } from './InProgressTicket';
+import { TodoTicket } from './TodoTicket';
+
+export type Ticket = TodoTicket | InProgressTicket | DoneTicket;
