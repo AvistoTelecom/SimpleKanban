@@ -5,14 +5,14 @@ import { UsersTableCreateRow } from './UsersTableCreateRow';
 import { User } from '../../context/KanbanPageContext';
 
 type UsersTableProps = {
-  users: User[];
+  userList: User[];
   onAddUser: (user: Omit<User, 'id'>) => void;
   onDeleteUser: (id: number) => void;
   onUpdateUser: (id: number, name: string | null, image: string | null) => void;
 };
 
 export const UsersTable: FunctionComponent<UsersTableProps> = ({
-  users,
+  userList,
   onAddUser,
   onDeleteUser,
   onUpdateUser,
@@ -22,8 +22,8 @@ export const UsersTable: FunctionComponent<UsersTableProps> = ({
       <table className="table table-zebra table-pin-rows">
         <UsersTableHeader />
         <tbody>
-          {users.length > 0 &&
-            users.map((user: User) => {
+          {userList.length > 0 &&
+            userList.map((user: User) => {
               return (
                 <UsersTableEntry
                   key={user.id}

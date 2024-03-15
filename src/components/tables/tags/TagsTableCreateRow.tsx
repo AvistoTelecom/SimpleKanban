@@ -2,13 +2,13 @@ import { ChangeEvent, FunctionComponent, KeyboardEvent, useState } from 'react';
 import { DEFAULT_TAG_COLOR, Tag } from '../../context/KanbanPageContext';
 
 type TagstableCreateRowProps = {
-  tags: Tag[];
+  tagList: Tag[];
   onAddTag: (tag: Tag) => void;
 };
 
 export const TagstableCreateRow: FunctionComponent<TagstableCreateRowProps> = ({
   onAddTag,
-  tags,
+  tagList,
 }) => {
   const [name, setName] = useState<string>('');
   const [color, setColor] = useState<string>(DEFAULT_TAG_COLOR);
@@ -20,7 +20,7 @@ export const TagstableCreateRow: FunctionComponent<TagstableCreateRowProps> = ({
       return false;
     }
 
-    const tagFound: Tag | undefined = tags.find(
+    const tagFound: Tag | undefined = tagList.find(
       (tag: Tag) => tag.name === newName
     );
     if (tagFound !== undefined) {

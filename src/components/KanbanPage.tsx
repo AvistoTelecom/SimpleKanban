@@ -84,7 +84,7 @@ export const KanbanPage: FunctionComponent = () => {
           <SidePanel>
             {contentID === 'tag' && (
               <TagsTable
-                tags={tagList}
+                tagList={tagList}
                 onAddTag={onAddTag}
                 onDeleteTag={onDeleteTag}
                 onUpdateTag={onUpdateTag}
@@ -92,7 +92,7 @@ export const KanbanPage: FunctionComponent = () => {
             )}
             {contentID === 'user' && (
               <UsersTable
-                users={userList}
+                userList={userList}
                 onAddUser={onAddUser}
                 onDeleteUser={onDeleteUser}
                 onUpdateUser={onUpdateUser}

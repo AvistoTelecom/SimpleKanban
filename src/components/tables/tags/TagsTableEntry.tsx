@@ -3,14 +3,14 @@ import { Tag } from '../../context/KanbanPageContext';
 
 type TableEntryProps = {
   tag: Tag;
-  tags: Tag[];
+  tagList: Tag[];
   onDeleteTag: (name: string) => void;
   onUpdateTag: (name: string, newName: string, color: string) => void;
 };
 
 export const TagsTableEntry: FunctionComponent<TableEntryProps> = ({
   tag,
-  tags,
+  tagList,
   onDeleteTag,
   onUpdateTag,
 }) => {
@@ -24,7 +24,7 @@ export const TagsTableEntry: FunctionComponent<TableEntryProps> = ({
       return false;
     }
 
-    const tagFound: Tag | undefined = tags.find(
+    const tagFound: Tag | undefined = tagList.find(
       (tag: Tag) => tag.name === newName
     );
     if (tagFound && tagFound.name !== tag.name) {

@@ -5,14 +5,14 @@ import { TagstableCreateRow } from './TagsTableCreateRow';
 import { Tag } from '../../context/KanbanPageContext';
 
 type TagsTableProps = {
-  tags: Tag[];
+  tagList: Tag[];
   onAddTag: (tag: Tag) => void;
   onDeleteTag: (name: string) => void;
   onUpdateTag: (name: string, newName: string, color: string) => void;
 };
 
 export const TagsTable: FunctionComponent<TagsTableProps> = ({
-  tags,
+  tagList,
   onAddTag,
   onDeleteTag,
   onUpdateTag,
@@ -22,20 +22,20 @@ export const TagsTable: FunctionComponent<TagsTableProps> = ({
       <table className="table table-zebra table-pin-rows">
         <TagsTableHeader />
         <tbody>
-          {tags.length > 0 &&
-            tags.map((tag: Tag) => {
+          {tagList.length > 0 &&
+            tagList.map((tag: Tag) => {
               return (
                 <TagsTableEntry
                   key={tag.name}
                   tag={tag}
-                  tags={tags}
+                  tagList={tagList}
                   onDeleteTag={onDeleteTag}
                   onUpdateTag={onUpdateTag}
                 />
               );
             })}
         </tbody>
-        <TagstableCreateRow onAddTag={onAddTag} tags={tags} />
+        <TagstableCreateRow onAddTag={onAddTag} tagList={tagList} />
       </table>
     </div>
   );
