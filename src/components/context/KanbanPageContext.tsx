@@ -96,11 +96,11 @@ const KanbanPageProvider: FunctionComponent<{ children: ReactNode }> = ({
   };
 
   const deleteUser = (id: number) => {
-    setUserList((userList) => userList.filter((user) => user.id === id));
+    setUserList((userList) => userList.filter((user) => user.id !== id));
   };
 
   const deleteTag = (name: string) => {
-    setTagList((tagList) => tagList.filter((tag) => tag.name === name));
+    setTagList((tagList) => tagList.filter((tag) => tag.name !== name));
   };
 
   const updateUser = (id: number, updatedUser: UserUpdateData) => {
