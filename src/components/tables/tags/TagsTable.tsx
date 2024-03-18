@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react';
 import { TagsTableHeader } from './TagsTableHeader';
 import { TagsTableEntry } from './TagsTableEntry';
-import { TagstableCreateRow } from './TagsTableCreateRow';
+import { TagsTableCreateRow } from './TagsTableCreateRow';
 import { Tag } from '../../context/TagsContext';
 
 type TagsTableProps = {
@@ -22,20 +22,17 @@ export const TagsTable: FunctionComponent<TagsTableProps> = ({
       <table className="table table-zebra table-pin-rows">
         <TagsTableHeader />
         <tbody>
-          {tagList.length > 0 &&
-            tagList.map((tag: Tag) => {
-              return (
-                <TagsTableEntry
-                  key={tag.name}
-                  tag={tag}
-                  tagList={tagList}
-                  onDeleteTag={onDeleteTag}
-                  onUpdateTag={onUpdateTag}
-                />
-              );
-            })}
+          {tagList.map((tag: Tag) => (
+            <TagsTableEntry
+              key={tag.name}
+              tag={tag}
+              tagList={tagList}
+              onDeleteTag={onDeleteTag}
+              onUpdateTag={onUpdateTag}
+            />
+          ))}
         </tbody>
-        <TagstableCreateRow onAddTag={onAddTag} tagList={tagList} />
+        <TagsTableCreateRow onAddTag={onAddTag} tagList={tagList} />
       </table>
     </div>
   );

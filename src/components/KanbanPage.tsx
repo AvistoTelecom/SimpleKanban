@@ -1,4 +1,4 @@
-import { FunctionComponent, useState, MouseEvent, useContext } from 'react';
+import { FunctionComponent, useState, useContext } from 'react';
 import { KanbanArea } from './KanbanArea';
 import { SidePanel } from './SidePanel';
 import { NavBar } from './NavBar';
@@ -23,8 +23,7 @@ export const KanbanPage: FunctionComponent = () => {
   const { tagList, addTag, deleteTag, updateTag } =
     useContext<TagsContextType>(TagsContext);
 
-  const onNavBar = (event: MouseEvent<HTMLButtonElement>) => {
-    const id: SidePanelContent = event.currentTarget.value as SidePanelContent;
+  const toggleSidePanel = (id: SidePanelContent) => {
     if (contentID === '') {
       setSidePanelOpen(!isSidePanelOpen);
       setContentID(id);
@@ -65,7 +64,7 @@ export const KanbanPage: FunctionComponent = () => {
 
   return (
     <>
-      <NavBar onNavBar={onNavBar} />
+      <NavBar onClick={toggleSidePanel} />
       <main className="flex-grow h-1 flex w-full space-x-2 p-2 bg-base-300">
         <KanbanArea />
         {isSidePanelOpen && (

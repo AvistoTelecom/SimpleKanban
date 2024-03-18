@@ -1,12 +1,12 @@
 import { ChangeEvent, FunctionComponent, KeyboardEvent, useState } from 'react';
 import { DEFAULT_TAG_COLOR, Tag } from '../../context/TagsContext';
 
-type TagstableCreateRowProps = {
+type TagsTableCreateRowProps = {
   tagList: Tag[];
   onAddTag: (tag: Tag) => void;
 };
 
-export const TagstableCreateRow: FunctionComponent<TagstableCreateRowProps> = ({
+export const TagsTableCreateRow: FunctionComponent<TagsTableCreateRowProps> = ({
   onAddTag,
   tagList,
 }) => {
