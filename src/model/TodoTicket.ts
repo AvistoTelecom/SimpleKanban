@@ -3,10 +3,10 @@ export type TodoTicket = {
   name: string;
   creationDate: Date;
   storyPoint: number;
-  assigneId: number | null;
-  tagName: string | null;
+  assigneId?: number;
+  tagName?: string;
   description: string;
-  parentId: number | null;
-  childId: number | null;
+  parentId?: number;
+  childId?: number;
   blocked: boolean;
 };

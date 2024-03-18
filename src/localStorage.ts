@@ -2,30 +2,15 @@ import { DoneTicket } from './model/DoneTicket';
 import { InProgressTicket } from './model/InProgressTicket';
 import { Tag } from './model/Tag';
 import { Ticket } from './model/Ticket';
+import {
+  isDoneTicket,
+  isInProgressTicket,
+  isTodoTicket,
+} from './model/TicketsFunctions';
 import { TodoTicket } from './model/TodoTicket';
 import { User } from './model/User';
 
-type ToDoTicketStorage = Ticket & {
-  status: 'todo';
-  startDate: null;
-  endDate: null;
-};
-
-type InProgressTicketStorage = InProgressTicket & {
-  status: 'inProgress';
-  endDate: null;
-};
-
-type DoneTicketStorage = DoneTicket & {
-  status: 'done';
-};
-
-type TicketStorage =
-  | ToDoTicketStorage
-  | InProgressTicketStorage
-  | DoneTicketStorage;
-
-export class LocalStorageUtil {
+export class LocalStorage {
   static getUserList = (): User[] => {
     const userList = localStorage.getItem('userList');
     return userList ? JSON.parse(userList) : [];
@@ -60,7 +45,7 @@ export class LocalStorageUtil {
     const storedUser = this.getUserList();
     ticketList.forEach((currentTicket) => {
       if (currentTicket.assigneId === userId) {
-        currentTicket.assigneId = null;
+        currentTicket.assigneId = undefined;
       }
     });
     this.setTicketList(ticketList);
@@ -108,7 +93,7 @@ export class LocalStorageUtil {
     const storedUser = this.getTagList();
     storedTickets.forEach((currentTicket) => {
       if (currentTicket.tagName === tagName) {
-        currentTicket.tagName = null;
+        currentTicket.tagName = undefined;
       }
     });
     this.setTicketList(storedTickets);
@@ -138,67 +123,31 @@ export class LocalStorageUtil {
     if (storedTickets === null) {
       return [];
     }
-    const storedTicketList: TicketStorage[] = JSON.parse(storedTickets);
-    const ticketList = storedTicketList.map((currentTicket) => {
-      const { status, startDate, endDate, ...ticket } = currentTicket;
-      if (status === 'todo') {
-        return { ...ticket, blocked: currentTicket.blocked };
-      }
-      const inProgress: InProgressTicket = {
-        ...ticket,
-        startDate: startDate,
-        blocked: currentTicket.blocked,
-      };
-      if (status === 'inProgress') {
-        return inProgress;
-      }
-      const done: DoneTicket = {
-        ...inProgress,
-        endDate: endDate,
-      };
-      return done;
-    });
-    return ticketList;
+    const storedTicketList: Ticket[] = JSON.parse(storedTickets);
+    return storedTicketList;
   };
 
   static getTodoTicketList = (): TodoTicket[] => {
     const ticketList = this.getTicketList();
-    return ticketList.filter((currentTicket) => {
-      !('starDate' in currentTicket);
-    });
+    return ticketList.filter((currentTicket) => isTodoTicket(currentTicket));
   };
 
   static getInProgressTicketList = (): InProgressTicket[] => {
     const ticketList = this.getTicketList();
-    return ticketList.filter(
-      (currentTicket) =>
-        'starDate' in currentTicket && !('endDate' in currentTicket)
+    return ticketList.filter((currentTicket) =>
+      isInProgressTicket(currentTicket)
     ) as InProgressTicket[];
   };
 
   static getDoneTicketList = (): DoneTicket[] => {
     const ticketList = this.getTicketList();
-    return ticketList.filter(
-      (currentTicket) => 'endDate' in currentTicket
+    return ticketList.filter((currentTicket) =>
+      isDoneTicket(currentTicket)
     ) as DoneTicket[];
   };
 
   static setTicketList = (ticketList: Ticket[]) => {
-    const result = ticketList.map((currentTicket) => {
-      if ('endDate' in currentTicket) {
-        return { ...currentTicket, status: 'done' };
-      }
-      if ('startDate' in currentTicket) {
-        return { ...currentTicket, status: 'inProgress', endDate: null };
-      }
-      return {
-        ...currentTicket,
-        status: 'todo',
-        startDate: null,
-        endDate: null,
-      };
-    });
-    localStorage.setItem('ticketList', JSON.stringify(result));
+    localStorage.setItem('ticketList', JSON.stringify(ticketList));
   };
 
   static getTicket = (ticketId: number): Ticket | null => {
@@ -229,10 +178,10 @@ export class LocalStorageUtil {
     const ticketList = this.getTicketList();
     ticketList.forEach((currentTicket) => {
       if (currentTicket.childId === ticketId) {
-        currentTicket.childId = null;
+        currentTicket.childId = undefined;
       }
       if (currentTicket.parentId === ticketId) {
-        currentTicket.parentId = null;
+        currentTicket.parentId = undefined;
       }
     });
     const filteredTicketList = ticketList.filter((currentTicket) => {
@@ -267,12 +216,10 @@ export class LocalStorageUtil {
     return doneTicket ?? null;
   };
 
-  static setTodoToInProgress = (
-    ticketToSet: TodoTicket
-  ): InProgressTicket | null => {
+  static setTodoToInProgress = (ticketToSet: TodoTicket) => {
     const ticket = this.getTicket(ticketToSet.id);
     if (ticket === null || ticket.blocked) {
-      return null;
+      return;
     }
     const inProgress = {
       ...ticket,
@@ -280,26 +227,22 @@ export class LocalStorageUtil {
       startDate: new Date(),
     };
     this.updadeTicket(inProgress);
-    return inProgress;
   };
 
-  static setInProgressToTodo = (ticketToSet: TodoTicket): Ticket | null => {
+  static setInProgressToTodo = (ticketToSet: TodoTicket) => {
     const inProgress = this.getTicket(ticketToSet.id);
-    if (inProgress === null || !('startDate' in inProgress)) {
-      return null;
+    if (inProgress === null || !isInProgressTicket(inProgress)) {
+      return;
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { startDate, ...todo } = inProgress;
     this.updadeTicket(todo);
-    return todo;
   };
 
-  static setInProgressToDone = (
-    ticketToSet: InProgressTicket
-  ): DoneTicket | null => {
+  static setInProgressToDone = (ticketToSet: InProgressTicket) => {
     const inProgress = this.getTicket(ticketToSet.id);
-    if (inProgress === null || !('startDate' in inProgress)) {
-      return null;
+    if (inProgress === null || !isInProgressTicket(inProgress)) {
+      return;
     }
     const done = {
       ...inProgress,
@@ -307,29 +250,41 @@ export class LocalStorageUtil {
       endDate: new Date(),
     };
     this.updadeTicket(done);
-    return done;
   };
 
-  static setDoneToInProgress = (
-    ticketToSet: DoneTicket
-  ): InProgressTicket | null => {
+  static setDoneToInProgress = (ticketToSet: DoneTicket) => {
     const done = this.getTicket(ticketToSet.id);
-    if (done === null || !('endDate' in done)) {
-      return null;
+    if (done === null || !isDoneTicket(done)) {
+      return;
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { endDate, ...inProgress } = done;
     this.updadeTicket(inProgress);
-    return inProgress;
   };
 
-  static setTodoToDone = (ticket: Ticket): DoneTicket | null => {
-    const inProgress = this.setTodoToInProgress(ticket);
-    return inProgress === null ? null : this.setInProgressToDone(inProgress);
+  static setTodoToDone = (ticketToSet: Ticket) => {
+    const ticket = this.getTicket(ticketToSet.id);
+    if (ticket === null || ticket.blocked) {
+      return;
+    }
+    const done = {
+      ...ticket,
+      blocked: ticket.blocked,
+      startDate: new Date(),
+      endDate: new Date(),
+    };
+
+    this.updadeTicket(done);
   };
 
-  static setDoneTicketToTodo = (doneTicket: DoneTicket) => {
-    const inProgress = this.setDoneToInProgress(doneTicket);
-    return inProgress === null ? null : this.setInProgressToTodo(inProgress);
+  static setDoneTicketToTodo = (ticketToSet: DoneTicket) => {
+    const done = this.getTicket(ticketToSet.id);
+    if (done === null || !isDoneTicket(done)) {
+      return;
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { endDate, startDate, ...todo } = done;
+
+    this.updadeTicket(todo);
   };
 }
