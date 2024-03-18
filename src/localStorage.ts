@@ -32,7 +32,7 @@ export class LocalStorageUtil {
   };
 
   static setUserList = (userList: User[]) => {
-    window.localStorage.setItem('userList', JSON.stringify(userList));
+    localStorage.setItem('userList', JSON.stringify(userList));
   };
 
   static getUser = (userId: number): User | null => {
@@ -58,9 +58,9 @@ export class LocalStorageUtil {
   static deleteUser = (userId: number) => {
     const ticketList = this.getTicketList();
     const storedUser = this.getUserList();
-    ticketList.forEach((currTicket) => {
-      if (currTicket.assigneId === userId) {
-        currTicket.assigneId = null;
+    ticketList.forEach((currentTicket) => {
+      if (currentTicket.assigneId === userId) {
+        currentTicket.assigneId = null;
       }
     });
     this.setTicketList(ticketList);
@@ -84,7 +84,7 @@ export class LocalStorageUtil {
   };
 
   static setTagList = (tagList: Tag[]) => {
-    window.localStorage.setItem('tagList', JSON.stringify(tagList));
+    localStorage.setItem('tagList', JSON.stringify(tagList));
   };
 
   static getTag = (tagName: string): Tag | null => {
@@ -106,9 +106,9 @@ export class LocalStorageUtil {
   static deleteTag = (tagName: string) => {
     const storedTickets = this.getTicketList();
     const storedUser = this.getTagList();
-    storedTickets.forEach((currTicket) => {
-      if (currTicket.tagName === tagName) {
-        currTicket.tagName = null;
+    storedTickets.forEach((currentTicket) => {
+      if (currentTicket.tagName === tagName) {
+        currentTicket.tagName = null;
       }
     });
     this.setTicketList(storedTickets);
@@ -121,9 +121,9 @@ export class LocalStorageUtil {
   static updateTag = (oldTag: Tag, newTag: Tag) => {
     const tagList = this.getTagList();
     const ticketList = this.getTicketList();
-    ticketList.forEach((currTicket) => {
-      if (currTicket.tagName === oldTag.name) {
-        currTicket.tagName = newTag.name;
+    ticketList.forEach((currentTicket) => {
+      if (currentTicket.tagName === oldTag.name) {
+        currentTicket.tagName = newTag.name;
       }
     });
     this.setTicketList(ticketList);
@@ -139,15 +139,15 @@ export class LocalStorageUtil {
       return [];
     }
     const storedTicketList: TicketStorage[] = JSON.parse(storedTickets);
-    const ticketList = storedTicketList.map((currTicket) => {
-      const { status, startDate, endDate, ...ticket } = currTicket;
+    const ticketList = storedTicketList.map((currentTicket) => {
+      const { status, startDate, endDate, ...ticket } = currentTicket;
       if (status === 'todo') {
-        return { ...ticket, blocked: currTicket.blocked };
+        return { ...ticket, blocked: currentTicket.blocked };
       }
       const inProgress: InProgressTicket = {
         ...ticket,
         startDate: startDate,
-        blocked: currTicket.blocked,
+        blocked: currentTicket.blocked,
       };
       if (status === 'inProgress') {
         return inProgress;
@@ -163,42 +163,48 @@ export class LocalStorageUtil {
 
   static getTodoTicketList = (): TodoTicket[] => {
     const ticketList = this.getTicketList();
-    return ticketList.filter((currTicket) => {
-      !('starDate' in currTicket);
+    return ticketList.filter((currentTicket) => {
+      !('starDate' in currentTicket);
     });
   };
 
   static getInProgressTicketList = (): InProgressTicket[] => {
     const ticketList = this.getTicketList();
     return ticketList.filter(
-      (currTicket) => 'starDate' in currTicket && !('endDate' in currTicket)
+      (currentTicket) =>
+        'starDate' in currentTicket && !('endDate' in currentTicket)
     ) as InProgressTicket[];
   };
 
   static getDoneTicketList = (): DoneTicket[] => {
     const ticketList = this.getTicketList();
     return ticketList.filter(
-      (currTicket) => 'endDate' in currTicket
+      (currentTicket) => 'endDate' in currentTicket
     ) as DoneTicket[];
   };
 
   static setTicketList = (ticketList: Ticket[]) => {
-    const result = ticketList.map((currTicket) => {
-      if ('endDate' in currTicket) {
-        return { ...currTicket, status: 'done' };
+    const result = ticketList.map((currentTicket) => {
+      if ('endDate' in currentTicket) {
+        return { ...currentTicket, status: 'done' };
       }
-      if ('startDate' in currTicket) {
-        return { ...currTicket, status: 'inProgress', endDate: null };
+      if ('startDate' in currentTicket) {
+        return { ...currentTicket, status: 'inProgress', endDate: null };
       }
-      return { ...currTicket, status: 'todo', startDate: null, endDate: null };
+      return {
+        ...currentTicket,
+        status: 'todo',
+        startDate: null,
+        endDate: null,
+      };
     });
-    window.localStorage.setItem('ticketList', JSON.stringify(result));
+    localStorage.setItem('ticketList', JSON.stringify(result));
   };
 
   static getTicket = (ticketId: number): Ticket | null => {
     const storedTickets = this.getTicketList();
     const ticket = storedTickets.find(
-      (currTicket) => currTicket.id === ticketId
+      (currentTicket) => currentTicket.id === ticketId
     );
     return ticket ?? null;
   };
@@ -207,8 +213,10 @@ export class LocalStorageUtil {
     const storedTickets = this.getTicketList();
     let maxTicketId: number = 0;
     if (storedTickets.length !== 0) {
-      maxTicketId = storedTickets.reduce((prevTicket, currTicket) =>
-        prevTicket && prevTicket.id > currTicket.id ? prevTicket : currTicket
+      maxTicketId = storedTickets.reduce((prevTicket, currentTicket) =>
+        prevTicket && prevTicket.id > currentTicket.id
+          ? prevTicket
+          : currentTicket
       ).id;
     }
     const ticketToAdd = { ...ticketToAddInfos, id: maxTicketId + 1 };
@@ -219,24 +227,24 @@ export class LocalStorageUtil {
 
   static deleteTicket = (ticketId: number) => {
     const ticketList = this.getTicketList();
-    ticketList.forEach((currTicket) => {
-      if (currTicket.childId === ticketId) {
-        currTicket.childId = null;
+    ticketList.forEach((currentTicket) => {
+      if (currentTicket.childId === ticketId) {
+        currentTicket.childId = null;
       }
-      if (currTicket.parentId === ticketId) {
-        currTicket.parentId = null;
+      if (currentTicket.parentId === ticketId) {
+        currentTicket.parentId = null;
       }
     });
-    const filteredTicketList = ticketList.filter((currTicket) => {
-      currTicket.id !== ticketId;
+    const filteredTicketList = ticketList.filter((currentTicket) => {
+      currentTicket.id !== ticketId;
     });
     this.setTicketList(filteredTicketList);
   };
 
   static updadeTicket = (ticket: Ticket) => {
     const ticketList = this.getTicketList();
-    const index = ticketList.findIndex((currTicket) => {
-      currTicket.id === ticket.id;
+    const index = ticketList.findIndex((currentTicket) => {
+      currentTicket.id === ticket.id;
     });
     this.setTicketList(ticketList.with(index, ticket));
   };
