@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react';
-import { NewTicketButton } from './NewTicketButton';
+import { NewTicketButton } from './AddTicketButton';
 
 export const TicketConumn: FunctionComponent = () => {
   return (
