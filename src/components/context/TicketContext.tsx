@@ -18,21 +18,6 @@ export type TicketContextType = {
   setDoneTicketToTodo: (id: number) => void;
 };
 
-const defaultTicketList: Ticket[] = [
-  {
-    id: 1,
-    name: 'ticket',
-    creationDate: new Date(),
-    storyPoint: 0,
-    assigneId: null,
-    tagName: null,
-    description: 'description',
-    parentId: null,
-    childId: null,
-    blocked: false,
-  },
-];
-
 export const TicketContext = createContext<TicketContextType>({
   ticketList: [],
   addTicket: () => {},
