@@ -1,4 +1,4 @@
-import { FunctionComponent, useState, MouseEvent, useContext } from 'react';
+import { FunctionComponent, useState, useContext } from 'react';
 import { KanbanArea } from './KanbanArea';
 import { SidePanel } from './SidePanel';
 import { NavBar } from './NavBar';
