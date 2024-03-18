@@ -2,13 +2,13 @@ import { FunctionComponent } from 'react';
 import { UsersTableEntry } from './UsersTableEntry';
 import { UsersTableHeader } from './UsersTableHeader';
 import { UsersTableCreateRow } from './UsersTableCreateRow';
-import { User } from '../../context/KanbanPageContext';
+import { CreateUser, User } from '../../context/UsersContext';
 
 type UsersTableProps = {
   userList: User[];
-  onAddUser: (user: Omit<User, 'id'>) => void;
+  onAddUser: (user: CreateUser) => void;
   onDeleteUser: (id: number) => void;
-  onUpdateUser: (id: number, name: string | null, image: string | null) => void;
+  onUpdateUser: (user: User) => void;
 };
 
 export const UsersTable: FunctionComponent<UsersTableProps> = ({

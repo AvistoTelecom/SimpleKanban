@@ -1,5 +1,5 @@
 import { ChangeEvent, FunctionComponent, KeyboardEvent, useState } from 'react';
-import { DEFAULT_TAG_COLOR, Tag } from '../../context/KanbanPageContext';
+import { DEFAULT_TAG_COLOR, Tag } from '../../context/TagsContext';
 
 type TagstableCreateRowProps = {
   tagList: Tag[];
