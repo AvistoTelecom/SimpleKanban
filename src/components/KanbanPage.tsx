@@ -27,8 +27,7 @@ export const KanbanPage: FunctionComponent = () => {
     updateUser,
   } = useContext<KabanPageContextType>(KanbanPageContext);
 
-  const onClickNavbar = (event: MouseEvent<HTMLButtonElement>) => {
-    const id: SidePanelContent = event.currentTarget.value as SidePanelContent;
+  const toggleSidePanel = (id: SidePanelContent) => {
     if (contentID === '') {
       setSidePanelOpen(!isSidePanelOpen);
       setContentID(id);
@@ -77,7 +76,7 @@ export const KanbanPage: FunctionComponent = () => {
 
   return (
     <>
-      <NavBar onClickNavbar={onClickNavbar} />
+      <NavBar onClick={toggleSidePanel} />
       <main className="flex-grow h-1 flex w-full space-x-2 p-2 bg-base-300">
         <KanbanArea />
         {isSidePanelOpen && (

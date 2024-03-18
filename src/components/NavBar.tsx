@@ -1,16 +1,25 @@
-import { FunctionComponent, MouseEvent } from 'react';
+import { FunctionComponent } from 'react';
+import { SidePanelContent } from './KanbanPage';
 
 type NavBarProps = {
-  onClickNavbar: (event: MouseEvent<HTMLButtonElement>) => void;
+  onClick: (id: SidePanelContent) => void;
 };
 
-export const NavBar: FunctionComponent<NavBarProps> = ({ onClickNavbar }) => {
+export const NavBar: FunctionComponent<NavBarProps> = ({ onClick }) => {
+  const onClickUserButton = () => {
+    onClick('user');
+  };
+
+  const onClickTagButton = () => {
+    onClick('tag');
+  };
+
   return (
     <nav className="navbar bg-base-300">
       <button
         type="button"
         className="btn btn-ghost text-xl"
-        onClick={onClickNavbar}
+        onClick={onClickTagButton}
         value="tag"
       >
         Tags
@@ -18,7 +27,7 @@ export const NavBar: FunctionComponent<NavBarProps> = ({ onClickNavbar }) => {
       <button
         type="button"
         className="btn btn-ghost text-xl"
-        onClick={onClickNavbar}
+        onClick={onClickUserButton}
         value="user"
       >
         Users
