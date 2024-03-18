@@ -22,16 +22,14 @@ export const UsersTable: FunctionComponent<UsersTableProps> = ({
       <table className="table table-zebra table-pin-rows">
         <UsersTableHeader />
         <tbody>
-          {userList.map((user: User) => {
-            return (
-              <UsersTableEntry
-                key={user.id}
-                user={user}
-                onDeleteUser={onDeleteUser}
-                onUpdateUser={onUpdateUser}
-              />
-            );
-          })}
+          {userList.map((user: User) => (
+            <UsersTableEntry
+              key={user.id}
+              user={user}
+              onDeleteUser={onDeleteUser}
+              onUpdateUser={onUpdateUser}
+            />
+          ))}
         </tbody>
         <UsersTableCreateRow onAddUser={onAddUser} />
       </table>

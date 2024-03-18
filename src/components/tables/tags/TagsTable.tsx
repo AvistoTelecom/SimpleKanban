@@ -22,17 +22,15 @@ export const TagsTable: FunctionComponent<TagsTableProps> = ({
       <table className="table table-zebra table-pin-rows">
         <TagsTableHeader />
         <tbody>
-          {tagList.map((tag: Tag) => {
-            return (
-              <TagsTableEntry
-                key={tag.name}
-                tag={tag}
-                tagList={tagList}
-                onDeleteTag={onDeleteTag}
-                onUpdateTag={onUpdateTag}
-              />
-            );
-          })}
+          {tagList.map((tag: Tag) => (
+            <TagsTableEntry
+              key={tag.name}
+              tag={tag}
+              tagList={tagList}
+              onDeleteTag={onDeleteTag}
+              onUpdateTag={onUpdateTag}
+            />
+          ))}
         </tbody>
         <TagsTableCreateRow onAddTag={onAddTag} tagList={tagList} />
       </table>
