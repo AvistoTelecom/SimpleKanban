@@ -1,10 +1,10 @@
 import { FunctionComponent } from 'react';
 
-type NewTicketButtonProps = {
+type AddTicketButtonProps = {
   onClick: () => void;
 };
 
-export const NewTicketButton: FunctionComponent<NewTicketButtonProps> = ({
+export const AddTicketButton: FunctionComponent<AddTicketButtonProps> = ({
   onClick,
 }) => {
   return (
