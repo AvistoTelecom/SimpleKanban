@@ -34,18 +34,17 @@ export const TicketContext = createContext<TicketContextType>({
 export const TicketContextProvider: FunctionComponent<{
   children: ReactNode;
 }> = () => {
-  //todo mettre localStorage get ticket list ici
   const [ticketList, setTicketList] = useState<Ticket[]>(
     LocalStorageUtil.getTicketList()
   );
 
   const addTicket = (ticket: Omit<Ticket, 'id'>) => {
-    const newTicket = {
-      ...ticket,
-      id: 5,
-    };
+    const id = LocalStorageUtil.addTicket(ticket);
+    const newTicket = LocalStorageUtil.getTicket(id);
+    if (newTicket === null) {
+      return;
+    }
     setTicketList((ticketList) => [...ticketList, newTicket]);
-    LocalStorageUtil.addTicket(ticket);
   };
 
   const deleteTicket = (id: number) => {
