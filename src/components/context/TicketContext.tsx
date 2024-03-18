@@ -50,7 +50,9 @@ export const TicketContextProvider: FunctionComponent<{
   children: ReactNode;
 }> = () => {
   //todo mettre localStorage get ticket list ici
-  const [ticketList, setTicketList] = useState<Ticket[]>(defaultTicketList);
+  const [ticketList, setTicketList] = useState<Ticket[]>(
+    LocalStorageUtil.getTicketList()
+  );
 
   const addTicket = (ticket: Omit<Ticket, 'id'>) => {
     const newTicket = {
