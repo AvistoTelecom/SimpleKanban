@@ -1,9 +1,12 @@
 import { ChangeEvent, FunctionComponent, KeyboardEvent, useState } from 'react';
 import { ImageInput } from './ImageInput';
-import { DEFAULT_PROFILE_PICTURE, User } from '../../context/KanbanPageContext';
+import {
+  CreateUser,
+  DEFAULT_PROFILE_PICTURE,
+} from '../../context/UsersContext';
 
 type UsersTableCreateRowProps = {
-  onAddUser: (user: Omit<User, 'id'>) => void;
+  onAddUser: (user: CreateUser) => void;
 };
 
 export const UsersTableCreateRow: FunctionComponent<

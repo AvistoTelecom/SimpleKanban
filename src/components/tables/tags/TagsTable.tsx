@@ -2,17 +2,13 @@ import { FunctionComponent } from 'react';
 import { TagsTableHeader } from './TagsTableHeader';
 import { TagsTableEntry } from './TagsTableEntry';
 import { TagsTableCreateRow } from './TagsTableCreateRow';
-import { Tag } from '../../context/KanbanPageContext';
+import { Tag } from '../../context/TagsContext';
 
 type TagsTableProps = {
   tagList: Tag[];
   onAddTag: (tag: Tag) => void;
   onDeleteTag: (name: string) => void;
-  onUpdateTag: (
-    name: string,
-    newName: string | null,
-    color: string | null
-  ) => void;
+  onUpdateTag: (name: string, tag: Tag) => void;
 };
 
 export const TagsTable: FunctionComponent<TagsTableProps> = ({

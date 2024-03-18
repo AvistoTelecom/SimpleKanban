@@ -4,28 +4,24 @@ import { SidePanel } from './SidePanel';
 import { NavBar } from './NavBar';
 import { TagsTable } from './tables/tags/TagsTable';
 import { UsersTable } from './tables/users/UsersTable';
+import { Tag, TagsContext, TagsContextType } from './context/TagsContext';
 import {
-  KabanPageContextType,
-  KanbanPageContext,
-  Tag,
+  CreateUser,
   User,
-} from './context/KanbanPageContext';
+  UsersContext,
+  UsersContextType,
+} from './context/UsersContext';
 
 export type SidePanelContent = 'tag' | 'user' | '';
 
 export const KanbanPage: FunctionComponent = () => {
   const [isSidePanelOpen, setSidePanelOpen] = useState<boolean>(false);
   const [contentID, setContentID] = useState<SidePanelContent>('');
-  const {
-    tagList,
-    userList,
-    addUser,
-    addTag,
-    deleteTag,
-    deleteUser,
-    updateTag,
-    updateUser,
-  } = useContext<KabanPageContextType>(KanbanPageContext);
+  const { userList, addUser, deleteUser, updateUser } =
+    useContext<UsersContextType>(UsersContext);
+
+  const { tagList, addTag, deleteTag, updateTag } =
+    useContext<TagsContextType>(TagsContext);
 
   const toggleSidePanel = (id: SidePanelContent) => {
     if (contentID === '') {
@@ -42,7 +38,7 @@ export const KanbanPage: FunctionComponent = () => {
     }
   };
 
-  const onAddUser = (user: Omit<User, 'id'>) => {
+  const onAddUser = (user: CreateUser) => {
     addUser(user);
   };
 
@@ -50,12 +46,8 @@ export const KanbanPage: FunctionComponent = () => {
     deleteUser(id);
   };
 
-  const onUpdateUser = (
-    id: number,
-    name: string | null,
-    image: string | null
-  ) => {
-    updateUser(id, { name: name, image: image });
+  const onUpdateUser = (user: User) => {
+    updateUser(user);
   };
 
   const onAddTag = (newTag: Tag) => {
@@ -66,12 +58,8 @@ export const KanbanPage: FunctionComponent = () => {
     deleteTag(name);
   };
 
-  const onUpdateTag = (
-    name: string,
-    newName: string | null,
-    color: string | null
-  ) => {
-    updateTag(name, { name: newName, color: color });
+  const onUpdateTag = (name: string, tag: Tag) => {
+    updateTag(name, tag);
   };
 
   return (
