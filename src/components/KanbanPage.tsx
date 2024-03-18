@@ -11,8 +11,10 @@ import {
   UsersContext,
   UsersContextType,
 } from './context/UsersContext';
+import { TicketColumn } from './TicketColumn';
 
-export type SidePanelContent = 'tag' | 'user' | '';
+export type SidePanelContent = 'tag' | 'user' | 'addTicket' | '';
+export type ColumnType = 'todo' | 'inProgress' | 'done' | '';
 
 export const KanbanPage: FunctionComponent = () => {
   const [isSidePanelOpen, setSidePanelOpen] = useState<boolean>(false);
@@ -66,7 +68,11 @@ export const KanbanPage: FunctionComponent = () => {
     <>
       <NavBar onClick={toggleSidePanel} />
       <main className="flex-grow h-1 flex w-full space-x-2 p-2 bg-base-300">
-        <KanbanArea />
+        <KanbanArea>
+          <TicketColumn type="todo" onClick={toggleSidePanel} />
+          <TicketColumn type="inProgress" onClick={toggleSidePanel} />
+          <TicketColumn type="done" onClick={toggleSidePanel} />
+        </KanbanArea>
         {isSidePanelOpen && (
           <SidePanel>
             {contentID === 'tag' && (
