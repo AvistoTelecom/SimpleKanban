@@ -1,15 +1,11 @@
 import { ChangeEvent, FunctionComponent, KeyboardEvent, useState } from 'react';
-import { Tag } from '../../context/KanbanPageContext';
+import { Tag } from '../../context/TagsContext';
 
 type TableEntryProps = {
   tag: Tag;
   tagList: Tag[];
   onDeleteTag: (name: string) => void;
-  onUpdateTag: (
-    name: string,
-    newName: string | null,
-    color: string | null
-  ) => void;
+  onUpdateTag: (name: string, tag: Tag) => void;
 };
 
 export const TagsTableEntry: FunctionComponent<TableEntryProps> = ({
@@ -45,15 +41,17 @@ export const TagsTableEntry: FunctionComponent<TableEntryProps> = ({
   };
 
   const onChangeColor = (event: ChangeEvent<HTMLInputElement>) => {
-    const input: string = event.target.value;
-    onUpdateTag(tag.name, null, input);
+    const color: string = event.target.value;
+    const newTag: Tag = { name: tag.name, color: color };
+    onUpdateTag(tag.name, newTag);
   };
 
   const onSubmit = () => {
     if (!isValidTagName(name)) {
       return;
     }
-    onUpdateTag(tag.name, name, null);
+    const newTag: Tag = { name: name, color: tag.color };
+    onUpdateTag(tag.name, newTag);
   };
 
   const onKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {

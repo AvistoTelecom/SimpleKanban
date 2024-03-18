@@ -1,11 +1,11 @@
 import { ChangeEvent, KeyboardEvent, FunctionComponent, useState } from 'react';
 import { ImageInput } from './ImageInput';
-import { User } from '../../context/KanbanPageContext';
+import { User } from '../../context/UsersContext';
 
 type UserEntryProps = {
   user: User;
   onDeleteUser: (id: number) => void;
-  onUpdateUser: (id: number, name: string | null, image: string | null) => void;
+  onUpdateUser: (user: User) => void;
 };
 
 export const UsersTableEntry: FunctionComponent<UserEntryProps> = ({
@@ -35,7 +35,8 @@ export const UsersTableEntry: FunctionComponent<UserEntryProps> = ({
     if (!isValidUserName(name)) {
       return;
     }
-    onUpdateUser(user.id, name, null);
+    const newUser: User = { id: user.id, name: name, image: user.image };
+    onUpdateUser(newUser);
   };
 
   const onKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -46,7 +47,8 @@ export const UsersTableEntry: FunctionComponent<UserEntryProps> = ({
   };
 
   const onChangeImage = (image: string) => {
-    onUpdateUser(user.id, null, image);
+    const newUser: User = { id: user.id, name: user.name, image };
+    onUpdateUser(newUser);
   };
 
   return (
