@@ -24,7 +24,7 @@ const defaultTagList: Tag[] = [
     color: '#00ff00',
   },
   {
-    name: 'tag3',
+    name: 'taaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaag',
     color: '#0000ff',
   },
 ];

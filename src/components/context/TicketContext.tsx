@@ -18,6 +18,70 @@ export type TicketContextType = {
   setDoneTicketToTodo: (id: number) => void;
 };
 
+const todoTicketListDefault = [
+  {
+    id: 1,
+    name: 'Truc à faire',
+    creationDate: new Date(),
+    storyPoint: 1,
+    assigneId: null,
+    tagName: 'tag1',
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas quis orci orci. Ut euismod felis risus, sed euismod tellus luctus ac. Suspendisse interdum lacinia tortor. Aliquam in nibh vulputate, mattis odio pretium, sollicitudin ligula. Fusce tempor imperdiet tempus. Sed euismod in mauris vel tempus. Maecenas rhoncus tortor vitae turpis varius, sed porttitor lorem viverra. Fusce ultricies vel lorem efficitur vestibulum.',
+    parentId: null,
+    childId: null,
+    blocked: false,
+  },
+  {
+    id: 1,
+    name: 'Un autre truc à faire',
+    creationDate: new Date(),
+    storyPoint: 5,
+    assigneId: 1,
+    tagName: 'tag2',
+    description: 'Description',
+    parentId: null,
+    childId: null,
+    blocked: false,
+  },
+  {
+    id: 1,
+    name: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaprout',
+    creationDate: new Date(),
+    storyPoint: 2,
+    assigneId: 2,
+    tagName: 'taaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaag',
+    description: '',
+    parentId: null,
+    childId: null,
+    blocked: false,
+  },
+  {
+    id: 1,
+    name: 'Todo',
+    creationDate: new Date(),
+    storyPoint: 2,
+    assigneId: 2,
+    tagName: null,
+    description: '',
+    parentId: null,
+    childId: null,
+    blocked: false,
+  },
+  {
+    id: 1,
+    name: 'Todo',
+    creationDate: new Date(),
+    storyPoint: 2,
+    assigneId: 2,
+    tagName: null,
+    description: '',
+    parentId: null,
+    childId: null,
+    blocked: false,
+  },
+];
+
 export const TicketContext = createContext<TicketContextType>({
   ticketList: [],
   addTicket: () => {},
@@ -33,10 +97,8 @@ export const TicketContext = createContext<TicketContextType>({
 
 export const TicketContextProvider: FunctionComponent<{
   children: ReactNode;
-}> = () => {
-  const [ticketList, setTicketList] = useState<Ticket[]>(
-    LocalStorageUtil.getTicketList()
-  );
+}> = ({ children }) => {
+  const [ticketList, setTicketList] = useState<Ticket[]>(todoTicketListDefault);
 
   const addTicket = (ticket: Omit<Ticket, 'id'>) => {
     const id = LocalStorageUtil.addTicket(ticket);
@@ -117,6 +179,8 @@ export const TicketContextProvider: FunctionComponent<{
         setTodoTicketToDone,
         setTodoTicketToInProgress,
       }}
-    ></TicketContext.Provider>
+    >
+      {children}
+    </TicketContext.Provider>
   );
 };
