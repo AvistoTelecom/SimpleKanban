@@ -1,9 +1,9 @@
 import { FunctionComponent } from 'react';
 import { AddTicketButton } from './AddTicketButton';
-import { ColumnType, SidePanelContent } from './KanbanPage';
+import { TicketStatus, SidePanelContent } from './KanbanPage';
 
 type TicketColumnProps = {
-  type: ColumnType;
+  type: TicketStatus;
   onClick: (id: SidePanelContent) => void;
 };
 

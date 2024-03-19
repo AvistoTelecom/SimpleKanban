@@ -33,7 +33,7 @@ export const TicketContext = createContext<TicketContextType>({
 
 export const TicketContextProvider: FunctionComponent<{
   children: ReactNode;
-}> = () => {
+}> = ({ children }) => {
   const [ticketList, setTicketList] = useState<Ticket[]>(
     LocalStorageUtil.getTicketList()
   );
@@ -117,6 +117,8 @@ export const TicketContextProvider: FunctionComponent<{
         setTodoTicketToDone,
         setTodoTicketToInProgress,
       }}
-    ></TicketContext.Provider>
+    >
+      {children}
+    </TicketContext.Provider>
   );
 };

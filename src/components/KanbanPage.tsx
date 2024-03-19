@@ -12,9 +12,11 @@ import {
   UsersContextType,
 } from './context/UsersContext';
 import { TicketColumn } from './TicketColumn';
+import { AddTicketForm } from './forms/AddTicketForm';
+import { TicketContext, TicketContextType } from './context/TicketContext';
 
 export type SidePanelContent = 'tag' | 'user' | 'addTicket' | '';
-export type ColumnType = 'todo' | 'inProgress' | 'done' | '';
+export type TicketStatus = 'todo' | 'inProgress' | 'done' | '';
 
 export const KanbanPage: FunctionComponent = () => {
   const [isSidePanelOpen, setSidePanelOpen] = useState<boolean>(false);
@@ -24,6 +26,8 @@ export const KanbanPage: FunctionComponent = () => {
 
   const { tagList, addTag, deleteTag, updateTag } =
     useContext<TagsContextType>(TagsContext);
+
+  const { ticketList } = useContext<TicketContextType>(TicketContext);
 
   const toggleSidePanel = (id: SidePanelContent) => {
     if (contentID === '') {
@@ -64,6 +68,10 @@ export const KanbanPage: FunctionComponent = () => {
     updateTag(name, tag);
   };
 
+  const addTicket = (ticket: CreateTicket) => {
+    // TODO
+  };
+
   return (
     <>
       <NavBar onClick={toggleSidePanel} />
@@ -89,6 +97,13 @@ export const KanbanPage: FunctionComponent = () => {
                 onAddUser={onAddUser}
                 onDeleteUser={onDeleteUser}
                 onUpdateUser={onUpdateUser}
+              />
+            )}
+            {contentID === 'addTicket' && (
+              <AddTicketForm
+                userList={userList}
+                tagList={tagList}
+                onAddTicket={addTicket}
               />
             )}
           </SidePanel>
