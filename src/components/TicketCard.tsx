@@ -14,8 +14,24 @@ export const TicketCard: FunctionComponent<TicketCardProps> = ({
   assigne,
   tag,
 }) => {
+  let tagTextColor = 'white';
+
+  if (tag) {
+    const color = tag.color.substring(1, 7);
+    const r = parseInt(color.substring(0, 2), 16);
+    const g = parseInt(color.substring(2, 4), 16);
+    const b = parseInt(color.substring(4, 6), 16);
+    if (r * 0.299 + g * 0.587 + b * 0.114 > 186) {
+      tagTextColor = 'black';
+    }
+  }
+
   const tagStyle = {
     backgroundColor: tag?.color,
+  };
+
+  const textTagStyle = {
+    color: tagTextColor,
   };
 
   return (
@@ -32,7 +48,7 @@ export const TicketCard: FunctionComponent<TicketCardProps> = ({
                 'width-full badge badge-lg line-clamp-1 break-words leading-tight'
               }
             >
-              {tag.name}
+              <p style={textTagStyle}>{tag.name}</p>
             </div>
           ) : (
             <></>
