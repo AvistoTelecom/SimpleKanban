@@ -27,7 +27,6 @@ export const KanbanPage: FunctionComponent = () => {
   const { tagList, addTag, deleteTag, updateTag } =
     useContext<TagsContextType>(TagsContext);
 
-  // Temporaire, valeur par défaut dev
   const [todoTicketList, setTodoTicketList] = useState<Ticket[]>([
     {
       id: 1,
@@ -147,8 +146,6 @@ export const KanbanPage: FunctionComponent = () => {
   };
 
   const onDragEnd = (result: DropResult) => {
-    console.log(result);
-
     const { source, destination } = result;
     if (!destination) {
       return;
