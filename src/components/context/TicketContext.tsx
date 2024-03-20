@@ -111,10 +111,14 @@ export const TicketContextProvider: FunctionComponent<{
 
   const deleteTicket = (id: number) => {
     LocalStorage.deleteTicket(id);
+    setTicketList((ticketList) =>
+      ticketList.filter((ticket) => ticket.id !== id)
+    );
   };
 
   const updateTicket = (ticket: Ticket) => {
     LocalStorage.updadeTicket(ticket);
+    setTicketList(ticketList.with(ticket.id, ticket));
   };
 
   const setDoneTicketToInProgress = (id: number) => {
