@@ -146,10 +146,6 @@ export const KanbanPage: FunctionComponent = () => {
     return newTicketList;
   };
 
-  const removeFromColumn = () => {};
-
-  const addToColumn = () => {};
-
   const onDragEnd = (result: DropResult) => {
     console.log(result);
 
