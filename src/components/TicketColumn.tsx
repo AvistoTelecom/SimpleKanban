@@ -1,17 +1,18 @@
 import { FunctionComponent } from 'react';
 import { AddTicketButton } from './AddTicketButton';
-import { TicketStatus, SidePanelContent } from './KanbanPage';
+import { ColumnType, SidePanelContent } from './KanbanPage';
 
 type TicketColumnProps = {
-  type: TicketStatus;
-  onClick: (id: SidePanelContent) => void;
+  type: ColumnType;
+  onClick: (id: SidePanelContent, type?: ColumnType) => void;
 };
 
 export const TicketColumn: FunctionComponent<TicketColumnProps> = ({
+  type,
   onClick,
 }) => {
   const onClickAddTicketButton = () => {
-    onClick('addTicket');
+    onClick('addTicket', type);
   };
 
   return (

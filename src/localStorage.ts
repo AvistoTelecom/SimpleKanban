@@ -60,7 +60,7 @@ export class LocalStorageUtil {
     const storedUser = this.getUserList();
     ticketList.forEach((currentTicket) => {
       if (currentTicket.assigneId === userId) {
-        currentTicket.assigneId = null;
+        currentTicket.assigneId = undefined;
       }
     });
     this.setTicketList(ticketList);
@@ -108,7 +108,7 @@ export class LocalStorageUtil {
     const storedUser = this.getTagList();
     storedTickets.forEach((currentTicket) => {
       if (currentTicket.tagName === tagName) {
-        currentTicket.tagName = null;
+        currentTicket.tagName = undefined;
       }
     });
     this.setTicketList(storedTickets);
@@ -229,10 +229,10 @@ export class LocalStorageUtil {
     const ticketList = this.getTicketList();
     ticketList.forEach((currentTicket) => {
       if (currentTicket.childId === ticketId) {
-        currentTicket.childId = null;
+        currentTicket.childId = undefined;
       }
       if (currentTicket.parentId === ticketId) {
-        currentTicket.parentId = null;
+        currentTicket.parentId = undefined;
       }
     });
     const filteredTicketList = ticketList.filter((currentTicket) => {

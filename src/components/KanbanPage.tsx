@@ -14,22 +14,30 @@ import {
 import { TicketColumn } from './TicketColumn';
 import { AddTicketForm } from './forms/AddTicketForm';
 import { TicketContext, TicketContextType } from './context/TicketContext';
+import { CreateTicket } from '../model/CreateTicket';
 
 export type SidePanelContent = 'tag' | 'user' | 'addTicket' | '';
-export type TicketStatus = 'todo' | 'inProgress' | 'done' | '';
+export type ColumnType = 'todo' | 'inProgress' | 'done' | '';
 
 export const KanbanPage: FunctionComponent = () => {
   const [isSidePanelOpen, setSidePanelOpen] = useState<boolean>(false);
   const [contentID, setContentID] = useState<SidePanelContent>('');
+  const [newTicketDefaultType, setNewTicketDefaultType] =
+    useState<ColumnType>('todo');
   const { userList, addUser, deleteUser, updateUser } =
     useContext<UsersContextType>(UsersContext);
 
   const { tagList, addTag, deleteTag, updateTag } =
     useContext<TagsContextType>(TagsContext);
 
-  const { ticketList } = useContext<TicketContextType>(TicketContext);
+  const { ticketList, addTicket } =
+    useContext<TicketContextType>(TicketContext);
 
-  const toggleSidePanel = (id: SidePanelContent) => {
+  const toggleSidePanel = (id: SidePanelContent, type?: ColumnType) => {
+    if (type !== undefined) {
+      setNewTicketDefaultType(type);
+    }
+
     if (contentID === '') {
       setSidePanelOpen(!isSidePanelOpen);
       setContentID(id);
@@ -68,8 +76,9 @@ export const KanbanPage: FunctionComponent = () => {
     updateTag(name, tag);
   };
 
-  const addTicket = (ticket: CreateTicket) => {
-    // TODO
+  const onAddTicket = (ticket: CreateTicket) => {
+    addTicket(ticket);
+    toggleSidePanel(contentID);
   };
 
   return (
@@ -101,9 +110,11 @@ export const KanbanPage: FunctionComponent = () => {
             )}
             {contentID === 'addTicket' && (
               <AddTicketForm
+                defaultType={newTicketDefaultType}
                 userList={userList}
                 tagList={tagList}
-                onAddTicket={addTicket}
+                ticketList={ticketList}
+                onAddTicket={onAddTicket}
               />
             )}
           </SidePanel>
