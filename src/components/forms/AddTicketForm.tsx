@@ -16,7 +16,7 @@ type AddTicketFormProps = {
   onAddTicket: (ticket: CreateTicket) => void;
 };
 
-type CreateTicketFormInput = {
+type FormInputs = {
   name: string;
   storyPoint: number;
   assigneId?: number;
@@ -34,9 +34,9 @@ export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
   defaultType,
   onAddTicket,
 }) => {
-  const { register, handleSubmit } = useForm<CreateTicketFormInput>({
+  const { register, handleSubmit } = useForm<FormInputs>({
     defaultValues: {
-      name: 'Ticket',
+      name: '',
       storyPoint: 0,
       assigneId: -1,
       tagName: '',
@@ -47,7 +47,7 @@ export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
     },
   });
 
-  const onSubmit: SubmitHandler<CreateTicketFormInput> = (formData) => {
+  const onSubmit: SubmitHandler<FormInputs> = (formData) => {
     const date = new Date();
     const newTicket: CreateTicket = {
       name: formData.name,
