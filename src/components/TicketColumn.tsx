@@ -25,7 +25,7 @@ export const TicketColumn: FunctionComponent<TicketColumnProps> = ({
   };
 
   return (
-    <div className="flex-1 grid grid-rows-[95%_5%] bg-base-200 place-items-center min-w-60 h-full rounded-box ">
+    <div className="flex-1 grid grid-rows-[95%_5%] bg-base-200 place-items-center min-w-60 h-full rounded-box overflow-hidden">
       <ul className="w-full h-full flex flex-col items-center overflow-y-auto overflow-x-hidden">
         {ticketList.map((ticket: Ticket) => (
           <TicketCard
