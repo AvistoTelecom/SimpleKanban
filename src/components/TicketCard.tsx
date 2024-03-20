@@ -3,11 +3,7 @@ import { Ticket } from '../model/Ticket';
 import { User } from '../model/User';
 import { Tag } from '../model/Tag';
 import { getTextColor } from '../utils/color.utils';
-import {
-  Draggable,
-  DraggableProvided,
-  DraggableStateSnapshot,
-} from 'react-beautiful-dnd';
+import { Draggable, DraggableProvided } from 'react-beautiful-dnd';
 
 type TicketCardProps = {
   index: number;
@@ -32,7 +28,7 @@ export const TicketCard: FunctionComponent<TicketCardProps> = ({
 
   return (
     <Draggable draggableId={'draggable-' + ticket.id} index={index}>
-      {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
+      {(provided: DraggableProvided) => (
         <li
           ref={provided.innerRef}
           {...provided.dragHandleProps}

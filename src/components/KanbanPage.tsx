@@ -27,6 +27,7 @@ export const KanbanPage: FunctionComponent = () => {
   const { tagList, addTag, deleteTag, updateTag } =
     useContext<TagsContextType>(TagsContext);
 
+  // Temporaire, valeur par défaut dev
   const [todoTicketList, setTodoTicketList] = useState<Ticket[]>([
     {
       id: 1,
@@ -134,6 +135,21 @@ export const KanbanPage: FunctionComponent = () => {
     updateTag(name, tag);
   };
 
+  const reorderTicketColumn = (
+    ticketList: Ticket[],
+    sourceIndex: number,
+    destinationIndex: number
+  ): Ticket[] => {
+    const newTicketList = Array.from(ticketList);
+    const [removed] = newTicketList.splice(sourceIndex, 1);
+    newTicketList.splice(destinationIndex, 0, removed);
+    return newTicketList;
+  };
+
+  const removeFromColumn = () => {};
+
+  const addToColumn = () => {};
+
   const onDragEnd = (result: DropResult) => {
     console.log(result);
 
@@ -141,30 +157,32 @@ export const KanbanPage: FunctionComponent = () => {
     if (!destination) {
       return;
     }
-    const sourceId = source.droppableId;
-    const destinationId = destination.droppableId;
 
-    if (sourceId === destinationId) {
-      switch (sourceId) {
+    const sourceColumn = source.droppableId;
+    const destinationColumn = destination.droppableId;
+
+    if (sourceColumn === destinationColumn) {
+      switch (sourceColumn) {
         case 'todo': {
-          const newTodoTicketList = Array.from(todoTicketList);
-          const [removed] = newTodoTicketList.splice(source.index, 1);
-          newTodoTicketList.splice(destination.index, 0, removed);
-          setTodoTicketList(newTodoTicketList);
+          setTodoTicketList(
+            reorderTicketColumn(todoTicketList, source.index, destination.index)
+          );
           break;
         }
         case 'inProgress': {
-          const newInProgressTicketList = Array.from(inProgressTicketList);
-          const [removed] = newInProgressTicketList.splice(source.index, 1);
-          newInProgressTicketList.splice(destination.index, 0, removed);
-          setInProgressTicketList(newInProgressTicketList);
+          setInProgressTicketList(
+            reorderTicketColumn(
+              inProgressTicketList,
+              source.index,
+              destination.index
+            )
+          );
           break;
         }
         case 'done': {
-          const newDoneTicketList = Array.from(doneTicketList);
-          const [removed] = newDoneTicketList.splice(source.index, 1);
-          newDoneTicketList.splice(destination.index, 0, removed);
-          setDoneTicketList(newDoneTicketList);
+          setDoneTicketList(
+            reorderTicketColumn(doneTicketList, source.index, destination.index)
+          );
           break;
         }
         default: {
@@ -176,7 +194,7 @@ export const KanbanPage: FunctionComponent = () => {
 
     let toMoveTicket;
 
-    switch (sourceId) {
+    switch (sourceColumn) {
       case 'todo': {
         const newTodoTicketList = Array.from(todoTicketList);
         toMoveTicket = newTodoTicketList.splice(source.index, 1);
@@ -200,7 +218,7 @@ export const KanbanPage: FunctionComponent = () => {
       }
     }
 
-    switch (destinationId) {
+    switch (destinationColumn) {
       case 'todo': {
         const newTodoTicket = Array.from(todoTicketList);
         newTodoTicket.splice(destination.index, 0, toMoveTicket[0]);

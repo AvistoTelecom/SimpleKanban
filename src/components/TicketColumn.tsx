@@ -5,11 +5,7 @@ import { TicketCard } from './TicketCard';
 import { Ticket } from '../model/Ticket';
 import { User } from './context/UsersContext';
 import { Tag } from './context/TagsContext';
-import {
-  Droppable,
-  DroppableProvided,
-  DroppableStateSnapshot,
-} from 'react-beautiful-dnd';
+import { Droppable, DroppableProvided } from 'react-beautiful-dnd';
 
 type TicketColumnProps = {
   type: ColumnType;
@@ -33,7 +29,7 @@ export const TicketColumn: FunctionComponent<TicketColumnProps> = ({
   return (
     <div className="flex-1 grid grid-rows-[95%_5%] bg-base-200 place-items-center min-w-60 h-full rounded-box ">
       <Droppable droppableId={type}>
-        {(provided: DroppableProvided, snapshot: DroppableStateSnapshot) => (
+        {(provided: DroppableProvided) => (
           <ul
             ref={provided.innerRef}
             className="w-full h-full flex flex-col items-center overflow-y-auto overflow-x-hidden"
