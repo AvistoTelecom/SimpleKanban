@@ -118,51 +118,57 @@ export const TicketContextProvider: FunctionComponent<{
   };
 
   const setDoneTicketToInProgress = (id: number) => {
-    const ticket = LocalStorage.getDoneTicket(id);
-    if (!ticket) {
+    LocalStorage.setDoneToInProgress(id);
+    const ticket = LocalStorage.getInProgressTicket(id);
+    if (ticket === null) {
       return;
     }
-    LocalStorage.setDoneToInProgress(ticket);
+    setTicketList((ticketList) => ticketList.with(id, ticket));
   };
 
   const setDoneTicketToTodo = (id: number) => {
-    const ticket = LocalStorage.getDoneTicket(id);
-    if (!ticket) {
+    LocalStorage.setDoneTicketToTodo(id);
+    const ticket = LocalStorage.getTodoTicket(id);
+    if (ticket === null) {
       return;
     }
-    LocalStorage.setDoneTicketToTodo(ticket);
+    setTicketList((ticketList) => ticketList.with(id, ticket));
   };
 
   const setInProgressTicketToDone = (id: number) => {
-    const ticket = LocalStorage.getInProgressTicket(id);
-    if (!ticket) {
+    LocalStorage.setInProgressToDone(id);
+    const ticket = LocalStorage.getDoneTicket(id);
+    if (ticket === null) {
       return;
     }
-    LocalStorage.setInProgressToDone(ticket);
+    setTicketList((ticketList) => ticketList.with(id, ticket));
   };
 
   const setInProgressTicketToTodo = (id: number) => {
-    const ticket = LocalStorage.getInProgressTicket(id);
-    if (!ticket) {
+    LocalStorage.setInProgressToTodo(id);
+    const ticket = LocalStorage.getTodoTicket(id);
+    if (ticket === null) {
       return;
     }
-    LocalStorage.setInProgressToTodo(ticket);
+    setTicketList((ticketList) => ticketList.with(id, ticket));
   };
 
   const setTodoTicketToDone = (id: number) => {
-    const ticket = LocalStorage.getInProgressTicket(id);
-    if (!ticket) {
+    LocalStorage.setTodoToDone(id);
+    const ticket = LocalStorage.getDoneTicket(id);
+    if (ticket === null) {
       return;
     }
-    LocalStorage.setTodoToDone(ticket);
+    setTicketList((ticketList) => ticketList.with(id, ticket));
   };
 
   const setTodoTicketToInProgress = (id: number) => {
+    LocalStorage.setTodoToInProgress(id);
     const ticket = LocalStorage.getInProgressTicket(id);
-    if (!ticket) {
+    if (ticket === null) {
       return;
     }
-    LocalStorage.setTodoToInProgress(ticket);
+    setTicketList((ticketList) => ticketList.with(id, ticket));
   };
 
   return (

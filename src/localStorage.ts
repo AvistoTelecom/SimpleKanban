@@ -258,8 +258,8 @@ export class LocalStorage {
     return doneTicket ?? null;
   };
 
-  static setTodoToInProgress = (ticketToSet: TodoTicket) => {
-    const ticket = this.getTicket(ticketToSet.id);
+  static setTodoToInProgress = (ticketId: number) => {
+    const ticket = this.getTicket(ticketId);
     if (ticket === null || ticket.blocked) {
       return;
     }
@@ -271,8 +271,8 @@ export class LocalStorage {
     this.updadeTicket(inProgress);
   };
 
-  static setInProgressToTodo = (ticketToSet: TodoTicket) => {
-    const inProgress = this.getTicket(ticketToSet.id);
+  static setInProgressToTodo = (ticketId: number) => {
+    const inProgress = this.getTicket(ticketId);
     if (inProgress === null || !isInProgressTicket(inProgress)) {
       return;
     }
@@ -281,8 +281,8 @@ export class LocalStorage {
     this.updadeTicket(todo);
   };
 
-  static setInProgressToDone = (ticketToSet: InProgressTicket) => {
-    const inProgress = this.getTicket(ticketToSet.id);
+  static setInProgressToDone = (ticketId: number) => {
+    const inProgress = this.getTicket(ticketId);
     if (inProgress === null || !isInProgressTicket(inProgress)) {
       return;
     }
@@ -294,8 +294,8 @@ export class LocalStorage {
     this.updadeTicket(done);
   };
 
-  static setDoneToInProgress = (ticketToSet: DoneTicket) => {
-    const done = this.getTicket(ticketToSet.id);
+  static setDoneToInProgress = (ticketId: number) => {
+    const done = this.getTicket(ticketId);
     if (done === null || !isDoneTicket(done)) {
       return;
     }
@@ -304,8 +304,8 @@ export class LocalStorage {
     this.updadeTicket(inProgress);
   };
 
-  static setTodoToDone = (ticketToSet: Ticket) => {
-    const ticket = this.getTicket(ticketToSet.id);
+  static setTodoToDone = (ticketId: number) => {
+    const ticket = this.getTicket(ticketId);
     if (ticket === null || ticket.blocked) {
       return;
     }
@@ -319,8 +319,8 @@ export class LocalStorage {
     this.updadeTicket(done);
   };
 
-  static setDoneTicketToTodo = (ticketToSet: DoneTicket) => {
-    const done = this.getTicket(ticketToSet.id);
+  static setDoneTicketToTodo = (ticketId: number) => {
+    const done = this.getTicket(ticketId);
     if (done === null || !isDoneTicket(done)) {
       return;
     }
