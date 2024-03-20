@@ -129,33 +129,41 @@ export class LocalStorage {
 
   static getTodoTicketList = (): TodoTicket[] => {
     const ticketList = this.getTicketList();
-    return ticketList.filter((currentTicket) => isTodoTicket(currentTicket));
+    return ticketList
+      .filter((currentTicket) => isTodoTicket(currentTicket))
+      .map((todoTicket) => {
+        todoTicket.creationDate = new Date(todoTicket.creationDate);
+        return todoTicket;
+      });
   };
 
   static getInProgressTicketList = (): InProgressTicket[] => {
     const ticketList = this.getTicketList();
-    return ticketList.filter((currentTicket) =>
+    const result = ticketList.filter((currentTicket) =>
       isInProgressTicket(currentTicket)
     ) as InProgressTicket[];
+    return result.map((inProgressTicket) => {
+      inProgressTicket.creationDate = new Date(inProgressTicket.creationDate);
+      inProgressTicket.startDate = new Date(inProgressTicket.startDate);
+      return inProgressTicket;
+    });
   };
 
   static getDoneTicketList = (): DoneTicket[] => {
     const ticketList = this.getTicketList();
-    return ticketList.filter((currentTicket) =>
+    const result: DoneTicket[] = ticketList.filter((currentTicket) =>
       isDoneTicket(currentTicket)
     ) as DoneTicket[];
+    return result.map((doneTicket) => {
+      doneTicket.creationDate = new Date(doneTicket.creationDate);
+      doneTicket.startDate = new Date(doneTicket.startDate);
+      doneTicket.endDate = new Date(doneTicket.endDate);
+      return doneTicket;
+    });
   };
 
   static setTicketList = (ticketList: Ticket[]) => {
     localStorage.setItem('ticketList', JSON.stringify(ticketList));
-  };
-
-  static getTicket = (ticketId: number): Ticket | null => {
-    const storedTickets = this.getTicketList();
-    const ticket = storedTickets.find(
-      (currentTicket) => currentTicket.id === ticketId
-    );
-    return ticket ?? null;
   };
 
   static addTicket = (ticketToAddInfos: Omit<Ticket, 'id'>): number => {
@@ -198,6 +206,27 @@ export class LocalStorage {
     this.setTicketList(ticketList.with(index, ticket));
   };
 
+  static getTicket = (ticketId: number): Ticket | null => {
+    const storedTickets = this.getTicketList();
+    const ticket = storedTickets.find(
+      (currentTicket) => currentTicket.id === ticketId
+    );
+    return ticket ?? null;
+  };
+
+  static getTodoTicket = (todoTicketId: number): TodoTicket | null => {
+    const storedTodoTickets = this.getTodoTicketList();
+    const todoTicket = storedTodoTickets.find(
+      (currTodoTicket) => currTodoTicket.id === todoTicketId
+    );
+
+    if (todoTicket !== undefined) {
+      todoTicket.creationDate = new Date(todoTicket.creationDate);
+    }
+
+    return todoTicket ?? null;
+  };
+
   static getInProgressTicket = (
     inProgressTicketId: number
   ): InProgressTicket | null => {
@@ -205,6 +234,12 @@ export class LocalStorage {
     const inProgressTicket = storedInProgressTickets.find(
       (currInProgressTicket) => currInProgressTicket.id === inProgressTicketId
     );
+
+    if (inProgressTicket !== undefined) {
+      inProgressTicket.creationDate = new Date(inProgressTicket.creationDate);
+      inProgressTicket.startDate = new Date(inProgressTicket.startDate);
+    }
+
     return inProgressTicket ?? null;
   };
 
@@ -213,6 +248,13 @@ export class LocalStorage {
     const doneTicket = storedDoneTickets.find(
       (currDoneTicket) => currDoneTicket.id === doneTicketId
     );
+
+    if (doneTicket !== undefined) {
+      doneTicket.creationDate = new Date(doneTicket.creationDate);
+      doneTicket.startDate = new Date(doneTicket.startDate);
+      doneTicket.endDate = new Date(doneTicket.endDate);
+    }
+
     return doneTicket ?? null;
   };
 
