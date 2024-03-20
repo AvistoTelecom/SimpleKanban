@@ -6,12 +6,13 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { CreateInProgressTicket } from '../../model/CreateInProgressTicket';
 import { CreateDoneTicket } from '../../model/CreateDoneTicket';
 import { Ticket } from '../../model/Ticket';
+import { ColumnType } from '../KanbanPage';
 
 type AddTicketFormProps = {
   userList: User[];
   tagList: Tag[];
   ticketList: Ticket[];
-  defaultType: string;
+  defaultType: ColumnType;
   onAddTicket: (ticket: CreateTicket) => void;
 };
 

@@ -1,6 +1,3 @@
-import { CreateTodoTicket } from './CreateTodoTicket';
+import { InProgressTicket } from './InProgressTicket';
 
-export type CreateInProgressTicket = CreateTodoTicket & {
-  blocked: false;
-  startDate: Date;
-};
+export type CreateInProgressTicket = Omit<InProgressTicket, 'id'>;

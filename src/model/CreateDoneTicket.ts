@@ -1,3 +1,3 @@
-import { CreateInProgressTicket } from './CreateInProgressTicket';
+import { DoneTicket } from './DoneTicket';
 
-export type CreateDoneTicket = CreateInProgressTicket & { endDate: Date };
+export type CreateDoneTicket = Omit<DoneTicket, 'id'>;
