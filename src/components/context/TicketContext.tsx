@@ -24,12 +24,9 @@ const todoTicketListDefault = [
     name: 'Truc à faire',
     creationDate: new Date(),
     storyPoint: 1,
-    assigneId: null,
     tagName: 'tag1',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas quis orci orci. Ut euismod felis risus, sed euismod tellus luctus ac. Suspendisse interdum lacinia tortor. Aliquam in nibh vulputate, mattis odio pretium, sollicitudin ligula. Fusce tempor imperdiet tempus. Sed euismod in mauris vel tempus. Maecenas rhoncus tortor vitae turpis varius, sed porttitor lorem viverra. Fusce ultricies vel lorem efficitur vestibulum.',
-    parentId: null,
-    childId: null,
     blocked: false,
   },
   {
@@ -40,8 +37,6 @@ const todoTicketListDefault = [
     assigneId: 1,
     tagName: 'tag2',
     description: 'Description',
-    parentId: null,
-    childId: null,
     blocked: false,
   },
   {
@@ -52,8 +47,6 @@ const todoTicketListDefault = [
     assigneId: 2,
     tagName: 'taaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaag',
     description: '',
-    parentId: null,
-    childId: null,
     blocked: false,
   },
   {
@@ -62,10 +55,7 @@ const todoTicketListDefault = [
     creationDate: new Date(),
     storyPoint: 2,
     assigneId: 2,
-    tagName: null,
     description: '',
-    parentId: null,
-    childId: null,
     blocked: false,
   },
   {
@@ -74,10 +64,7 @@ const todoTicketListDefault = [
     creationDate: new Date(),
     storyPoint: 2,
     assigneId: 2,
-    tagName: null,
     description: '',
-    parentId: null,
-    childId: null,
     blocked: false,
   },
 ];
@@ -103,7 +90,7 @@ export const TicketContextProvider: FunctionComponent<{
   const addTicket = (ticket: Omit<Ticket, 'id'>) => {
     const id = LocalStorage.addTicket(ticket);
     const newTicket = LocalStorage.getTicket(id);
-    if (newTicket === null) {
+    if (!newTicket) {
       return;
     }
     setTicketList((ticketList) => [...ticketList, newTicket]);
@@ -124,7 +111,7 @@ export const TicketContextProvider: FunctionComponent<{
   const setDoneTicketToInProgress = (id: number) => {
     LocalStorage.setDoneToInProgress(id);
     const ticket = LocalStorage.getInProgressTicket(id);
-    if (ticket === null) {
+    if (!ticket) {
       return;
     }
     setTicketList((ticketList) => ticketList.with(id, ticket));
@@ -133,7 +120,7 @@ export const TicketContextProvider: FunctionComponent<{
   const setDoneTicketToTodo = (id: number) => {
     LocalStorage.setDoneTicketToTodo(id);
     const ticket = LocalStorage.getTodoTicket(id);
-    if (ticket === null) {
+    if (!ticket) {
       return;
     }
     setTicketList((ticketList) => ticketList.with(id, ticket));
@@ -142,7 +129,7 @@ export const TicketContextProvider: FunctionComponent<{
   const setInProgressTicketToDone = (id: number) => {
     LocalStorage.setInProgressToDone(id);
     const ticket = LocalStorage.getDoneTicket(id);
-    if (ticket === null) {
+    if (!ticket) {
       return;
     }
     setTicketList((ticketList) => ticketList.with(id, ticket));
@@ -151,7 +138,7 @@ export const TicketContextProvider: FunctionComponent<{
   const setInProgressTicketToTodo = (id: number) => {
     LocalStorage.setInProgressToTodo(id);
     const ticket = LocalStorage.getTodoTicket(id);
-    if (ticket === null) {
+    if (!ticket) {
       return;
     }
     setTicketList((ticketList) => ticketList.with(id, ticket));
@@ -160,7 +147,7 @@ export const TicketContextProvider: FunctionComponent<{
   const setTodoTicketToDone = (id: number) => {
     LocalStorage.setTodoToDone(id);
     const ticket = LocalStorage.getDoneTicket(id);
-    if (ticket === null) {
+    if (!ticket) {
       return;
     }
     setTicketList((ticketList) => ticketList.with(id, ticket));
@@ -169,7 +156,7 @@ export const TicketContextProvider: FunctionComponent<{
   const setTodoTicketToInProgress = (id: number) => {
     LocalStorage.setTodoToInProgress(id);
     const ticket = LocalStorage.getInProgressTicket(id);
-    if (ticket === null) {
+    if (!ticket) {
       return;
     }
     setTicketList((ticketList) => ticketList.with(id, ticket));
