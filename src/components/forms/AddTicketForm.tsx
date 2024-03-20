@@ -47,26 +47,26 @@ export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
     },
   });
 
-  const onSubmit: SubmitHandler<CreateTicketFormInput> = (data) => {
+  const onSubmit: SubmitHandler<CreateTicketFormInput> = (formData) => {
     const date = new Date();
     const newTicket: CreateTicket = {
-      name: data.name,
-      storyPoint: data.storyPoint,
-      assigneId: data.assigneId === -1 ? undefined : data.assigneId,
-      tagName: data.tagName === '' ? undefined : data.tagName,
-      description: data.description,
-      parentId: data.parentId === -1 ? undefined : data.parentId,
-      childId: data.childId === -1 ? undefined : data.childId,
+      name: formData.name,
+      storyPoint: formData.storyPoint,
+      assigneId: formData.assigneId === -1 ? undefined : formData.assigneId,
+      tagName: formData.tagName === '' ? undefined : formData.tagName,
+      description: formData.description,
+      parentId: formData.parentId === -1 ? undefined : formData.parentId,
+      childId: formData.childId === -1 ? undefined : formData.childId,
       creationDate: date,
       blocked: false,
     };
 
-    if (data.type === 'todo') {
+    if (formData.type === 'todo') {
       onAddTicket(newTicket);
       return;
     }
 
-    if (data.type === 'inProgress') {
+    if (formData.type === 'inProgress') {
       const inProgressTicket: CreateInProgressTicket = {
         ...newTicket,
         startDate: date,
@@ -76,7 +76,7 @@ export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
       return;
     }
 
-    if (data.type === 'done') {
+    if (formData.type === 'done') {
       const doneTicket: CreateDoneTicket = {
         ...newTicket,
         startDate: date,
