@@ -138,7 +138,7 @@ export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
           </div>
           <input
             type="number"
-            placeholder="Points..."
+            placeholder="Story points..."
             className="input input-bordered input-md w-full"
             {...register('storyPoint')}
           />
