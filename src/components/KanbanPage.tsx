@@ -70,7 +70,12 @@ export const KanbanPage: FunctionComponent = () => {
   return (
     <>
       <NavBar onClick={toggleSidePanel} />
-      <main className="flex-grow h-1 flex w-full space-x-2 p-2 bg-base-300">
+      <main
+        className={
+          'flex-grow h-1 flex w-full p-2 bg-base-300' +
+          (isSidePanelOpen ? ' space-x-2' : '')
+        }
+      >
         <KanbanArea>
           <TicketColumn
             type="todo"
@@ -94,26 +99,24 @@ export const KanbanPage: FunctionComponent = () => {
             tagList={tagList}
           />
         </KanbanArea>
-        {isSidePanelOpen && (
-          <SidePanel>
-            {contentID === 'tag' && (
-              <TagsTable
-                tagList={tagList}
-                onAddTag={onAddTag}
-                onDeleteTag={onDeleteTag}
-                onUpdateTag={onUpdateTag}
-              />
-            )}
-            {contentID === 'user' && (
-              <UsersTable
-                userList={userList}
-                onAddUser={onAddUser}
-                onDeleteUser={onDeleteUser}
-                onUpdateUser={onUpdateUser}
-              />
-            )}
-          </SidePanel>
-        )}
+        <SidePanel isOpen={isSidePanelOpen}>
+          {contentID === 'tag' && (
+            <TagsTable
+              tagList={tagList}
+              onAddTag={onAddTag}
+              onDeleteTag={onDeleteTag}
+              onUpdateTag={onUpdateTag}
+            />
+          )}
+          {contentID === 'user' && (
+            <UsersTable
+              userList={userList}
+              onAddUser={onAddUser}
+              onDeleteUser={onDeleteUser}
+              onUpdateUser={onUpdateUser}
+            />
+          )}
+        </SidePanel>
       </main>
     </>
   );
