@@ -139,10 +139,9 @@ export const KanbanPage: FunctionComponent = () => {
     sourceIndex: number,
     destinationIndex: number
   ): Ticket[] => {
-    const newTicketList = Array.from(ticketList);
-    const [removed] = newTicketList.splice(sourceIndex, 1);
-    newTicketList.splice(destinationIndex, 0, removed);
-    return newTicketList;
+    return ticketList
+      .toSpliced(sourceIndex, 1)
+      .toSpliced(destinationIndex, 0, ticketList[sourceIndex]);
   };
 
   const onDragEnd = (result: DropResult) => {

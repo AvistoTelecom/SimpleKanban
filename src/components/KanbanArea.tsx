@@ -1,9 +1,11 @@
 import { FunctionComponent, PropsWithChildren } from 'react';
 
-export const KanbanArea: FunctionComponent<PropsWithChildren> = (props) => {
+export const KanbanArea: FunctionComponent<PropsWithChildren> = ({
+  children,
+}) => {
   return (
     <div className="flex bg-base-100 rounded-box w-full gap-2 p-2 overflow-x-auto select-none">
-      {props.children}
+      {children}
     </div>
   );
 };

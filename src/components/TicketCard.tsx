@@ -40,7 +40,7 @@ export const TicketCard: FunctionComponent<TicketCardProps> = ({
               <h2 className="card-title flex-auto mr-2 line-clamp-1 break-words">
                 {ticket.name}
               </h2>
-              {tag ? (
+              {tag && (
                 <div
                   style={tagStyle}
                   className={
@@ -49,21 +49,20 @@ export const TicketCard: FunctionComponent<TicketCardProps> = ({
                 >
                   <p style={textTagStyle}>{tag.name}</p>
                 </div>
-              ) : (
-                <></>
               )}
             </div>
 
             <div className="card-actions justify-between mt-2">
               <div>
                 <p className="text-neutral-content">
-                  <b>Creation :</b> {ticket.creationDate.toLocaleDateString()}
+                  <strong>Creation :</strong>{' '}
+                  {ticket.creationDate.toLocaleDateString()}
                 </p>
                 <p className="text-neutral-content">
-                  <b>Story points :</b> {ticket.storyPoint}
+                  <strong>Story points :</strong> {ticket.storyPoint}
                 </p>
               </div>
-              {assigne ? (
+              {assigne && (
                 <div className="flex tooltip" data-tip={assigne.name}>
                   <img
                     className="mask mask-squircle w-12 h-12"
@@ -71,8 +70,6 @@ export const TicketCard: FunctionComponent<TicketCardProps> = ({
                     alt="Avatar"
                   />
                 </div>
-              ) : (
-                <></>
               )}
             </div>
           </div>
