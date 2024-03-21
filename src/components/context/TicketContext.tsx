@@ -1,6 +1,6 @@
 import { FunctionComponent, ReactNode, createContext, useState } from 'react';
 import { Ticket } from '../../model/Ticket';
-import { LocalStorageUtil } from '../../localStorage';
+import { LocalStorage } from '../../localStorage';
 import { CreateTicket } from '../../model/CreateTicket';
 
 export type TicketContextType = {
@@ -25,12 +25,9 @@ const todoTicketListDefault = [
     name: 'Truc à faire',
     creationDate: new Date(),
     storyPoint: 1,
-    assigneId: null,
     tagName: 'tag1',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas quis orci orci. Ut euismod felis risus, sed euismod tellus luctus ac. Suspendisse interdum lacinia tortor. Aliquam in nibh vulputate, mattis odio pretium, sollicitudin ligula. Fusce tempor imperdiet tempus. Sed euismod in mauris vel tempus. Maecenas rhoncus tortor vitae turpis varius, sed porttitor lorem viverra. Fusce ultricies vel lorem efficitur vestibulum.',
-    parentId: null,
-    childId: null,
     blocked: false,
   },
   {
@@ -41,8 +38,6 @@ const todoTicketListDefault = [
     assigneId: 1,
     tagName: 'tag2',
     description: 'Description',
-    parentId: null,
-    childId: null,
     blocked: false,
   },
   {
@@ -53,8 +48,6 @@ const todoTicketListDefault = [
     assigneId: 2,
     tagName: 'taaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaag',
     description: '',
-    parentId: null,
-    childId: null,
     blocked: false,
   },
   {
@@ -63,10 +56,7 @@ const todoTicketListDefault = [
     creationDate: new Date(),
     storyPoint: 2,
     assigneId: 2,
-    tagName: null,
     description: '',
-    parentId: null,
-    childId: null,
     blocked: false,
   },
   {
@@ -75,10 +65,7 @@ const todoTicketListDefault = [
     creationDate: new Date(),
     storyPoint: 2,
     assigneId: 2,
-    tagName: null,
     description: '',
-    parentId: null,
-    childId: null,
     blocked: false,
   },
 ];
@@ -101,69 +88,79 @@ export const TicketContextProvider: FunctionComponent<{
 }> = ({ children }) => {
   const [ticketList, setTicketList] = useState<Ticket[]>(todoTicketListDefault);
 
-  const addTicket = (ticket: Omit<Ticket, 'id'>) => {
-    const id = LocalStorageUtil.addTicket(ticket);
-    const newTicket = LocalStorageUtil.getTicket(id);
-    if (newTicket === null) {
+  const addTicket = (ticket: CreateTicket) => {
+    const id = LocalStorage.addTicket(ticket);
+    const newTicket = LocalStorage.getTicket(id);
+    if (!newTicket) {
       return;
     }
     setTicketList((ticketList) => [...ticketList, newTicket]);
   };
 
   const deleteTicket = (id: number) => {
-    LocalStorageUtil.deleteTicket(id);
+    LocalStorage.deleteTicket(id);
+    setTicketList((ticketList) =>
+      ticketList.filter((ticket) => ticket.id !== id)
+    );
   };
 
   const updateTicket = (ticket: Ticket) => {
-    LocalStorageUtil.updadeTicket(ticket);
+    LocalStorage.updadeTicket(ticket);
+    setTicketList(ticketList.with(ticket.id, ticket));
   };
 
   const setDoneTicketToInProgress = (id: number) => {
-    const ticket = LocalStorageUtil.getDoneTicket(id);
+    LocalStorage.setDoneToInProgress(id);
+    const ticket = LocalStorage.getInProgressTicket(id);
     if (!ticket) {
       return;
     }
-    LocalStorageUtil.setDoneToInProgress(ticket);
+    setTicketList((ticketList) => ticketList.with(id, ticket));
   };
 
   const setDoneTicketToTodo = (id: number) => {
-    const ticket = LocalStorageUtil.getDoneTicket(id);
+    LocalStorage.setDoneTicketToTodo(id);
+    const ticket = LocalStorage.getTodoTicket(id);
     if (!ticket) {
       return;
     }
-    LocalStorageUtil.setDoneTicketToTodo(ticket);
+    setTicketList((ticketList) => ticketList.with(id, ticket));
   };
 
   const setInProgressTicketToDone = (id: number) => {
-    const ticket = LocalStorageUtil.getInProgressTicket(id);
+    LocalStorage.setInProgressToDone(id);
+    const ticket = LocalStorage.getDoneTicket(id);
     if (!ticket) {
       return;
     }
-    LocalStorageUtil.setInProgressToDone(ticket);
+    setTicketList((ticketList) => ticketList.with(id, ticket));
   };
 
   const setInProgressTicketToTodo = (id: number) => {
-    const ticket = LocalStorageUtil.getInProgressTicket(id);
+    LocalStorage.setInProgressToTodo(id);
+    const ticket = LocalStorage.getTodoTicket(id);
     if (!ticket) {
       return;
     }
-    LocalStorageUtil.setInProgressToTodo(ticket);
+    setTicketList((ticketList) => ticketList.with(id, ticket));
   };
 
   const setTodoTicketToDone = (id: number) => {
-    const ticket = LocalStorageUtil.getInProgressTicket(id);
+    LocalStorage.setTodoToDone(id);
+    const ticket = LocalStorage.getDoneTicket(id);
     if (!ticket) {
       return;
     }
-    LocalStorageUtil.setTodoToDone(ticket);
+    setTicketList((ticketList) => ticketList.with(id, ticket));
   };
 
   const setTodoTicketToInProgress = (id: number) => {
-    const ticket = LocalStorageUtil.getInProgressTicket(id);
+    LocalStorage.setTodoToInProgress(id);
+    const ticket = LocalStorage.getInProgressTicket(id);
     if (!ticket) {
       return;
     }
-    LocalStorageUtil.setTodoToInProgress(ticket);
+    setTicketList((ticketList) => ticketList.with(id, ticket));
   };
 
   return (
