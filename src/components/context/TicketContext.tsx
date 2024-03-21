@@ -1,10 +1,11 @@
 import { FunctionComponent, ReactNode, createContext, useState } from 'react';
 import { Ticket } from '../../model/Ticket';
 import { LocalStorage } from '../../localStorage';
+import { CreateTicket } from '../../model/CreateTicket';
 
 export type TicketContextType = {
   ticketList: Ticket[];
-  addTicket: (ticket: Ticket) => void;
+  addTicket: (ticket: CreateTicket) => void;
   deleteTicket: (id: number) => void;
   updateTicket: (ticket: Ticket) => void;
 
@@ -87,7 +88,7 @@ export const TicketContextProvider: FunctionComponent<{
 }> = ({ children }) => {
   const [ticketList, setTicketList] = useState<Ticket[]>(todoTicketListDefault);
 
-  const addTicket = (ticket: Omit<Ticket, 'id'>) => {
+  const addTicket = (ticket: CreateTicket) => {
     const id = LocalStorage.addTicket(ticket);
     const newTicket = LocalStorage.getTicket(id);
     if (!newTicket) {

@@ -5,40 +5,55 @@ import { TicketCard } from './TicketCard';
 import { Ticket } from '../model/Ticket';
 import { User } from './context/UsersContext';
 import { Tag } from './context/TagsContext';
+import { Droppable, DroppableProvided } from 'react-beautiful-dnd';
 
 type TicketColumnProps = {
   type: ColumnType;
   ticketList: Ticket[];
   userList: User[];
   tagList: Tag[];
-  onClick: (id: SidePanelContent) => void;
+  onClick: (id: SidePanelContent, type?: ColumnType) => void;
 };
 
 export const TicketColumn: FunctionComponent<TicketColumnProps> = ({
+  type,
   ticketList,
   userList,
   tagList,
   onClick,
 }) => {
   const onClickAddTicketButton = () => {
-    onClick('addTicket');
+    onClick('addTicket', type);
   };
 
   return (
-    <div className="flex-1 grid grid-rows-[95%_5%] bg-base-200 place-items-center min-w-60 h-full rounded-box ">
-      <ul className="w-full h-full flex flex-col items-center overflow-y-auto overflow-x-hidden">
-        {ticketList.map((ticket: Ticket) => (
-          <TicketCard
-            ticket={ticket}
-            assigne={userList.find(
-              (currentUser) => currentUser.id === ticket.assigneId
-            )}
-            tag={tagList.find(
-              (currentTag) => currentTag.name === ticket.tagName
-            )}
-          />
-        ))}
-      </ul>
+    <div className="flex-1 flex flex-col bg-base-200 place-items-center min-w-60 h-full rounded-box overflow-hidden">
+      <Droppable droppableId={type}>
+        {(provided: DroppableProvided) => (
+          <ul
+            ref={provided.innerRef}
+            className="w-full h-full flex flex-col items-center overflow-y-auto overflow-x-hidden"
+            {...provided.droppableProps}
+          >
+            {ticketList.map((ticket: Ticket, index) => (
+              <TicketCard
+                key={'draggable-' + ticket.id}
+                index={index}
+                ticket={ticket}
+                assigne={userList.find(
+                  (currentUser) => currentUser.id === ticket.assigneId,
+                  ticket
+                )}
+                tag={tagList.find(
+                  (currentTag) => currentTag.name === ticket.tagName,
+                  ticket
+                )}
+              />
+            ))}
+            {provided.placeholder}
+          </ul>
+        )}
+      </Droppable>
       <AddTicketButton onClick={onClickAddTicketButton} />
     </div>
   );
