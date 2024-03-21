@@ -219,10 +219,6 @@ export class LocalStorage {
     const todoTicket = storedTodoTickets.find(
       (currTodoTicket) => currTodoTicket.id === todoTicketId
     );
-    if (todoTicket === undefined) {
-      return;
-    }
-    todoTicket.creationDate = new Date(todoTicket.creationDate);
     return todoTicket;
   };
 
@@ -233,12 +229,6 @@ export class LocalStorage {
     const inProgressTicket = storedInProgressTickets.find(
       (currInProgressTicket) => currInProgressTicket.id === inProgressTicketId
     );
-
-    if (inProgressTicket === undefined) {
-      return;
-    }
-    inProgressTicket.creationDate = new Date(inProgressTicket.creationDate);
-    inProgressTicket.startDate = new Date(inProgressTicket.startDate);
     return inProgressTicket;
   };
 
@@ -247,13 +237,6 @@ export class LocalStorage {
     const doneTicket = storedDoneTickets.find(
       (currDoneTicket) => currDoneTicket.id === doneTicketId
     );
-
-    if (doneTicket === undefined) {
-      return;
-    }
-    doneTicket.creationDate = new Date(doneTicket.creationDate);
-    doneTicket.startDate = new Date(doneTicket.startDate);
-    doneTicket.endDate = new Date(doneTicket.endDate);
     return doneTicket;
   };
 
