@@ -10,7 +10,7 @@ export const SidePanel: FunctionComponent<
   return (
     <div
       className={
-        'transition-all duration-250 ease-out h-full bg-base-100 ' +
+        'transition-width duration-300 ease-out h-full bg-base-100 ' +
         (isOpen ? 'w-full rounded-box p-2' : 'w-0')
       }
     >
