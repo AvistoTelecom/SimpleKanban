@@ -12,6 +12,9 @@ import {
   UsersContextType,
 } from './context/UsersContext';
 import { TicketColumn } from './TicketColumn';
+import { AddTicketForm } from './forms/AddTicketForm';
+import { TicketContext, TicketContextType } from './context/TicketContext';
+import { CreateTicket } from '../model/CreateTicket';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { Ticket } from '../model/Ticket';
 
@@ -21,11 +24,16 @@ export type ColumnType = 'todo' | 'inProgress' | 'done' | '';
 export const KanbanPage: FunctionComponent = () => {
   const [isSidePanelOpen, setSidePanelOpen] = useState<boolean>(false);
   const [contentID, setContentID] = useState<SidePanelContent>('');
+  const [newTicketDefaultType, setNewTicketDefaultType] =
+    useState<ColumnType>('todo');
   const { userList, addUser, deleteUser, updateUser } =
     useContext<UsersContextType>(UsersContext);
 
   const { tagList, addTag, deleteTag, updateTag } =
     useContext<TagsContextType>(TagsContext);
+
+  const { ticketList, addTicket } =
+    useContext<TicketContextType>(TicketContext);
 
   const [todoTicketList, setTodoTicketList] = useState<Ticket[]>([
     {
@@ -96,7 +104,10 @@ export const KanbanPage: FunctionComponent = () => {
 
   const [doneTicketList, setDoneTicketList] = useState<Ticket[]>([]);
 
-  const toggleSidePanel = (id: SidePanelContent) => {
+  const toggleSidePanel = (id: SidePanelContent, type?: ColumnType) => {
+    if (type !== undefined) {
+      setNewTicketDefaultType(type);
+    }
     if (contentID === '') {
       setSidePanelOpen(!isSidePanelOpen);
       setContentID(id);
@@ -133,6 +144,11 @@ export const KanbanPage: FunctionComponent = () => {
   const onUpdateTag = (name: string, tag: Tag) => {
     updateTag(name, tag);
   };
+
+  const onAddTicket = (ticket: CreateTicket) => {
+    addTicket(ticket);
+    toggleSidePanel(contentID);
+  }
 
   const reorderTicketColumn = (
     ticketList: Ticket[],
@@ -286,6 +302,15 @@ export const KanbanPage: FunctionComponent = () => {
               onUpdateUser={onUpdateUser}
             />
           )}
+          {contentID === 'addTicket' && (
+            <AddTicketForm
+              defaultType={newTicketDefaultType}
+              userList={userList}
+              tagList={tagList}
+              ticketList={ticketList}
+              onAddTicket={onAddTicket}
+            />
+            )}
         </SidePanel>
       </main>
     </>

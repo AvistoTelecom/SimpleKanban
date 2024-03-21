@@ -1,10 +1,11 @@
 import { FunctionComponent, ReactNode, createContext, useState } from 'react';
 import { Ticket } from '../../model/Ticket';
 import { LocalStorageUtil } from '../../localStorage';
+import { CreateTicket } from '../../model/CreateTicket';
 
 export type TicketContextType = {
   ticketList: Ticket[];
-  addTicket: (ticket: Ticket) => void;
+  addTicket: (ticket: CreateTicket) => void;
   deleteTicket: (id: number) => void;
   updateTicket: (ticket: Ticket) => void;
 

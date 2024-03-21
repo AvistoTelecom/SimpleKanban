@@ -12,7 +12,7 @@ type TicketColumnProps = {
   ticketList: Ticket[];
   userList: User[];
   tagList: Tag[];
-  onClick: (id: SidePanelContent) => void;
+  onClick: (id: SidePanelContent, type?: ColumnType) => void;
 };
 
 export const TicketColumn: FunctionComponent<TicketColumnProps> = ({
@@ -23,7 +23,7 @@ export const TicketColumn: FunctionComponent<TicketColumnProps> = ({
   onClick,
 }) => {
   const onClickAddTicketButton = () => {
-    onClick('addTicket');
+    onClick('addTicket', type);
   };
 
   return (
