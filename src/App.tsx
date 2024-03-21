@@ -10,7 +10,7 @@ export const App: FunctionComponent = () => {
     <UsersContextProvider>
       <TagsContextProvider>
         <TicketContextProvider>
-          <div className="h-screen flex flex-col ">
+          <div className="h-screen flex flex-col">
             <Routes>
               <Route path="/" element={<KanbanPage />} />
               <Route path="*" element={<Navigate to="/" />} />
