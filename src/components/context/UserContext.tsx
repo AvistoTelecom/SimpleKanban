@@ -56,7 +56,6 @@ export const UserContextProvider: FunctionComponent<{
     if (userIndex === -1) {
       return;
     }
-
     setUserList((userList) => userList.with(userIndex, updatedUser));
   };
 

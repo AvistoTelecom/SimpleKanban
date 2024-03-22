@@ -1,27 +1,32 @@
+import { LocalStorage } from '../../localStorage';
 import { Tag } from '../../model/Tag';
 import { TagAction } from './TagAction';
 
-const updateTag = (state: Tag[], name: string, newTag: Tag) => {
-  const tagIndex = state.findIndex((tag) => tag.name === name);
-  if (tagIndex === -1) {
-    return;
-  }
-  return state.with(tagIndex, newTag);
+const addTag = (newTag: Tag): Tag[] => {
+  LocalStorage.addTag(newTag);
+  return LocalStorage.getTagList();
 };
 
-export const tagReducer = (state: Tag[], action: TagAction): Tag[] => {
+const updateTag = (tagName: string, newTag: Tag): Tag[] => {
+  LocalStorage.updateTag(tagName, newTag);
+  //todo update ticketList
+  return LocalStorage.getTagList();
+};
+
+const deleteTag = (tagName: string): Tag[] => {
+  LocalStorage.deleteTag(tagName);
+  //todo update
+  return LocalStorage.getTagList();
+};
+
+export const tagReducer = (action: TagAction): Tag[] => {
   switch (action.type) {
     case 'ADD-TAG':
-      return [...state, action.payload];
+      return addTag(action.payload);
     case 'UPDATE-TAG': {
-      const updatedTag = updateTag(
-        state,
-        action.payload.name,
-        action.payload.newTag
-      );
-      return updatedTag ? updatedTag : state;
+      return updateTag(action.payload.name, action.payload.newTag);
     }
     case 'DELETE-TAG':
-      return state.filter((tag) => tag.name !== action.payload);
+      return deleteTag(action.payload);
   }
 };

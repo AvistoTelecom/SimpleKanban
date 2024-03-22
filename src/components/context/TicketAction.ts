@@ -1,14 +1,9 @@
+import { CreateTicket } from '../../model/CreateTicket';
 import { Ticket } from '../../model/Ticket';
 
 export type TicketAction =
-  | { type: 'ADD-TICKET'; payload: Ticket }
-  | {
-      type: 'UPDATE-TICKET';
-      payload: {
-        old: Ticket;
-        new: Ticket;
-      };
-    }
+  | { type: 'ADD-TICKET'; payload: CreateTicket }
+  | { type: 'UPDATE-TICKET'; payload: Ticket }
   | { type: 'DELETE-TICKET'; payload: number }
   | { type: 'SET-TODO-TO-INPROGRESS-TICKET'; payload: number }
   | { type: 'SET-TODO-TO-DONE-TICKET'; payload: number }

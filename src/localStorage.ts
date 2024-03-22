@@ -101,17 +101,17 @@ export class LocalStorage {
     this.setTagList(filteredTaList);
   };
 
-  static updateTag = (oldTag: Tag, newTag: Tag) => {
+  static updateTag = (tagName: string, newTag: Tag) => {
     const tagList = this.getTagList();
     const ticketList = this.getTicketList();
     ticketList.forEach((currentTicket) => {
-      if (currentTicket.tagName === oldTag.name) {
+      if (currentTicket.tagName === tagName) {
         currentTicket.tagName = newTag.name;
       }
     });
     this.setTicketList(ticketList);
     const tagIndex = tagList.findIndex((currTag) => {
-      currTag.name === oldTag.name;
+      currTag.name === tagName;
     });
     this.setTagList(tagList.with(tagIndex, newTag));
   };
