@@ -88,9 +88,9 @@ export const TicketView: FunctionComponent<TicketViewProps> = ({
             {ticket.storyPoint}
           </p>
           {assigne ? (
-            <div>
-              <p>
-                <strong>Assignee : </strong> None
+            <div className="flex items-center">
+              <p className="mr-2">
+                <strong>Assignee : </strong>
               </p>
               <div className="flex tooltip" data-tip={assigne.name}>
                 <img

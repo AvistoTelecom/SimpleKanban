@@ -18,6 +18,7 @@ import { CreateTicket } from '../model/CreateTicket';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { Ticket } from '../model/Ticket';
 import { TicketView } from './TicketView';
+import { EditTicketForm } from './forms/EditTicketForm';
 
 export type SidePanelContent =
   | 'tag'
@@ -160,6 +161,10 @@ export const KanbanPage: FunctionComponent = () => {
   const onAddTicket = (ticket: CreateTicket) => {
     addTicket(ticket);
     toggleSidePanel(contentID);
+  };
+
+  const onEditTicket = (ticket: Ticket) => {
+    // TODO
   };
 
   const onClickOnEditTicket = (ticketId: string) => {
@@ -331,6 +336,27 @@ export const KanbanPage: FunctionComponent = () => {
             <TicketView
               onClick={onClickOnEditTicket}
               ticket={ticketInSidePanel}
+              assigne={userList.find(
+                (user) => user.id === ticketInSidePanel.assigneId
+              )}
+              parentTicket={ticketList.find(
+                (ticket) => ticket.id === ticketInSidePanel.parentId
+              )}
+              childTicket={ticketList.find(
+                (ticket) => ticket.id === ticketInSidePanel.childId
+              )}
+              tag={tagList.find(
+                (tag) => tag.name === ticketInSidePanel.tagName
+              )}
+            />
+          )}
+          {contentID === 'editTicket' && ticketInSidePanel !== undefined && (
+            <EditTicketForm
+              ticket={ticketInSidePanel}
+              userList={userList}
+              tagList={tagList}
+              ticketList={ticketList}
+              onEditTicket={onEditTicket}
             />
           )}
         </SidePanel>
