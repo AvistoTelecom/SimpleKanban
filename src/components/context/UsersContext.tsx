@@ -1,7 +1,7 @@
 import { FunctionComponent, ReactNode, createContext, useState } from 'react';
 
 export type User = {
-  id: number;
+  id: string;
   name: string;
   image: string;
 };
@@ -14,7 +14,7 @@ export type CreateUser = {
 export type UsersContextType = {
   userList: User[];
   addUser: (user: CreateUser) => void;
-  deleteUser: (id: number) => void;
+  deleteUser: (id: string) => void;
   updateUser: (user: User) => void;
 };
 
@@ -23,12 +23,12 @@ export const DEFAULT_PROFILE_PICTURE: string =
 
 const defaultUserList: User[] = [
   {
-    id: 1,
+    id: '1',
     name: 'test',
     image: DEFAULT_PROFILE_PICTURE,
   },
   {
-    id: 2,
+    id: '2',
     name: 'test2',
     image: DEFAULT_PROFILE_PICTURE,
   },
@@ -47,16 +47,16 @@ const UsersContextProvider: FunctionComponent<{ children: ReactNode }> = ({
   const [userList, setUserList] = useState<User[]>(defaultUserList);
 
   const addUser = (user: CreateUser) => {
-    // Random only for debug (remove this comment and the random)
+    // Will be done in "useReducer PR"
     const newUser = {
-      id: Math.floor(Math.random() * 1500),
+      id: '1',
       name: user.name,
       image: user.image,
     };
     setUserList((userList) => [...userList, newUser]);
   };
 
-  const deleteUser = (id: number) => {
+  const deleteUser = (id: string) => {
     setUserList((userList) => userList.filter((user) => user.id !== id));
   };
 

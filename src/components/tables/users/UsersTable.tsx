@@ -7,7 +7,7 @@ import { CreateUser, User } from '../../context/UsersContext';
 type UsersTableProps = {
   userList: User[];
   onAddUser: (user: CreateUser) => void;
-  onDeleteUser: (id: number) => void;
+  onDeleteUser: (id: string) => void;
   onUpdateUser: (user: User) => void;
 };
 

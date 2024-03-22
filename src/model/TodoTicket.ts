@@ -1,12 +1,12 @@
 export type TodoTicket = {
-  id: number;
+  id: string;
   name: string;
   creationDate: Date;
   storyPoint: number;
-  assigneId?: number;
+  assigneId?: string;
   tagName?: string;
   description: string;
-  parentId?: number;
-  childId?: number;
+  parentId?: string;
+  childId?: string;
   blocked: boolean;
 };

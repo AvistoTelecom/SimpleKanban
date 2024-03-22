@@ -19,11 +19,11 @@ type AddTicketFormProps = {
 type FormInputs = {
   name: string;
   storyPoint: number;
-  assigneId?: number;
+  assigneId?: string;
   tagName?: string;
   description: string;
-  parentId?: number;
-  childId?: number;
+  parentId?: string;
+  childId?: string;
   type: string;
 };
 
@@ -38,11 +38,11 @@ export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
     defaultValues: {
       name: '',
       storyPoint: 0,
-      assigneId: -1,
+      assigneId: '',
       tagName: '',
       description: '',
-      parentId: -1,
-      childId: -1,
+      parentId: '',
+      childId: '',
       type: defaultType,
     },
   });
@@ -52,11 +52,11 @@ export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
     const newTicket: CreateTicket = {
       name: formData.name,
       storyPoint: formData.storyPoint,
-      assigneId: formData.assigneId === -1 ? undefined : formData.assigneId,
+      assigneId: formData.assigneId === '' ? undefined : formData.assigneId,
       tagName: formData.tagName === '' ? undefined : formData.tagName,
       description: formData.description,
-      parentId: formData.parentId === -1 ? undefined : formData.parentId,
-      childId: formData.childId === -1 ? undefined : formData.childId,
+      parentId: formData.parentId === '' ? undefined : formData.parentId,
+      childId: formData.childId === '' ? undefined : formData.childId,
       creationDate: date,
       blocked: false,
     };
@@ -171,7 +171,7 @@ export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
             className="select select-bordered w-full"
             {...register('assigneId')}
           >
-            <option value={-1}>None</option>
+            <option value={''}>None</option>
             {userList.map((user, index) => (
               <option key={index} value={user.name}>
                 {user.name}
@@ -188,7 +188,7 @@ export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
             className="select select-bordered w-full"
             {...register('parentId')}
           >
-            <option value={-1}>None</option>
+            <option value={''}>None</option>
             {ticketList.map((ticket, index) => (
               <option key={index} value={ticket.id}>
                 {ticket.name}
@@ -205,7 +205,7 @@ export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
             className="select select-bordered w-full"
             {...register('childId')}
           >
-            <option value={-1}>None</option>
+            <option value={''}>None</option>
             {ticketList.map((ticket, index) => (
               <option key={index} value={ticket.id}>
                 {ticket.name}
