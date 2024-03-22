@@ -34,7 +34,7 @@ export const ImageInput: FunctionComponent<ImageInputProps> = ({
         value={''}
       />
       <span className="-top-1 left-9 absolute w-5 h-5 bg-neutral rounded-full flex items-center justify-center">
-        <EditIcon />
+        <EditIcon width="3.5" height="3.5" />
       </span>
     </label>
   );

@@ -17,8 +17,15 @@ import { TicketContext, TicketContextType } from './context/TicketContext';
 import { CreateTicket } from '../model/CreateTicket';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { Ticket } from '../model/Ticket';
+import { TicketView } from './TicketView';
 
-export type SidePanelContent = 'tag' | 'user' | 'addTicket' | '';
+export type SidePanelContent =
+  | 'tag'
+  | 'user'
+  | 'addTicket'
+  | 'viewTicket'
+  | 'editTicket'
+  | '';
 export type ColumnType = 'todo' | 'inProgress' | 'done' | '';
 
 export const KanbanPage: FunctionComponent = () => {
@@ -26,6 +33,9 @@ export const KanbanPage: FunctionComponent = () => {
   const [contentID, setContentID] = useState<SidePanelContent>('');
   const [newTicketDefaultType, setNewTicketDefaultType] =
     useState<ColumnType>('todo');
+
+  const [ticketInSidePanel, setTicketInSidePanel] = useState<Ticket>();
+
   const { userList, addUser, deleteUser, updateUser } =
     useContext<UsersContextType>(UsersContext);
 
@@ -93,7 +103,20 @@ export const KanbanPage: FunctionComponent = () => {
 
   const [doneTicketList, setDoneTicketList] = useState<Ticket[]>([]);
 
-  const toggleSidePanel = (id: SidePanelContent, type?: ColumnType) => {
+  const toggleSidePanel = (
+    id: SidePanelContent,
+    type?: ColumnType,
+    ticketId?: string
+  ) => {
+    if (ticketId !== undefined) {
+      const ticket = ticketList.find(
+        (savedTicket) => savedTicket.id === ticketId
+      );
+      if (ticket === undefined) {
+        return;
+      }
+      setTicketInSidePanel(ticket);
+    }
     if (type !== undefined) {
       setNewTicketDefaultType(type);
     }
@@ -137,6 +160,10 @@ export const KanbanPage: FunctionComponent = () => {
   const onAddTicket = (ticket: CreateTicket) => {
     addTicket(ticket);
     toggleSidePanel(contentID);
+  };
+
+  const onClickOnEditTicket = (ticketId: string) => {
+    toggleSidePanel('editTicket', undefined, ticketId);
   };
 
   const reorderTicketColumn = (
@@ -298,6 +325,12 @@ export const KanbanPage: FunctionComponent = () => {
               tagList={tagList}
               ticketList={ticketList}
               onAddTicket={onAddTicket}
+            />
+          )}
+          {contentID === 'viewTicket' && ticketInSidePanel !== undefined && (
+            <TicketView
+              onClick={onClickOnEditTicket}
+              ticket={ticketInSidePanel}
             />
           )}
         </SidePanel>

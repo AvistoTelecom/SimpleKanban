@@ -82,7 +82,7 @@ export const UsersTableEntry: FunctionComponent<UserEntryProps> = ({
           onClick={() => onDeleteUser(user.id)}
           className="hover:text-accent"
         >
-          <TrashIcon />
+          <TrashIcon height="6" width="6" />
         </button>
       </td>
     </tr>

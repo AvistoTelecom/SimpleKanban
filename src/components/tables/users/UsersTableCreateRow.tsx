@@ -82,7 +82,7 @@ export const UsersTableCreateRow: FunctionComponent<
             className="hover:text-primary"
             onClick={onSubmit}
           >
-            <PlusIcon />
+            <PlusIcon width="6" height="6" />
           </button>
         </th>
       </tr>

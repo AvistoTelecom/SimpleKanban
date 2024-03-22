@@ -214,7 +214,11 @@ export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
           </select>
         </label>
       </div>
-      <input type="submit" className="btn btn-secondary mt-2" />
+      <input
+        type="submit"
+        className="btn btn-secondary mt-2"
+        value="New ticket"
+      />
     </form>
   );
 };
