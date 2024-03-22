@@ -106,10 +106,10 @@ export const TicketContextProvider: FunctionComponent<{
 
   const updateTicket = (ticket: Ticket) => {
     LocalStorage.updadeTicket(ticket);
-    const ticketId = ticketList.findIndex(
+    const ticketIndex = ticketList.findIndex(
       (savedTicket) => savedTicket.id === ticket.id
     );
-    setTicketList(ticketList.with(ticketId, ticket));
+    setTicketList(ticketList.with(ticketIndex, ticket));
   };
 
   const setDoneTicketToInProgress = (id: string) => {
@@ -118,10 +118,10 @@ export const TicketContextProvider: FunctionComponent<{
     if (!ticket) {
       return;
     }
-    const ticketId = ticketList.findIndex(
+    const ticketIndex = ticketList.findIndex(
       (savedTicket) => savedTicket.id === id
     );
-    setTicketList((ticketList) => ticketList.with(ticketId, ticket));
+    setTicketList((ticketList) => ticketList.with(ticketIndex, ticket));
   };
 
   const setDoneTicketToTodo = (id: string) => {
@@ -130,10 +130,10 @@ export const TicketContextProvider: FunctionComponent<{
     if (!ticket) {
       return;
     }
-    const ticketId = ticketList.findIndex(
+    const ticketIndex = ticketList.findIndex(
       (savedTicket) => savedTicket.id === id
     );
-    setTicketList((ticketList) => ticketList.with(ticketId, ticket));
+    setTicketList((ticketList) => ticketList.with(ticketIndex, ticket));
   };
 
   const setInProgressTicketToDone = (id: string) => {
@@ -142,10 +142,10 @@ export const TicketContextProvider: FunctionComponent<{
     if (!ticket) {
       return;
     }
-    const ticketId = ticketList.findIndex(
+    const ticketIndex = ticketList.findIndex(
       (savedTicket) => savedTicket.id === id
     );
-    setTicketList((ticketList) => ticketList.with(ticketId, ticket));
+    setTicketList((ticketList) => ticketList.with(ticketIndex, ticket));
   };
 
   const setInProgressTicketToTodo = (id: string) => {
@@ -154,10 +154,10 @@ export const TicketContextProvider: FunctionComponent<{
     if (!ticket) {
       return;
     }
-    const ticketId = ticketList.findIndex(
+    const ticketIndex = ticketList.findIndex(
       (savedTicket) => savedTicket.id === id
     );
-    setTicketList((ticketList) => ticketList.with(ticketId, ticket));
+    setTicketList((ticketList) => ticketList.with(ticketIndex, ticket));
   };
 
   const setTodoTicketToDone = (id: string) => {
@@ -166,10 +166,10 @@ export const TicketContextProvider: FunctionComponent<{
     if (!ticket) {
       return;
     }
-    const ticketId = ticketList.findIndex(
+    const ticketIndex = ticketList.findIndex(
       (savedTicket) => savedTicket.id === id
     );
-    setTicketList((ticketList) => ticketList.with(ticketId, ticket));
+    setTicketList((ticketList) => ticketList.with(ticketIndex, ticket));
   };
 
   const setTodoTicketToInProgress = (id: string) => {
@@ -178,10 +178,10 @@ export const TicketContextProvider: FunctionComponent<{
     if (!ticket) {
       return;
     }
-    const ticketId = ticketList.findIndex(
+    const ticketIndex = ticketList.findIndex(
       (savedTicket) => savedTicket.id === id
     );
-    setTicketList((ticketList) => ticketList.with(ticketId, ticket));
+    setTicketList((ticketList) => ticketList.with(ticketIndex, ticket));
   };
 
   return (
