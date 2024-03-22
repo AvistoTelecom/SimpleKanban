@@ -31,7 +31,7 @@ const todoTicketListDefault = [
     blocked: false,
   },
   {
-    id: '1',
+    id: '2',
     name: 'Un autre truc à faire',
     creationDate: new Date(),
     storyPoint: 5,
@@ -41,7 +41,7 @@ const todoTicketListDefault = [
     blocked: false,
   },
   {
-    id: '1',
+    id: '3',
     name: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaprout',
     creationDate: new Date(),
     storyPoint: 2,
@@ -51,7 +51,7 @@ const todoTicketListDefault = [
     blocked: false,
   },
   {
-    id: '1',
+    id: '4',
     name: 'Todo',
     creationDate: new Date(),
     storyPoint: 2,
@@ -60,7 +60,7 @@ const todoTicketListDefault = [
     blocked: false,
   },
   {
-    id: '1',
+    id: '5',
     name: 'Todo',
     creationDate: new Date(),
     storyPoint: 2,
