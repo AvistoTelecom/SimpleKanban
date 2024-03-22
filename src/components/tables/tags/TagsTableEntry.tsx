@@ -1,6 +1,6 @@
 import { ChangeEvent, FunctionComponent, KeyboardEvent, useState } from 'react';
-import { Tag } from '../../context/TagsContext';
 import { TrashIcon } from '../../icons/TrashIcon';
+import { Tag } from '../../../model/Tag';
 
 type TableEntryProps = {
   tag: Tag;

@@ -1,17 +1,8 @@
 import { FunctionComponent, ReactNode, createContext, useState } from 'react';
+import { User } from '../../model/User';
+import { CreateUser } from '../../model/CreateUser';
 
-export type User = {
-  id: number;
-  name: string;
-  image: string;
-};
-
-export type CreateUser = {
-  name: string;
-  image: string;
-};
-
-export type UsersContextType = {
+export type UserContextType = {
   userList: User[];
   addUser: (user: CreateUser) => void;
   deleteUser: (id: number) => void;
@@ -34,16 +25,16 @@ const defaultUserList: User[] = [
   },
 ];
 
-export const UsersContext = createContext<UsersContextType>({
+export const UserContext = createContext<UserContextType>({
   userList: [],
   addUser: () => {},
   updateUser: () => {},
   deleteUser: () => {},
 });
 
-const UsersContextProvider: FunctionComponent<{ children: ReactNode }> = ({
-  children,
-}) => {
+export const UserContextProvider: FunctionComponent<{
+  children: ReactNode;
+}> = ({ children }) => {
   const [userList, setUserList] = useState<User[]>(defaultUserList);
 
   const addUser = (user: CreateUser) => {
@@ -70,7 +61,7 @@ const UsersContextProvider: FunctionComponent<{ children: ReactNode }> = ({
   };
 
   return (
-    <UsersContext.Provider
+    <UserContext.Provider
       value={{
         userList,
         addUser,
@@ -79,8 +70,6 @@ const UsersContextProvider: FunctionComponent<{ children: ReactNode }> = ({
       }}
     >
       {children}
-    </UsersContext.Provider>
+    </UserContext.Provider>
   );
 };
-
-export default UsersContextProvider;

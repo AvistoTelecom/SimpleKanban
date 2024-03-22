@@ -1,7 +1,7 @@
 import { ChangeEvent, KeyboardEvent, FunctionComponent, useState } from 'react';
 import { ImageInput } from './ImageInput';
-import { User } from '../../context/UsersContext';
 import { TrashIcon } from '../../icons/TrashIcon';
+import { User } from '../../../model/User';
 
 type UserEntryProps = {
   user: User;

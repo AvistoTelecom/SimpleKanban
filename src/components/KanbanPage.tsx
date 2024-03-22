@@ -4,19 +4,17 @@ import { SidePanel } from './SidePanel';
 import { NavBar } from './NavBar';
 import { TagsTable } from './tables/tags/TagsTable';
 import { UsersTable } from './tables/users/UsersTable';
-import { Tag, TagsContext, TagsContextType } from './context/TagsContext';
-import {
-  CreateUser,
-  User,
-  UsersContext,
-  UsersContextType,
-} from './context/UsersContext';
 import { TicketColumn } from './TicketColumn';
 import { AddTicketForm } from './forms/AddTicketForm';
 import { TicketContext, TicketContextType } from './context/TicketContext';
 import { CreateTicket } from '../model/CreateTicket';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { Ticket } from '../model/Ticket';
+import { UserContext, UserContextType } from './context/UserContext';
+import { CreateUser } from '../model/CreateUser';
+import { User } from '../model/User';
+import { Tag } from '../model/Tag';
+import { TagContext, TagContextType } from './context/TagContext';
 
 export type SidePanelContent = 'tag' | 'user' | 'addTicket' | '';
 export type ColumnType = 'todo' | 'inProgress' | 'done' | '';
@@ -27,10 +25,10 @@ export const KanbanPage: FunctionComponent = () => {
   const [newTicketDefaultType, setNewTicketDefaultType] =
     useState<ColumnType>('todo');
   const { userList, addUser, deleteUser, updateUser } =
-    useContext<UsersContextType>(UsersContext);
+    useContext<UserContextType>(UserContext);
 
   const { tagList, addTag, deleteTag, updateTag } =
-    useContext<TagsContextType>(TagsContext);
+    useContext<TagContextType>(TagContext);
 
   const { ticketList, addTicket } =
     useContext<TicketContextType>(TicketContext);
@@ -44,8 +42,6 @@ export const KanbanPage: FunctionComponent = () => {
       assigneId: 1,
       tagName: 'tag1',
       description: '',
-      parentId: null,
-      childId: null,
       blocked: false,
     },
     {
@@ -56,8 +52,6 @@ export const KanbanPage: FunctionComponent = () => {
       assigneId: 1,
       tagName: 'tag2',
       description: '',
-      parentId: null,
-      childId: null,
       blocked: false,
     },
     {
@@ -68,8 +62,6 @@ export const KanbanPage: FunctionComponent = () => {
       assigneId: 1,
       tagName: 'tag3',
       description: '',
-      parentId: null,
-      childId: null,
       blocked: false,
     },
     {
@@ -80,8 +72,6 @@ export const KanbanPage: FunctionComponent = () => {
       assigneId: 1,
       tagName: 'tag1',
       description: '',
-      parentId: null,
-      childId: null,
       blocked: false,
     },
     {
@@ -92,8 +82,6 @@ export const KanbanPage: FunctionComponent = () => {
       assigneId: 1,
       tagName: 'tag2',
       description: '',
-      parentId: null,
-      childId: null,
       blocked: false,
     },
   ]);
@@ -148,7 +136,7 @@ export const KanbanPage: FunctionComponent = () => {
   const onAddTicket = (ticket: CreateTicket) => {
     addTicket(ticket);
     toggleSidePanel(contentID);
-  }
+  };
 
   const reorderTicketColumn = (
     ticketList: Ticket[],
@@ -310,7 +298,7 @@ export const KanbanPage: FunctionComponent = () => {
               ticketList={ticketList}
               onAddTicket={onAddTicket}
             />
-            )}
+          )}
         </SidePanel>
       </main>
     </>
