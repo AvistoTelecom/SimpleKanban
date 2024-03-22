@@ -4,13 +4,6 @@ import { SidePanel } from './SidePanel';
 import { NavBar } from './NavBar';
 import { TagsTable } from './tables/tags/TagsTable';
 import { UsersTable } from './tables/users/UsersTable';
-import { Tag, TagsContext, TagsContextType } from './context/TagsContext';
-import {
-  CreateUser,
-  User,
-  UsersContext,
-  UsersContextType,
-} from './context/UsersContext';
 import { TicketColumn } from './TicketColumn';
 import { AddTicketForm } from './forms/AddTicketForm';
 import { TicketContext, TicketContextType } from './context/TicketContext';
@@ -19,6 +12,11 @@ import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { Ticket } from '../model/Ticket';
 import { TicketView } from './TicketDetails';
 import { EditTicketForm } from './forms/EditTicketForm';
+import { UserContext, UserContextType } from './context/UserContext';
+import { CreateUser } from '../model/CreateUser';
+import { User } from '../model/User';
+import { Tag } from '../model/Tag';
+import { TagContext, TagContextType } from './context/TagContext';
 
 export type SidePanelContent =
   | 'tag'
@@ -38,10 +36,10 @@ export const KanbanPage: FunctionComponent = () => {
   const [sidePanelTicket, setSidePanelTicket] = useState<Ticket>();
 
   const { userList, addUser, deleteUser, updateUser } =
-    useContext<UsersContextType>(UsersContext);
+    useContext<UserContextType>(UserContext);
 
   const { tagList, addTag, deleteTag, updateTag } =
-    useContext<TagsContextType>(TagsContext);
+    useContext<TagContextType>(TagContext);
 
   const { ticketList, addTicket, updateTicket } =
     useContext<TicketContextType>(TicketContext);

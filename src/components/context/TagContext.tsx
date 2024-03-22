@@ -1,11 +1,7 @@
 import { FunctionComponent, ReactNode, createContext, useState } from 'react';
+import { Tag } from '../../model/Tag';
 
-export type Tag = {
-  name: string;
-  color: string;
-};
-
-export type TagsContextType = {
+export type TagContextType = {
   tagList: Tag[];
   addTag: (tag: Tag) => void;
   deleteTag: (name: string) => void;
@@ -29,14 +25,14 @@ const defaultTagList: Tag[] = [
   },
 ];
 
-export const TagsContext = createContext<TagsContextType>({
+export const TagContext = createContext<TagContextType>({
   tagList: [],
   addTag: () => {},
   updateTag: () => {},
   deleteTag: () => {},
 });
 
-const TagsContextProvider: FunctionComponent<{ children: ReactNode }> = ({
+export const TagContextProvider: FunctionComponent<{ children: ReactNode }> = ({
   children,
 }) => {
   const [tagList, setTagList] = useState<Tag[]>(defaultTagList);
@@ -63,7 +59,7 @@ const TagsContextProvider: FunctionComponent<{ children: ReactNode }> = ({
   };
 
   return (
-    <TagsContext.Provider
+    <TagContext.Provider
       value={{
         tagList,
         addTag,
@@ -72,8 +68,6 @@ const TagsContextProvider: FunctionComponent<{ children: ReactNode }> = ({
       }}
     >
       {children}
-    </TagsContext.Provider>
+    </TagContext.Provider>
   );
 };
-
-export default TagsContextProvider;

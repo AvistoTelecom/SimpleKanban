@@ -1,20 +1,11 @@
 import { FunctionComponent, ReactNode, createContext, useState } from 'react';
+import { User } from '../../model/User';
+import { CreateUser } from '../../model/CreateUser';
 
-export type User = {
-  id: string;
-  name: string;
-  image: string;
-};
-
-export type CreateUser = {
-  name: string;
-  image: string;
-};
-
-export type UsersContextType = {
+export type UserContextType = {
   userList: User[];
   addUser: (user: CreateUser) => void;
-  deleteUser: (id: string) => void;
+  deleteUser: (id: number) => void;
   updateUser: (user: User) => void;
 };
 
@@ -23,40 +14,40 @@ export const DEFAULT_PROFILE_PICTURE: string =
 
 const defaultUserList: User[] = [
   {
-    id: '1',
+    id: 1,
     name: 'test',
     image: DEFAULT_PROFILE_PICTURE,
   },
   {
-    id: '2',
+    id: 2,
     name: 'test2',
     image: DEFAULT_PROFILE_PICTURE,
   },
 ];
 
-export const UsersContext = createContext<UsersContextType>({
+export const UserContext = createContext<UserContextType>({
   userList: [],
   addUser: () => {},
   updateUser: () => {},
   deleteUser: () => {},
 });
 
-const UsersContextProvider: FunctionComponent<{ children: ReactNode }> = ({
-  children,
-}) => {
+export const UserContextProvider: FunctionComponent<{
+  children: ReactNode;
+}> = ({ children }) => {
   const [userList, setUserList] = useState<User[]>(defaultUserList);
 
   const addUser = (user: CreateUser) => {
-    // Will be done in "useReducer PR"
+    // Random only for debug (remove this comment and the random)
     const newUser = {
-      id: '1',
+      id: Math.floor(Math.random() * 1500),
       name: user.name,
       image: user.image,
     };
     setUserList((userList) => [...userList, newUser]);
   };
 
-  const deleteUser = (id: string) => {
+  const deleteUser = (id: number) => {
     setUserList((userList) => userList.filter((user) => user.id !== id));
   };
 
@@ -70,7 +61,7 @@ const UsersContextProvider: FunctionComponent<{ children: ReactNode }> = ({
   };
 
   return (
-    <UsersContext.Provider
+    <UserContext.Provider
       value={{
         userList,
         addUser,
@@ -79,8 +70,6 @@ const UsersContextProvider: FunctionComponent<{ children: ReactNode }> = ({
       }}
     >
       {children}
-    </UsersContext.Provider>
+    </UserContext.Provider>
   );
 };
-
-export default UsersContextProvider;

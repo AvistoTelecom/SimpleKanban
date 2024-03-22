@@ -1,14 +1,14 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { KanbanPage } from './components/KanbanPage';
 import { FunctionComponent } from 'react';
-import UsersContextProvider from './components/context/UsersContext';
-import TagsContextProvider from './components/context/TagsContext';
+import { UserContextProvider } from './components/context/UserContext';
+import { TagContextProvider } from './components/context/TagContext';
 import { TicketContextProvider } from './components/context/TicketContext';
 
 export const App: FunctionComponent = () => {
   return (
-    <UsersContextProvider>
-      <TagsContextProvider>
+    <UserContextProvider>
+      <TagContextProvider>
         <TicketContextProvider>
           <div className="h-screen flex flex-col">
             <Routes>
@@ -17,7 +17,7 @@ export const App: FunctionComponent = () => {
             </Routes>
           </div>
         </TicketContextProvider>
-      </TagsContextProvider>
-    </UsersContextProvider>
+      </TagContextProvider>
+    </UserContextProvider>
   );
 };

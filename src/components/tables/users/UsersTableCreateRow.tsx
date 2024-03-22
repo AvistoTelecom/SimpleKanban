@@ -1,10 +1,8 @@
 import { ChangeEvent, FunctionComponent, KeyboardEvent, useState } from 'react';
 import { ImageInput } from './ImageInput';
-import {
-  CreateUser,
-  DEFAULT_PROFILE_PICTURE,
-} from '../../context/UsersContext';
+import { DEFAULT_PROFILE_PICTURE } from '../../context/UserContext';
 import { PlusIcon } from '../../icons/PlusIcon';
+import { CreateUser } from '../../../model/CreateUser';
 
 type UsersTableCreateRowProps = {
   onAddUser: (user: CreateUser) => void;
