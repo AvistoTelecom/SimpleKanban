@@ -10,6 +10,8 @@ import {
 } from './model/TicketsFunctions';
 import { TodoTicket } from './model/TodoTicket';
 import { User } from './model/User';
+import { CreateUser } from './components/context/UsersContext';
+import { CreateTicket } from './model/CreateTicket';
 
 export class LocalStorage {
   static getUserList = (): User[] => {
@@ -27,7 +29,7 @@ export class LocalStorage {
     return user;
   };
 
-  static addUser = (userToAddInfos: Omit<User, 'id'>): string => {
+  static addUser = (userToAddInfos: CreateUser): string => {
     const storedUsers = this.getUserList();
     const uuid: string = uuidv4();
     const userToAdd = { ...userToAddInfos, id: uuid };
@@ -162,7 +164,7 @@ export class LocalStorage {
     localStorage.setItem('ticketList', JSON.stringify(ticketList));
   };
 
-  static addTicket = (ticketToAddInfos: Omit<Ticket, 'id'>): string => {
+  static addTicket = (ticketToAddInfos: CreateTicket): string => {
     const storedTickets = this.getTicketList();
     const uuid: string = uuidv4();
     const ticketToAdd = { ...ticketToAddInfos, id: uuid };
