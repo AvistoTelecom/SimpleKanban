@@ -37,63 +37,52 @@ export const KanbanPage: FunctionComponent = () => {
 
   const [todoTicketList, setTodoTicketList] = useState<Ticket[]>([
     {
-      id: 1,
+      id: '1',
       name: 'Ticket 1',
       creationDate: new Date(),
       storyPoint: 1,
-      assigneId: 1,
+      assigneId: '1',
       tagName: 'tag1',
       description: '',
-      parentId: null,
-      childId: null,
       blocked: false,
     },
     {
-      id: 2,
+      id: '2',
       name: 'Ticket 2',
       creationDate: new Date(),
       storyPoint: 1,
-      assigneId: 1,
+      assigneId: '1',
       tagName: 'tag2',
       description: '',
-      parentId: null,
-      childId: null,
       blocked: false,
     },
     {
-      id: 3,
+      id: '3',
       name: 'Ticket 3',
       creationDate: new Date(),
       storyPoint: 1,
-      assigneId: 1,
+      assigneId: '1',
       tagName: 'tag3',
       description: '',
-      parentId: null,
-      childId: null,
       blocked: false,
     },
     {
-      id: 4,
+      id: '4',
       name: 'Ticket 4',
       creationDate: new Date(),
       storyPoint: 1,
-      assigneId: 1,
       tagName: 'tag1',
       description: '',
-      parentId: null,
-      childId: null,
       blocked: false,
     },
     {
-      id: 5,
+      id: '5',
       name: 'Ticket 5',
       creationDate: new Date(),
       storyPoint: 1,
-      assigneId: 1,
+      assigneId: '1',
       tagName: 'tag2',
       description: '',
-      parentId: null,
-      childId: null,
       blocked: false,
     },
   ]);
@@ -125,7 +114,7 @@ export const KanbanPage: FunctionComponent = () => {
     addUser(user);
   };
 
-  const onDeleteUser = (id: number) => {
+  const onDeleteUser = (id: string) => {
     deleteUser(id);
   };
 
@@ -148,7 +137,7 @@ export const KanbanPage: FunctionComponent = () => {
   const onAddTicket = (ticket: CreateTicket) => {
     addTicket(ticket);
     toggleSidePanel(contentID);
-  }
+  };
 
   const reorderTicketColumn = (
     ticketList: Ticket[],
@@ -310,7 +299,7 @@ export const KanbanPage: FunctionComponent = () => {
               ticketList={ticketList}
               onAddTicket={onAddTicket}
             />
-            )}
+          )}
         </SidePanel>
       </main>
     </>

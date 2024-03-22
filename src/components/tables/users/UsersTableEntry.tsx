@@ -5,7 +5,7 @@ import { TrashIcon } from '../../icons/TrashIcon';
 
 type UserEntryProps = {
   user: User;
-  onDeleteUser: (id: number) => void;
+  onDeleteUser: (id: string) => void;
   onUpdateUser: (user: User) => void;
 };
 
