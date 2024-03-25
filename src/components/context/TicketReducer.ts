@@ -1,57 +1,125 @@
 import { LocalStorage } from '../../localStorage';
 import { CreateTicket } from '../../model/CreateTicket';
+import { DoneTicket } from '../../model/DoneTicket';
+import { InProgressTicket } from '../../model/InProgressTicket';
 import { Ticket } from '../../model/Ticket';
+import { TodoTicket } from '../../model/TodoTicket';
 import { TicketAction } from './TicketAction';
+
+const getTicketList = (): {
+  todoList: TodoTicket[];
+  inProgressList: InProgressTicket[];
+  doneList: DoneTicket[];
+} => {
+  return {
+    todoList: LocalStorage.getTodoTicketList(),
+    inProgressList: LocalStorage.getInProgressTicketList(),
+    doneList: LocalStorage.getDoneTicketList(),
+  };
+};
 
 const addTicket = (newTicket: CreateTicket) => {
   LocalStorage.addTicket(newTicket);
-  return LocalStorage.getTicketList();
+  return getTicketList();
 };
 
-const updateTicket = (newTicket: Ticket): Ticket[] => {
+const updateTicket = (newTicket: Ticket) => {
   LocalStorage.updadeTicket(newTicket);
-  return LocalStorage.getTicketList();
+  return getTicketList();
 };
 
-const deleteTicket = (ticketId: number): Ticket[] => {
+const deleteTicket = (ticketId: number) => {
   LocalStorage.deleteTicket(ticketId);
-  return LocalStorage.getTicketList();
+  return getTicketList();
 };
 
-const setTodoToInProgress = (ticketId: number): Ticket[] => {
+const setTodoToInProgress = (ticketId: number) => {
   LocalStorage.setTodoToInProgress(ticketId);
-  return LocalStorage.getTicketList();
+  return getTicketList();
 };
 
-const setTodoToDone = (ticketId: number): Ticket[] => {
+const setTodoToDone = (ticketId: number) => {
   LocalStorage.setTodoToDone(ticketId);
-  return LocalStorage.getTicketList();
+  return getTicketList();
 };
 
-const setInProgressToTodo = (ticketId: number): Ticket[] => {
+const setInProgressToTodo = (ticketId: number) => {
   LocalStorage.setInProgressToTodo(ticketId);
-  return LocalStorage.getTicketList();
+  return getTicketList();
 };
 
-const setInProgressToDone = (ticketId: number): Ticket[] => {
+const setInProgressToDone = (ticketId: number) => {
   LocalStorage.setInProgressToDone(ticketId);
-  return LocalStorage.getTicketList();
+  return getTicketList();
 };
 
-const setDoneToTodo = (ticketId: number): Ticket[] => {
+const setDoneToTodo = (ticketId: number) => {
   LocalStorage.setDoneTicketToTodo(ticketId);
-  return LocalStorage.getTicketList();
+  return getTicketList();
 };
 
-const setDoneToInProgress = (ticketId: number): Ticket[] => {
+const setDoneToInProgress = (ticketId: number) => {
   LocalStorage.setDoneToInProgress(ticketId);
-  return LocalStorage.getTicketList();
+  return getTicketList();
+};
+
+const reorderTodoList = (
+  state: {
+    todoList: TodoTicket[];
+    inProgressList: InProgressTicket[];
+    doneList: DoneTicket[];
+  },
+  todoList: Ticket[]
+) => {
+  const orderedList = todoList
+    .concat(state.inProgressList)
+    .concat(state.doneList);
+  LocalStorage.setTicketList(orderedList);
+  return getTicketList();
+};
+
+const reorderInProgressList = (
+  state: {
+    todoList: TodoTicket[];
+    inProgressList: InProgressTicket[];
+    doneList: DoneTicket[];
+  },
+  inProgressLisy: Ticket[]
+) => {
+  const orderedList = state.todoList
+    .concat(inProgressLisy)
+    .concat(state.doneList);
+  LocalStorage.setTicketList(orderedList);
+  return getTicketList();
+};
+
+const reorderDoneList = (
+  state: {
+    todoList: TodoTicket[];
+    inProgressList: InProgressTicket[];
+    doneList: DoneTicket[];
+  },
+  doneList: Ticket[]
+) => {
+  const orderedList = state.todoList
+    .concat(state.inProgressList)
+    .concat(doneList);
+  LocalStorage.setTicketList(orderedList);
+  return getTicketList();
 };
 
 export const ticketReducer = (
-  state: Ticket[],
+  _state: {
+    todoList: TodoTicket[];
+    inProgressList: InProgressTicket[];
+    doneList: DoneTicket[];
+  },
   action: TicketAction
-): Ticket[] => {
+): {
+  todoList: TodoTicket[];
+  inProgressList: InProgressTicket[];
+  doneList: DoneTicket[];
+} => {
   switch (action.type) {
     case 'ADD-TICKET':
       return addTicket(action.payload);
@@ -71,5 +139,11 @@ export const ticketReducer = (
       return setDoneToTodo(action.payload);
     case 'SET-DONE-TO-INPROGRESS-TICKET':
       return setDoneToInProgress(action.payload);
+    case 'REORDER-TODO-LIST-TICKET':
+      return reorderTodoList(_state, action.payload);
+    case 'REORDER-INPROGRESS-LIST-TICKET':
+      return reorderInProgressList(_state, action.payload);
+    case 'REORDER-DONE-LIST-TICKET':
+      return reorderDoneList(_state, action.payload);
   }
 };

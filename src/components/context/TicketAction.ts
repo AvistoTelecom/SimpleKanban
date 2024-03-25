@@ -10,4 +10,7 @@ export type TicketAction =
   | { type: 'SET-INPROGRESS-TO-TODO-TICKET'; payload: number }
   | { type: 'SET-INPROGRESS-TO-DONE-TICKET'; payload: number }
   | { type: 'SET-DONE-TO-TODO-TICKET'; payload: number }
-  | { type: 'SET-DONE-TO-INPROGRESS-TICKET'; payload: number };
+  | { type: 'SET-DONE-TO-INPROGRESS-TICKET'; payload: number }
+  | { type: 'REORDER-TODO-LIST-TICKET'; payload: Ticket[] }
+  | { type: 'REORDER-INPROGRESS-LIST-TICKET'; payload: Ticket[] }
+  | { type: 'REORDER-DONE-LIST-TICKET'; payload: Ticket[] };

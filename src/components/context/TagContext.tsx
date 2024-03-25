@@ -1,72 +1,37 @@
-import { FunctionComponent, ReactNode, createContext, useState } from 'react';
+import {
+  Dispatch,
+  FunctionComponent,
+  ReactNode,
+  createContext,
+  useReducer,
+} from 'react';
 import { Tag } from '../../model/Tag';
+import { tagReducer } from './TagReducer';
+import { TagAction } from './TagAction';
+import { LocalStorage } from '../../localStorage';
 
 export type TagContextType = {
   tagList: Tag[];
-  addTag: (tag: Tag) => void;
-  deleteTag: (name: string) => void;
-  updateTag: (name: string, tag: Tag) => void;
+  dispatchTagList: Dispatch<TagAction>;
 };
 
 export const DEFAULT_TAG_COLOR: string = '#000000';
 
-const defaultTagList: Tag[] = [
-  {
-    name: 'tag1',
-    color: '#ff0000',
-  },
-  {
-    name: 'tag2',
-    color: '#00ff00',
-  },
-  {
-    name: 'tag3',
-    color: '#0000ff',
-  },
-];
-
 export const TagContext = createContext<TagContextType>({
   tagList: [],
-  addTag: () => {},
-  updateTag: () => {},
-  deleteTag: () => {},
+  dispatchTagList: () => {},
 });
 
 export const TagContextProvider: FunctionComponent<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [tagList, setTagList] = useState<Tag[]>(defaultTagList);
-
-  const addTag = (newTag: Tag) => {
-    const nameAlreadyExists = tagList.some((tag) => tag.name === newTag.name);
-    if (nameAlreadyExists) {
-      return;
-    }
-    setTagList((tagList) => [...tagList, newTag]);
-  };
-
-  const deleteTag = (name: string) => {
-    setTagList((tagList) => tagList.filter((tag) => tag.name !== name));
-  };
-
-  const updateTag = (name: string, updatedTag: Tag) => {
-    const tagIndex = tagList.findIndex((tag) => tag.name === name);
-    if (tagIndex === -1) {
-      return;
-    }
-
-    setTagList((tagList) => tagList.with(tagIndex, updatedTag));
-  };
+  const [tagList, dispatchTagList] = useReducer(
+    tagReducer,
+    LocalStorage.getTagList()
+  );
 
   return (
-    <TagContext.Provider
-      value={{
-        tagList,
-        addTag,
-        deleteTag,
-        updateTag,
-      }}
-    >
+    <TagContext.Provider value={{ tagList, dispatchTagList }}>
       {children}
     </TagContext.Provider>
   );
