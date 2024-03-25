@@ -19,7 +19,7 @@ const deleteTag = (tagName: string): Tag[] => {
   return LocalStorage.getTagList();
 };
 
-export const tagReducer = (action: TagAction): Tag[] => {
+export const tagReducer = (_state: Tag[], action: TagAction): Tag[] => {
   switch (action.type) {
     case 'ADD-TAG':
       return addTag(action.payload);

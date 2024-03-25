@@ -19,7 +19,7 @@ const deleteUser = (userId: number): User[] => {
   return LocalStorage.getUserList();
 };
 
-export const userReducer = (action: UserAction) => {
+export const userReducer = (_state: User[], action: UserAction): User[] => {
   switch (action.type) {
     case 'ADD-USER':
       return addUser(action.payload);

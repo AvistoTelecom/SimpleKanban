@@ -33,74 +33,15 @@ export const KanbanPage: FunctionComponent = () => {
   const [newTicketDefaultType, setNewTicketDefaultType] =
     useState<ColumnType>('todo');
 
-  const [sidePanelTicket, setSidePanelTicket] = useState<Ticket>();
-
-  const { userList, addUser, deleteUser, updateUser } =
+  const { userList, dispatchUserList } =
     useContext<UserContextType>(UserContext);
-
-  const { tagList, addTag, deleteTag, updateTag } =
-    useContext<TagContextType>(TagContext);
-
-  const { ticketList, addTicket, updateTicket } =
-    useContext<TicketContextType>(TicketContext);
-
-  const [todoTicketList, setTodoTicketList] = useState<Ticket[]>([
-    {
-      id: '1',
-      name: 'Ticket 1',
-      creationDate: new Date(),
-      storyPoint: 1,
-      assigneId: '1',
-      tagName: 'tag1',
-      description: '',
-      blocked: false,
-    },
-    {
-      id: '2',
-      name: 'Ticket 2',
-      creationDate: new Date(),
-      storyPoint: 1,
-      assigneId: '1',
-      tagName: 'tag2',
-      description: '',
-      blocked: false,
-    },
-    {
-      id: '3',
-      name: 'Ticket 3',
-      creationDate: new Date(),
-      storyPoint: 1,
-      assigneId: '1',
-      tagName: 'tag3',
-      description: '',
-      blocked: false,
-    },
-    {
-      id: '4',
-      name: 'Ticket 4',
-      creationDate: new Date(),
-      storyPoint: 1,
-      tagName: 'tag1',
-      description: '',
-      blocked: false,
-    },
-    {
-      id: '5',
-      name: 'Ticket 5',
-      creationDate: new Date(),
-      storyPoint: 1,
-      assigneId: '1',
-      tagName: 'tag2',
-      description: '',
-      blocked: false,
-    },
-  ]);
-
-  const [inProgressTicketList, setInProgressTicketList] = useState<Ticket[]>(
-    []
-  );
-
-  const [doneTicketList, setDoneTicketList] = useState<Ticket[]>([]);
+  const { tagList, dispatchTagList } = useContext<TagContextType>(TagContext)!;
+  const {
+    todoTicketList,
+    inProgressTicketList,
+    doneTicketList,
+    dispatchTicketList,
+  } = useContext<TicketContextType>(TicketContext);
 
   const toggleSidePanel = (
     id: SidePanelContent,
@@ -133,31 +74,34 @@ export const KanbanPage: FunctionComponent = () => {
   };
 
   const onAddUser = (user: CreateUser) => {
-    addUser(user);
+    dispatchUserList({ type: 'ADD-USER', payload: user });
   };
 
-  const onDeleteUser = (id: string) => {
-    deleteUser(id);
+  const onDeleteUser = (id: number) => {
+    dispatchUserList({ type: 'DELETE-USER', payload: id });
   };
 
   const onUpdateUser = (user: User) => {
-    updateUser(user);
+    dispatchUserList({ type: 'UPDATE-USER', payload: user });
   };
 
   const onAddTag = (newTag: Tag) => {
-    addTag(newTag);
+    dispatchTagList({ type: 'ADD-TAG', payload: newTag });
   };
 
   const onDeleteTag = (name: string) => {
-    deleteTag(name);
+    dispatchTagList({ type: 'DELETE-TAG', payload: name });
   };
 
   const onUpdateTag = (name: string, tag: Tag) => {
-    updateTag(name, tag);
+    dispatchTagList({
+      type: 'UPDATE-TAG',
+      payload: { name: name, newTag: tag },
+    });
   };
 
   const onAddTicket = (ticket: CreateTicket) => {
-    addTicket(ticket);
+    dispatchTicketList({ type: 'ADD-TICKET', payload: ticket });
     toggleSidePanel(contentID);
   };
 
@@ -193,25 +137,36 @@ export const KanbanPage: FunctionComponent = () => {
     if (sourceColumn === destinationColumn) {
       switch (sourceColumn) {
         case 'todo': {
-          setTodoTicketList(
-            reorderTicketColumn(todoTicketList, source.index, destination.index)
-          );
+          dispatchTicketList({
+            type: 'REORDER-TODO-LIST-TICKET',
+            payload: reorderTicketColumn(
+              todoTicketList,
+              source.index,
+              destination.index
+            ),
+          });
           break;
         }
         case 'inProgress': {
-          setInProgressTicketList(
-            reorderTicketColumn(
+          dispatchTicketList({
+            type: 'REORDER-INPROGRESS-LIST-TICKET',
+            payload: reorderTicketColumn(
               inProgressTicketList,
               source.index,
               destination.index
-            )
-          );
+            ),
+          });
           break;
         }
         case 'done': {
-          setDoneTicketList(
-            reorderTicketColumn(doneTicketList, source.index, destination.index)
-          );
+          dispatchTicketList({
+            type: 'REORDER-DONE-LIST-TICKET',
+            payload: reorderTicketColumn(
+              doneTicketList,
+              source.index,
+              destination.index
+            ),
+          });
           break;
         }
         default: {
@@ -225,21 +180,15 @@ export const KanbanPage: FunctionComponent = () => {
 
     switch (sourceColumn) {
       case 'todo': {
-        const newTodoTicketList = Array.from(todoTicketList);
-        toMoveTicket = newTodoTicketList.splice(source.index, 1);
-        setTodoTicketList(newTodoTicketList);
+        toMoveTicket = todoTicketList.at(source.index);
         break;
       }
       case 'inProgress': {
-        const newInProgressTicketList = Array.from(inProgressTicketList);
-        toMoveTicket = newInProgressTicketList.splice(source.index, 1);
-        setInProgressTicketList(newInProgressTicketList);
+        toMoveTicket = inProgressTicketList.at(source.index);
         break;
       }
       case 'done': {
-        const newDoneTicketList = Array.from(doneTicketList);
-        toMoveTicket = newDoneTicketList.splice(source.index, 1);
-        setDoneTicketList(newDoneTicketList);
+        toMoveTicket = doneTicketList.at(source.index);
         break;
       }
       default: {
@@ -247,29 +196,41 @@ export const KanbanPage: FunctionComponent = () => {
       }
     }
 
-    switch (destinationColumn) {
+    if (toMoveTicket === undefined) {
+      return;
+    }
+
+    /*switch (destinationColumn) {
       case 'todo': {
+        dispatchTicketList({
+          type: 'REORDER-DONE-LIST-TICKET',
+          payload: reorderTicketColumn(
+            doneTicketList,
+            source.index,
+            destination.index
+          ),
+        });
         const newTodoTicket = Array.from(todoTicketList);
-        newTodoTicket.splice(destination.index, 0, toMoveTicket[0]);
+        newTodoTicket.splice(destination.index, 0, toMoveTicket);
         setTodoTicketList(newTodoTicket);
         break;
       }
       case 'inProgress': {
         const newInProgressTicket = Array.from(inProgressTicketList);
-        newInProgressTicket.splice(destination.index, 0, toMoveTicket[0]);
+        newInProgressTicket.splice(destination.index, 0, toMoveTicket);
         setInProgressTicketList(newInProgressTicket);
         break;
       }
       case 'done': {
         const newDoneTicket = Array.from(doneTicketList);
-        newDoneTicket.splice(destination.index, 0, toMoveTicket[0]);
+        newDoneTicket.splice(destination.index, 0, toMoveTicket);
         setDoneTicketList(newDoneTicket);
         break;
       }
       default: {
         return;
       }
-    }
+    }*/
   };
 
   return (
@@ -328,7 +289,9 @@ export const KanbanPage: FunctionComponent = () => {
               defaultType={newTicketDefaultType}
               userList={userList}
               tagList={tagList}
-              ticketList={ticketList}
+              ticketList={todoTicketList
+                .concat(inProgressTicketList)
+                .concat(doneTicketList)}
               onAddTicket={onAddTicket}
             />
           )}

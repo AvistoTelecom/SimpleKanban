@@ -47,17 +47,15 @@ export class LocalStorage {
       }
     });
     this.setTicketList(ticketList);
-    const filteredUserList = storedUser.filter((currUser) => {
-      currUser.id !== userId;
-    });
+    const filteredUserList = storedUser.filter(
+      (currUser) => currUser.id !== userId
+    );
     this.setUserList(filteredUserList);
   };
 
   static updateUser = (user: User) => {
     const userList = this.getUserList();
-    const index = userList.findIndex((currUser) => {
-      currUser.id === user.id;
-    });
+    const index = userList.findIndex((currUser) => currUser.id === user.id);
     this.setUserList(userList.with(index, user));
   };
 
@@ -95,9 +93,9 @@ export class LocalStorage {
       }
     });
     this.setTicketList(storedTickets);
-    const filteredTaList = storedUser.filter((currTag: Tag) => {
-      currTag.name !== tagName;
-    });
+    const filteredTaList = storedUser.filter(
+      (currTag: Tag) => currTag.name !== tagName
+    );
     this.setTagList(filteredTaList);
   };
 
@@ -183,9 +181,9 @@ export class LocalStorage {
         currentTicket.parentId = undefined;
       }
     });
-    const filteredTicketList = ticketList.filter((currentTicket) => {
-      currentTicket.id !== ticketId;
-    });
+    const filteredTicketList = ticketList.filter(
+      (currentTicket) => currentTicket.id !== ticketId
+    );
     this.setTicketList(filteredTicketList);
   };
 
@@ -249,7 +247,6 @@ export class LocalStorage {
     if (inProgress === undefined || !isInProgressTicket(inProgress)) {
       return;
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { startDate, ...todo } = inProgress;
     this.updadeTicket(todo);
   };
@@ -272,7 +269,6 @@ export class LocalStorage {
     if (done === undefined || !isDoneTicket(done)) {
       return;
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { endDate, ...inProgress } = done;
     this.updadeTicket(inProgress);
   };
@@ -288,7 +284,6 @@ export class LocalStorage {
       startDate: new Date(),
       endDate: new Date(),
     };
-
     this.updadeTicket(done);
   };
 
@@ -297,9 +292,7 @@ export class LocalStorage {
     if (done === undefined || !isDoneTicket(done)) {
       return;
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { endDate, startDate, ...todo } = done;
-
     this.updadeTicket(todo);
   };
 }
