@@ -24,6 +24,7 @@ const todoTicketListDefault = [
     id: '1',
     name: 'Truc à faire',
     creationDate: new Date(),
+    startDate: new Date(),
     storyPoint: 1,
     tagName: 'tag1',
     description:

@@ -17,8 +17,16 @@ import { TicketContext, TicketContextType } from './context/TicketContext';
 import { CreateTicket } from '../model/CreateTicket';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { Ticket } from '../model/Ticket';
+import { TicketView } from './TicketDetails';
+import { EditTicketForm } from './forms/EditTicketForm';
 
-export type SidePanelContent = 'tag' | 'user' | 'addTicket' | '';
+export type SidePanelContent =
+  | 'tag'
+  | 'user'
+  | 'addTicket'
+  | 'viewTicket'
+  | 'editTicket'
+  | '';
 export type ColumnType = 'todo' | 'inProgress' | 'done' | '';
 
 export const KanbanPage: FunctionComponent = () => {
@@ -26,13 +34,16 @@ export const KanbanPage: FunctionComponent = () => {
   const [contentID, setContentID] = useState<SidePanelContent>('');
   const [newTicketDefaultType, setNewTicketDefaultType] =
     useState<ColumnType>('todo');
+
+  const [sidePanelTicket, setSidePanelTicket] = useState<Ticket>();
+
   const { userList, addUser, deleteUser, updateUser } =
     useContext<UsersContextType>(UsersContext);
 
   const { tagList, addTag, deleteTag, updateTag } =
     useContext<TagsContextType>(TagsContext);
 
-  const { ticketList, addTicket } =
+  const { ticketList, addTicket, updateTicket } =
     useContext<TicketContextType>(TicketContext);
 
   const [todoTicketList, setTodoTicketList] = useState<Ticket[]>([
@@ -93,7 +104,20 @@ export const KanbanPage: FunctionComponent = () => {
 
   const [doneTicketList, setDoneTicketList] = useState<Ticket[]>([]);
 
-  const toggleSidePanel = (id: SidePanelContent, type?: ColumnType) => {
+  const toggleSidePanel = (
+    id: SidePanelContent,
+    type?: ColumnType,
+    ticketId?: string
+  ) => {
+    if (ticketId !== undefined) {
+      const ticket = ticketList.find(
+        (savedTicket) => savedTicket.id === ticketId
+      );
+      if (ticket === undefined) {
+        return;
+      }
+      setSidePanelTicket(ticket);
+    }
     if (type !== undefined) {
       setNewTicketDefaultType(type);
     }
@@ -137,6 +161,16 @@ export const KanbanPage: FunctionComponent = () => {
   const onAddTicket = (ticket: CreateTicket) => {
     addTicket(ticket);
     toggleSidePanel(contentID);
+  };
+
+  const onEditTicket = (ticket: Ticket) => {
+    console.log(ticket);
+    updateTicket(ticket);
+    toggleSidePanel(contentID);
+  };
+
+  const onClickOnEditTicket = (ticketId: string) => {
+    toggleSidePanel('editTicket', undefined, ticketId);
   };
 
   const reorderTicketColumn = (
@@ -298,6 +332,31 @@ export const KanbanPage: FunctionComponent = () => {
               tagList={tagList}
               ticketList={ticketList}
               onAddTicket={onAddTicket}
+            />
+          )}
+          {contentID === 'viewTicket' && sidePanelTicket !== undefined && (
+            <TicketView
+              onClick={onClickOnEditTicket}
+              ticket={sidePanelTicket}
+              assigne={userList.find(
+                (user) => user.id === sidePanelTicket.assigneId
+              )}
+              parentTicket={ticketList.find(
+                (ticket) => ticket.id === sidePanelTicket.parentId
+              )}
+              childTicket={ticketList.find(
+                (ticket) => ticket.id === sidePanelTicket.childId
+              )}
+              tag={tagList.find((tag) => tag.name === sidePanelTicket.tagName)}
+            />
+          )}
+          {contentID === 'editTicket' && sidePanelTicket !== undefined && (
+            <EditTicketForm
+              ticket={sidePanelTicket}
+              userList={userList}
+              tagList={tagList}
+              ticketList={ticketList}
+              onEditTicket={onEditTicket}
             />
           )}
         </SidePanel>

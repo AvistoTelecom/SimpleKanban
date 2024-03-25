@@ -4,12 +4,14 @@ import { User } from '../model/User';
 import { Tag } from '../model/Tag';
 import { getTextColor } from '../utils/color.utils';
 import { Draggable, DraggableProvided } from 'react-beautiful-dnd';
+import { ColumnType, SidePanelContent } from './KanbanPage';
 
 type TicketCardProps = {
   index: number;
   ticket: Ticket;
   assigne?: User;
   tag?: Tag;
+  onClick: (id: SidePanelContent, type?: ColumnType, ticketId?: string) => void;
 };
 
 export const TicketCard: FunctionComponent<TicketCardProps> = ({
@@ -17,6 +19,7 @@ export const TicketCard: FunctionComponent<TicketCardProps> = ({
   ticket,
   assigne,
   tag,
+  onClick,
 }) => {
   const tagStyle = {
     backgroundColor: tag?.color,
@@ -26,10 +29,15 @@ export const TicketCard: FunctionComponent<TicketCardProps> = ({
     color: getTextColor(tag?.color),
   };
 
+  const onClickOnCard = () => {
+    onClick('viewTicket', undefined, ticket.id);
+  };
+
   return (
     <Draggable draggableId={'draggable-' + ticket.id} index={index}>
       {(provided: DraggableProvided) => (
         <li
+          onClick={onClickOnCard}
           ref={provided.innerRef}
           {...provided.dragHandleProps}
           {...provided.draggableProps}

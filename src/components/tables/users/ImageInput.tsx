@@ -1,5 +1,5 @@
 import { ChangeEvent, FunctionComponent } from 'react';
-import { EditIcon } from '../../icons/EditIcon';
+import { SmallEditIcon } from '../../icons/EditIcon';
 
 type ImageInputProps = {
   image: string;
@@ -34,7 +34,7 @@ export const ImageInput: FunctionComponent<ImageInputProps> = ({
         value={''}
       />
       <span className="-top-1 left-9 absolute w-5 h-5 bg-neutral rounded-full flex items-center justify-center">
-        <EditIcon />
+        <SmallEditIcon />
       </span>
     </label>
   );

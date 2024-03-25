@@ -1,19 +1,23 @@
 import { FunctionComponent } from 'react';
-import { CreateTicket } from '../../model/CreateTicket';
-import { User } from '../../model/User';
-import { Tag } from '../../model/Tag';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { CreateInProgressTicket } from '../../model/CreateInProgressTicket';
-import { CreateDoneTicket } from '../../model/CreateDoneTicket';
 import { Ticket } from '../../model/Ticket';
+import { Tag } from '../context/TagsContext';
+import { User } from '../context/UsersContext';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import {
+  isDoneTicket,
+  isInProgressTicket,
+  isTodoTicket,
+} from '../../model/TicketsFunctions';
 import { ColumnType } from '../KanbanPage';
+import { InProgressTicket } from '../../model/InProgressTicket';
+import { DoneTicket } from '../../model/DoneTicket';
 
-type AddTicketFormProps = {
+type EditTicketFormProps = {
+  ticket: Ticket;
   userList: User[];
   tagList: Tag[];
   ticketList: Ticket[];
-  defaultType: ColumnType;
-  onAddTicket: (ticket: CreateTicket) => void;
+  onEditTicket: (ticket: Ticket) => void;
 };
 
 type FormInputs = {
@@ -25,31 +29,41 @@ type FormInputs = {
   parentId?: string;
   childId?: string;
   type: string;
+  blocked: boolean;
 };
 
-export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
+export const EditTicketForm: FunctionComponent<EditTicketFormProps> = ({
   userList,
   tagList,
   ticketList,
-  defaultType,
-  onAddTicket,
+  ticket,
+  onEditTicket,
 }) => {
+  let ticketType: ColumnType = 'todo';
+  if (isDoneTicket(ticket)) {
+    ticketType = 'done';
+  }
+  if (isInProgressTicket(ticket)) {
+    ticketType = 'inProgress';
+  }
   const { register, handleSubmit } = useForm<FormInputs>({
     defaultValues: {
-      name: '',
-      storyPoint: 0,
-      assigneId: '',
-      tagName: '',
-      description: '',
-      parentId: '',
-      childId: '',
-      type: defaultType,
+      name: ticket.name,
+      storyPoint: ticket.storyPoint,
+      assigneId: ticket.assigneId,
+      tagName: ticket.tagName,
+      description: ticket.description,
+      parentId: ticket.parentId,
+      childId: ticket.childId,
+      type: ticketType,
+      blocked: ticket.blocked,
     },
   });
 
   const onSubmit: SubmitHandler<FormInputs> = (formData) => {
     const date = new Date();
-    const newTicket: CreateTicket = {
+    const newTicket: Ticket = {
+      id: ticket.id,
       name: formData.name,
       storyPoint: formData.storyPoint,
       assigneId: formData.assigneId === '' ? undefined : formData.assigneId,
@@ -57,33 +71,64 @@ export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
       description: formData.description,
       parentId: formData.parentId === '' ? undefined : formData.parentId,
       childId: formData.childId === '' ? undefined : formData.childId,
-      creationDate: date,
-      blocked: false,
+      creationDate: ticket.creationDate,
+      blocked: formData.blocked,
     };
 
-    if (formData.type === 'todo') {
-      onAddTicket(newTicket);
-      return;
-    }
-
-    if (formData.type === 'inProgress') {
-      const inProgressTicket: CreateInProgressTicket = {
-        ...newTicket,
-        startDate: date,
-        blocked: false,
-      };
-      onAddTicket(inProgressTicket);
-      return;
-    }
-
-    if (formData.type === 'done') {
-      const doneTicket: CreateDoneTicket = {
-        ...newTicket,
-        startDate: date,
-        endDate: date,
-        blocked: false,
-      };
-      onAddTicket(doneTicket);
+    switch (formData.type) {
+      case 'todo':
+        onEditTicket(newTicket);
+        break;
+      case 'inProgress': {
+        if (isDoneTicket(ticket) || isInProgressTicket(ticket)) {
+          const inProgressTicket: InProgressTicket = {
+            ...newTicket,
+            startDate: ticket.startDate,
+            blocked: false,
+          };
+          onEditTicket(inProgressTicket);
+          return;
+        }
+        const inProgressTicket: InProgressTicket = {
+          ...newTicket,
+          startDate: date,
+          blocked: false,
+        };
+        onEditTicket(inProgressTicket);
+        break;
+      }
+      case 'done': {
+        if (isDoneTicket(ticket)) {
+          const doneTicket: DoneTicket = {
+            ...newTicket,
+            startDate: ticket.startDate,
+            endDate: ticket.endDate,
+            blocked: false,
+          };
+          onEditTicket(doneTicket);
+          return;
+        }
+        if (isInProgressTicket(ticket)) {
+          const doneTicket: DoneTicket = {
+            ...newTicket,
+            startDate: ticket.startDate,
+            endDate: date,
+            blocked: false,
+          };
+          onEditTicket(doneTicket);
+          return;
+        }
+        const doneTicket: DoneTicket = {
+          ...newTicket,
+          startDate: date,
+          endDate: date,
+          blocked: false,
+        };
+        onEditTicket(doneTicket);
+        break;
+      }
+      default:
+        return;
     }
   };
 
@@ -139,6 +184,7 @@ export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
           <input
             type="number"
             placeholder="Story points..."
+            min={0}
             className="input input-bordered input-md w-full"
             {...register('storyPoint')}
           />
@@ -213,11 +259,20 @@ export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
             ))}
           </select>
         </label>
+        <label className="label cursor-pointer form-control mt-2 flex-row">
+          <span className="label-text">Blocked : </span>
+          <input
+            type="checkbox"
+            className="checkbox"
+            disabled={!isTodoTicket(ticket)}
+            {...register('blocked')}
+          />
+        </label>
       </div>
       <input
         type="submit"
         className="btn btn-secondary mt-2"
-        value="New ticket"
+        value="Edit ticket"
       />
     </form>
   );

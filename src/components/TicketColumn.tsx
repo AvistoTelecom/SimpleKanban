@@ -12,7 +12,7 @@ type TicketColumnProps = {
   ticketList: Ticket[];
   userList: User[];
   tagList: Tag[];
-  onClick: (id: SidePanelContent, type?: ColumnType) => void;
+  onClick: (id: SidePanelContent, type?: ColumnType, ticketId?: string) => void;
 };
 
 export const TicketColumn: FunctionComponent<TicketColumnProps> = ({
@@ -40,6 +40,7 @@ export const TicketColumn: FunctionComponent<TicketColumnProps> = ({
                 key={'draggable-' + ticket.id}
                 index={index}
                 ticket={ticket}
+                onClick={onClick}
                 assigne={userList.find(
                   (currentUser) => currentUser.id === ticket.assigneId,
                   ticket
