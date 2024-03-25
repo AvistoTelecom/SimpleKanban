@@ -120,6 +120,8 @@ export const KanbanPage: FunctionComponent = () => {
     sourceIndex: number,
     destinationIndex: number
   ): Ticket[] => {
+    console.log('Call reorderTicketColumn');
+    console.log(ticketList);
     return ticketList
       .toSpliced(sourceIndex, 1)
       .toSpliced(destinationIndex, 0, ticketList[sourceIndex]);
@@ -176,61 +178,165 @@ export const KanbanPage: FunctionComponent = () => {
       return;
     }
 
-    let toMoveTicket;
+    let toMoveTicket: Ticket | undefined;
+    let toMoveTicketId: number;
 
-    switch (sourceColumn) {
-      case 'todo': {
-        toMoveTicket = todoTicketList.at(source.index);
-        break;
-      }
-      case 'inProgress': {
-        toMoveTicket = inProgressTicketList.at(source.index);
-        break;
-      }
-      case 'done': {
-        toMoveTicket = doneTicketList.at(source.index);
-        break;
-      }
-      default: {
+    if (sourceColumn === 'todo') {
+      toMoveTicket = todoTicketList.at(source.index);
+      if (toMoveTicket === undefined) {
         return;
       }
-    }
+      toMoveTicketId = toMoveTicket.id;
 
-    if (toMoveTicket === undefined) {
-      return;
-    }
+      if (destinationColumn === 'inProgress') {
+        console.log('drop inProgress');
 
-    /*switch (destinationColumn) {
-      case 'todo': {
+        dispatchTicketList({
+          type: 'SET-TODO-TO-INPROGRESS-TICKET',
+          payload: toMoveTicketId,
+        });
+
+        const sourceIndex = inProgressTicketList.findIndex(
+          (currTicket) => currTicket.id === toMoveTicketId
+        );
+        console.log(inProgressTicketList);
+
+        console.log(sourceIndex);
+
+        dispatchTicketList({
+          type: 'REORDER-INPROGRESS-LIST-TICKET',
+          payload: reorderTicketColumn(
+            inProgressTicketList,
+            sourceIndex,
+            destination.index
+          ),
+        });
+        return;
+      }
+
+      if (destinationColumn === 'done') {
+        dispatchTicketList({
+          type: 'SET-TODO-TO-DONE-TICKET',
+          payload: toMoveTicketId,
+        });
+
+        const sourceIndex = doneTicketList.findIndex(
+          (currTicket) => currTicket.id === toMoveTicketId
+        );
+
         dispatchTicketList({
           type: 'REORDER-DONE-LIST-TICKET',
           payload: reorderTicketColumn(
             doneTicketList,
-            source.index,
+            sourceIndex,
             destination.index
           ),
         });
-        const newTodoTicket = Array.from(todoTicketList);
-        newTodoTicket.splice(destination.index, 0, toMoveTicket);
-        setTodoTicketList(newTodoTicket);
-        break;
       }
-      case 'inProgress': {
-        const newInProgressTicket = Array.from(inProgressTicketList);
-        newInProgressTicket.splice(destination.index, 0, toMoveTicket);
-        setInProgressTicketList(newInProgressTicket);
-        break;
-      }
-      case 'done': {
-        const newDoneTicket = Array.from(doneTicketList);
-        newDoneTicket.splice(destination.index, 0, toMoveTicket);
-        setDoneTicketList(newDoneTicket);
-        break;
-      }
-      default: {
+      return;
+    }
+
+    if (sourceColumn === 'inProgress') {
+      toMoveTicket = todoTicketList.at(source.index);
+
+      if (toMoveTicket === undefined) {
         return;
       }
-    }*/
+
+      toMoveTicketId = toMoveTicket.id;
+
+      if (destinationColumn === 'todo') {
+        dispatchTicketList({
+          type: 'SET-INPROGRESS-TO-TODO-TICKET',
+          payload: toMoveTicketId,
+        });
+
+        const sourceIndex = todoTicketList.findIndex(
+          (currTicket) => currTicket.id === toMoveTicketId
+        );
+
+        dispatchTicketList({
+          type: 'REORDER-TODO-LIST-TICKET',
+          payload: reorderTicketColumn(
+            todoTicketList,
+            sourceIndex,
+            destination.index
+          ),
+        });
+        return;
+      }
+
+      if (destinationColumn === 'done') {
+        dispatchTicketList({
+          type: 'SET-INPROGRESS-TO-DONE-TICKET',
+          payload: toMoveTicketId,
+        });
+
+        const sourceIndex = doneTicketList.findIndex(
+          (currTicket) => currTicket.id === toMoveTicketId
+        );
+
+        dispatchTicketList({
+          type: 'REORDER-DONE-LIST-TICKET',
+          payload: reorderTicketColumn(
+            doneTicketList,
+            sourceIndex,
+            destination.index
+          ),
+        });
+      }
+      return;
+    }
+
+    if (sourceColumn === 'done') {
+      toMoveTicket = todoTicketList.at(source.index);
+
+      if (toMoveTicket === undefined) {
+        return;
+      }
+
+      toMoveTicketId = toMoveTicket.id;
+
+      if (destinationColumn === 'todo') {
+        dispatchTicketList({
+          type: 'SET-DONE-TO-TODO-TICKET',
+          payload: toMoveTicketId,
+        });
+
+        const sourceIndex = todoTicketList.findIndex(
+          (currTicket) => currTicket.id === toMoveTicketId
+        );
+        dispatchTicketList({
+          type: 'REORDER-TODO-LIST-TICKET',
+          payload: reorderTicketColumn(
+            todoTicketList,
+            sourceIndex,
+            destination.index
+          ),
+        });
+        return;
+      }
+
+      if (destinationColumn === 'inProgress') {
+        dispatchTicketList({
+          type: 'SET-DONE-TO-INPROGRESS-TICKET',
+          payload: toMoveTicketId,
+        });
+
+        const sourceIndex = inProgressTicketList.findIndex(
+          (currTicket) => currTicket.id === toMoveTicketId
+        );
+        dispatchTicketList({
+          type: 'REORDER-INPROGRESS-LIST-TICKET',
+          payload: reorderTicketColumn(
+            inProgressTicketList,
+            sourceIndex,
+            destination.index
+          ),
+        });
+      }
+      return;
+    }
   };
 
   return (

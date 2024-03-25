@@ -34,7 +34,10 @@ const deleteTicket = (ticketId: number) => {
 };
 
 const setTodoToInProgress = (ticketId: number) => {
+  console.log('todo to inprogress');
+  console.log(getTicketList());
   LocalStorage.setTodoToInProgress(ticketId);
+  console.log(getTicketList());
   return getTicketList();
 };
 
@@ -84,11 +87,16 @@ const reorderInProgressList = (
     inProgressList: InProgressTicket[];
     doneList: DoneTicket[];
   },
-  inProgressLisy: Ticket[]
+  inProgressList: Ticket[]
 ) => {
+  console.log('ordering');
+  console.log(state);
+  console.log(inProgressList);
   const orderedList = state.todoList
-    .concat(inProgressLisy)
+    .concat(inProgressList)
     .concat(state.doneList);
+  console.log(orderedList);
+
   LocalStorage.setTicketList(orderedList);
   return getTicketList();
 };
@@ -142,6 +150,7 @@ export const ticketReducer = (
     case 'REORDER-TODO-LIST-TICKET':
       return reorderTodoList(_state, action.payload);
     case 'REORDER-INPROGRESS-LIST-TICKET':
+      console.log('action', action);
       return reorderInProgressList(_state, action.payload);
     case 'REORDER-DONE-LIST-TICKET':
       return reorderDoneList(_state, action.payload);

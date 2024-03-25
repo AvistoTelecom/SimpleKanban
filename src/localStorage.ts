@@ -108,9 +108,7 @@ export class LocalStorage {
       }
     });
     this.setTicketList(ticketList);
-    const tagIndex = tagList.findIndex((currTag) => {
-      currTag.name === tagName;
-    });
+    const tagIndex = tagList.findIndex((currTag) => currTag.name === tagName);
     this.setTagList(tagList.with(tagIndex, newTag));
   };
 
@@ -189,9 +187,9 @@ export class LocalStorage {
 
   static updadeTicket = (ticket: Ticket) => {
     const ticketList = this.getTicketList();
-    const index = ticketList.findIndex((currentTicket) => {
-      currentTicket.id === ticket.id;
-    });
+    const index = ticketList.findIndex(
+      (currentTicket) => currentTicket.id === ticket.id
+    );
     this.setTicketList(ticketList.with(index, ticket));
   };
 
