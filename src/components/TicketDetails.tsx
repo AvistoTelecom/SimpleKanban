@@ -48,9 +48,7 @@ export const TicketView: FunctionComponent<TicketViewProps> = ({
       {tag && (
         <div
           style={tagStyle}
-          className={
-            'width-full badge badge-lg line-clamp-1 break-words leading-tight'
-          }
+          className="width-full badge badge-lg line-clamp-1 break-words leading-tight"
         >
           <p style={textTagStyle}>{tag.name}</p>
         </div>

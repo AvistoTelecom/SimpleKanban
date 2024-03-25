@@ -17,7 +17,7 @@ import { TicketContext, TicketContextType } from './context/TicketContext';
 import { CreateTicket } from '../model/CreateTicket';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { Ticket } from '../model/Ticket';
-import { TicketView } from './TicketView';
+import { TicketView } from './TicketDetails';
 import { EditTicketForm } from './forms/EditTicketForm';
 
 export type SidePanelContent =
@@ -35,7 +35,7 @@ export const KanbanPage: FunctionComponent = () => {
   const [newTicketDefaultType, setNewTicketDefaultType] =
     useState<ColumnType>('todo');
 
-  const [ticketInSidePanel, setTicketInSidePanel] = useState<Ticket>();
+  const [sidePanelTicket, setSidePanelTicket] = useState<Ticket>();
 
   const { userList, addUser, deleteUser, updateUser } =
     useContext<UsersContextType>(UsersContext);
@@ -116,7 +116,7 @@ export const KanbanPage: FunctionComponent = () => {
       if (ticket === undefined) {
         return;
       }
-      setTicketInSidePanel(ticket);
+      setSidePanelTicket(ticket);
     }
     if (type !== undefined) {
       setNewTicketDefaultType(type);
@@ -164,6 +164,7 @@ export const KanbanPage: FunctionComponent = () => {
   };
 
   const onEditTicket = (ticket: Ticket) => {
+    console.log(ticket);
     updateTicket(ticket);
     toggleSidePanel(contentID);
   };
@@ -333,27 +334,25 @@ export const KanbanPage: FunctionComponent = () => {
               onAddTicket={onAddTicket}
             />
           )}
-          {contentID === 'viewTicket' && ticketInSidePanel !== undefined && (
+          {contentID === 'viewTicket' && sidePanelTicket !== undefined && (
             <TicketView
               onClick={onClickOnEditTicket}
-              ticket={ticketInSidePanel}
+              ticket={sidePanelTicket}
               assigne={userList.find(
-                (user) => user.id === ticketInSidePanel.assigneId
+                (user) => user.id === sidePanelTicket.assigneId
               )}
               parentTicket={ticketList.find(
-                (ticket) => ticket.id === ticketInSidePanel.parentId
+                (ticket) => ticket.id === sidePanelTicket.parentId
               )}
               childTicket={ticketList.find(
-                (ticket) => ticket.id === ticketInSidePanel.childId
+                (ticket) => ticket.id === sidePanelTicket.childId
               )}
-              tag={tagList.find(
-                (tag) => tag.name === ticketInSidePanel.tagName
-              )}
+              tag={tagList.find((tag) => tag.name === sidePanelTicket.tagName)}
             />
           )}
-          {contentID === 'editTicket' && ticketInSidePanel !== undefined && (
+          {contentID === 'editTicket' && sidePanelTicket !== undefined && (
             <EditTicketForm
-              ticket={ticketInSidePanel}
+              ticket={sidePanelTicket}
               userList={userList}
               tagList={tagList}
               ticketList={ticketList}
