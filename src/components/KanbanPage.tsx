@@ -112,7 +112,7 @@ export const KanbanPage: FunctionComponent = () => {
       return;
     }
 
-    if (sidePanelTicket?.id === ticketId && isSidePanelOpen) {
+    if (sidePanelTicket?.id === ticketId && contentID === id) {
       setSidePanelOpen(false);
       setSidePanelTicket(undefined);
       setContentID('');
