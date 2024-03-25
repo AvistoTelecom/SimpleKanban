@@ -96,7 +96,7 @@ export const TagsTableEntry: FunctionComponent<TableEntryProps> = ({
           onClick={() => onDeleteTag(tag.name)}
           className="hover:text-accent"
         >
-          <TrashIcon width="6" height="6" />
+          <TrashIcon />
         </button>
       </td>
     </tr>

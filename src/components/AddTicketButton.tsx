@@ -14,7 +14,7 @@ export const AddTicketButton: FunctionComponent<AddTicketButtonProps> = ({
       onClick={onClick}
       className="btn-ghost w-full font-bold py-2 px-4 rounded-box rounded-tr-none rounded-tl-none inline-flex gap-2 items-center"
     >
-      <PlusIcon width="6" height="6" />
+      <PlusIcon />
       <span>Add Ticket</span>
     </button>
   );

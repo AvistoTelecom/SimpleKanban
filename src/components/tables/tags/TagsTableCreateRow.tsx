@@ -95,7 +95,7 @@ export const TagsTableCreateRow: FunctionComponent<TagsTableCreateRowProps> = ({
             className="hover:text-primary"
             onClick={onSubmit}
           >
-            <PlusIcon width="6" height="6" />
+            <PlusIcon />
           </button>
         </th>
       </tr>

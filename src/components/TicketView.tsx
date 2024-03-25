@@ -42,7 +42,7 @@ export const TicketView: FunctionComponent<TicketViewProps> = ({
         onClick={onClickOnEditTicket}
         className="absolute top-2 right-2 hover:text-accent hover:bg-base-200 rounded-box p-4"
       >
-        <EditIcon width="5" height="5" />
+        <EditIcon />
       </button>
       <h2 className="text-xl font-semibold dark:text-white">{ticket.name}</h2>
       {tag && (

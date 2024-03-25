@@ -1,7 +1,6 @@
 import { FunctionComponent } from 'react';
-import { IconProps } from './IconProps';
 
-export const TrashIcon: FunctionComponent<IconProps> = ({ width, height }) => {
+export const TrashIcon: FunctionComponent = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -9,7 +8,7 @@ export const TrashIcon: FunctionComponent<IconProps> = ({ width, height }) => {
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="currentColor"
-      className={'w-' + width + ' h-' + height}
+      className="w-6 h-6"
     >
       <path
         strokeLinecap="round"
