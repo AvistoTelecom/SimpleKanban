@@ -3,7 +3,11 @@ import { Ticket } from '../../model/Ticket';
 import { Tag } from '../context/TagsContext';
 import { User } from '../context/UsersContext';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { isDoneTicket, isInProgressTicket } from '../../model/TicketsFunctions';
+import {
+  isDoneTicket,
+  isInProgressTicket,
+  isTodoTicket,
+} from '../../model/TicketsFunctions';
 import { ColumnType } from '../KanbanPage';
 import { InProgressTicket } from '../../model/InProgressTicket';
 import { DoneTicket } from '../../model/DoneTicket';
@@ -254,6 +258,15 @@ export const EditTicketForm: FunctionComponent<EditTicketFormProps> = ({
               </option>
             ))}
           </select>
+        </label>
+        <label className="label cursor-pointer form-control mt-2 flex-row">
+          <span className="label-text">Blocked : </span>
+          <input
+            type="checkbox"
+            className="checkbox"
+            disabled={!isTodoTicket(ticket)}
+            {...register('blocked')}
+          />
         </label>
       </div>
       <input
