@@ -43,7 +43,7 @@ export const KanbanPage: FunctionComponent = () => {
   const { tagList, addTag, deleteTag, updateTag } =
     useContext<TagsContextType>(TagsContext);
 
-  const { ticketList, addTicket } =
+  const { ticketList, addTicket, updateTicket } =
     useContext<TicketContextType>(TicketContext);
 
   const [todoTicketList, setTodoTicketList] = useState<Ticket[]>([
@@ -164,7 +164,8 @@ export const KanbanPage: FunctionComponent = () => {
   };
 
   const onEditTicket = (ticket: Ticket) => {
-    // TODO
+    updateTicket(ticket);
+    toggleSidePanel(contentID);
   };
 
   const onClickOnEditTicket = (ticketId: string) => {

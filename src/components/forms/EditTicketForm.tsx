@@ -3,12 +3,10 @@ import { Ticket } from '../../model/Ticket';
 import { Tag } from '../context/TagsContext';
 import { User } from '../context/UsersContext';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import {
-  isDoneTicket,
-  isInProgressTicket,
-  isTodoTicket,
-} from '../../model/TicketsFunctions';
+import { isDoneTicket, isInProgressTicket } from '../../model/TicketsFunctions';
 import { ColumnType } from '../KanbanPage';
+import { InProgressTicket } from '../../model/InProgressTicket';
+import { DoneTicket } from '../../model/DoneTicket';
 
 type EditTicketFormProps = {
   ticket: Ticket;
@@ -37,17 +35,13 @@ export const EditTicketForm: FunctionComponent<EditTicketFormProps> = ({
   ticket,
   onEditTicket,
 }) => {
-  let ticketType: ColumnType = '';
-  if (isTodoTicket(ticket)) {
-    ticketType = 'todo';
+  let ticketType: ColumnType = 'todo';
+  if (isDoneTicket(ticket)) {
+    ticketType = 'done';
   }
   if (isInProgressTicket(ticket)) {
     ticketType = 'inProgress';
   }
-  if (isDoneTicket(ticket)) {
-    ticketType = 'done';
-  }
-
   const { register, handleSubmit } = useForm<FormInputs>({
     defaultValues: {
       name: ticket.name,
@@ -58,12 +52,80 @@ export const EditTicketForm: FunctionComponent<EditTicketFormProps> = ({
       parentId: ticket.parentId,
       childId: ticket.childId,
       type: ticketType,
+      blocked: ticket.blocked,
     },
   });
 
   const onSubmit: SubmitHandler<FormInputs> = (formData) => {
-    // TODO
-    console.log(formData);
+    const date = new Date();
+    const newTicket: Ticket = {
+      id: ticket.id,
+      name: formData.name,
+      storyPoint: formData.storyPoint,
+      assigneId: formData.assigneId,
+      tagName: formData.tagName,
+      description: formData.description,
+      parentId: formData.parentId,
+      childId: formData.childId,
+      creationDate: ticket.creationDate,
+      blocked: formData.blocked,
+    };
+
+    switch (formData.type) {
+      case 'todo':
+        onEditTicket(newTicket);
+        break;
+      case 'inProgress': {
+        if (isDoneTicket(ticket) || isInProgressTicket(ticket)) {
+          const inProgressTicket: InProgressTicket = {
+            ...newTicket,
+            startDate: ticket.startDate,
+            blocked: false,
+          };
+          onEditTicket(inProgressTicket);
+          return;
+        }
+        const inProgressTicket: InProgressTicket = {
+          ...newTicket,
+          startDate: date,
+          blocked: false,
+        };
+        onEditTicket(inProgressTicket);
+        break;
+      }
+      case 'done': {
+        if (isDoneTicket(ticket)) {
+          const doneTicket: DoneTicket = {
+            ...newTicket,
+            startDate: ticket.startDate,
+            endDate: ticket.endDate,
+            blocked: false,
+          };
+          onEditTicket(doneTicket);
+          return;
+        }
+        if (isInProgressTicket(ticket)) {
+          const doneTicket: DoneTicket = {
+            ...newTicket,
+            startDate: ticket.startDate,
+            endDate: date,
+            blocked: false,
+          };
+          onEditTicket(doneTicket);
+          return;
+        }
+        const doneTicket: DoneTicket = {
+          ...newTicket,
+          startDate: date,
+          endDate: date,
+          blocked: false,
+        };
+        onEditTicket(doneTicket);
+        break;
+      }
+      default:
+        return;
+    }
   };
 
   return (
