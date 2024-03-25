@@ -10,6 +10,7 @@ import { InProgressTicket } from '../../model/InProgressTicket';
 import { DoneTicket } from '../../model/DoneTicket';
 import { TicketAction } from './TicketAction';
 import { ticketReducer } from './TicketReducer';
+import { LocalStorage } from '../../localStorage';
 
 export type TicketContextType = {
   todoTicketList: TodoTicket[];
@@ -29,9 +30,9 @@ export const TicketContextProvider: FunctionComponent<{
   children: ReactNode;
 }> = ({ children }) => {
   const [allTicketList, dispatchTicketList] = useReducer(ticketReducer, {
-    todoList: [],
-    inProgressList: [],
-    doneList: [],
+    todoList: LocalStorage.getTodoTicketList(),
+    inProgressList: LocalStorage.getInProgressTicketList(),
+    doneList: LocalStorage.getDoneTicketList(),
   });
 
   return (
