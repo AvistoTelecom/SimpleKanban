@@ -120,8 +120,6 @@ export const KanbanPage: FunctionComponent = () => {
     sourceIndex: number,
     destinationIndex: number
   ): Ticket[] => {
-    console.log('Call reorderTicketColumn');
-    console.log(ticketList);
     return ticketList
       .toSpliced(sourceIndex, 1)
       .toSpliced(destinationIndex, 0, ticketList[sourceIndex]);
@@ -189,150 +187,80 @@ export const KanbanPage: FunctionComponent = () => {
       toMoveTicketId = toMoveTicket.id;
 
       if (destinationColumn === 'inProgress') {
-        console.log('drop inProgress');
-
         dispatchTicketList({
           type: 'SET-TODO-TO-INPROGRESS-TICKET',
-          payload: toMoveTicketId,
-        });
-
-        const sourceIndex = inProgressTicketList.findIndex(
-          (currTicket) => currTicket.id === toMoveTicketId
-        );
-        console.log(inProgressTicketList);
-
-        console.log(sourceIndex);
-
-        dispatchTicketList({
-          type: 'REORDER-INPROGRESS-LIST-TICKET',
-          payload: reorderTicketColumn(
-            inProgressTicketList,
-            sourceIndex,
-            destination.index
-          ),
+          payload: {
+            ticketId: toMoveTicketId,
+            destinationIndex: destination.index,
+          },
         });
         return;
       }
-
       if (destinationColumn === 'done') {
         dispatchTicketList({
           type: 'SET-TODO-TO-DONE-TICKET',
-          payload: toMoveTicketId,
-        });
-
-        const sourceIndex = doneTicketList.findIndex(
-          (currTicket) => currTicket.id === toMoveTicketId
-        );
-
-        dispatchTicketList({
-          type: 'REORDER-DONE-LIST-TICKET',
-          payload: reorderTicketColumn(
-            doneTicketList,
-            sourceIndex,
-            destination.index
-          ),
+          payload: {
+            ticketId: toMoveTicketId,
+            destinationIndex: destination.index,
+          },
         });
       }
       return;
     }
 
     if (sourceColumn === 'inProgress') {
-      toMoveTicket = todoTicketList.at(source.index);
-
+      toMoveTicket = inProgressTicketList.at(source.index);
       if (toMoveTicket === undefined) {
         return;
       }
-
       toMoveTicketId = toMoveTicket.id;
 
       if (destinationColumn === 'todo') {
         dispatchTicketList({
           type: 'SET-INPROGRESS-TO-TODO-TICKET',
-          payload: toMoveTicketId,
-        });
-
-        const sourceIndex = todoTicketList.findIndex(
-          (currTicket) => currTicket.id === toMoveTicketId
-        );
-
-        dispatchTicketList({
-          type: 'REORDER-TODO-LIST-TICKET',
-          payload: reorderTicketColumn(
-            todoTicketList,
-            sourceIndex,
-            destination.index
-          ),
+          payload: {
+            ticketId: toMoveTicketId,
+            destinationIndex: destination.index,
+          },
         });
         return;
       }
-
       if (destinationColumn === 'done') {
         dispatchTicketList({
           type: 'SET-INPROGRESS-TO-DONE-TICKET',
-          payload: toMoveTicketId,
-        });
-
-        const sourceIndex = doneTicketList.findIndex(
-          (currTicket) => currTicket.id === toMoveTicketId
-        );
-
-        dispatchTicketList({
-          type: 'REORDER-DONE-LIST-TICKET',
-          payload: reorderTicketColumn(
-            doneTicketList,
-            sourceIndex,
-            destination.index
-          ),
+          payload: {
+            ticketId: toMoveTicketId,
+            destinationIndex: destination.index,
+          },
         });
       }
       return;
     }
 
     if (sourceColumn === 'done') {
-      toMoveTicket = todoTicketList.at(source.index);
-
+      toMoveTicket = doneTicketList.at(source.index);
       if (toMoveTicket === undefined) {
         return;
       }
-
       toMoveTicketId = toMoveTicket.id;
 
       if (destinationColumn === 'todo') {
         dispatchTicketList({
           type: 'SET-DONE-TO-TODO-TICKET',
-          payload: toMoveTicketId,
-        });
-
-        const sourceIndex = todoTicketList.findIndex(
-          (currTicket) => currTicket.id === toMoveTicketId
-        );
-        dispatchTicketList({
-          type: 'REORDER-TODO-LIST-TICKET',
-          payload: reorderTicketColumn(
-            todoTicketList,
-            sourceIndex,
-            destination.index
-          ),
+          payload: {
+            ticketId: toMoveTicketId,
+            destinationIndex: destination.index,
+          },
         });
         return;
       }
-
       if (destinationColumn === 'inProgress') {
         dispatchTicketList({
           type: 'SET-DONE-TO-INPROGRESS-TICKET',
-          payload: toMoveTicketId,
-        });
-
-        const sourceIndex = inProgressTicketList.findIndex(
-          (currTicket) => currTicket.id === toMoveTicketId
-        );
-        dispatchTicketList({
-          type: 'REORDER-INPROGRESS-LIST-TICKET',
-          payload: reorderTicketColumn(
-            inProgressTicketList,
-            sourceIndex,
-            destination.index
-          ),
+          payload: {
+            ticketId: toMoveTicketId,
+            destinationIndex: destination.index,
+          },
         });
       }
       return;
