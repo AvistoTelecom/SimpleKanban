@@ -15,7 +15,6 @@ const updateUser = (newUser: User): User[] => {
 
 const deleteUser = (userId: number): User[] => {
   LocalStorage.deleteUser(userId);
-  //todo mettre à jour les tickets
   return LocalStorage.getUserList();
 };
 
