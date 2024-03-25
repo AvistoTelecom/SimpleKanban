@@ -173,7 +173,7 @@ export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
           >
             <option value={-1}>None</option>
             {userList.map((user, index) => (
-              <option key={index} value={user.name}>
+              <option key={index} value={user.id}>
                 {user.name}
               </option>
             ))}
