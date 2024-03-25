@@ -9,13 +9,11 @@ const addTag = (newTag: Tag): Tag[] => {
 
 const updateTag = (tagName: string, newTag: Tag): Tag[] => {
   LocalStorage.updateTag(tagName, newTag);
-  //todo update ticketList
   return LocalStorage.getTagList();
 };
 
 const deleteTag = (tagName: string): Tag[] => {
   LocalStorage.deleteTag(tagName);
-  //todo update
   return LocalStorage.getTagList();
 };
 
