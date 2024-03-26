@@ -32,6 +32,7 @@ export const KanbanPage: FunctionComponent = () => {
   const [contentID, setContentID] = useState<SidePanelContent>('');
   const [newTicketDefaultType, setNewTicketDefaultType] =
     useState<ColumnType>('todo');
+  const [sidePanelTicket, setSidePanelTicket] = useState<Ticket>();
 
   const { userList, dispatchUserList } =
     useContext<UserContextType>(UserContext);
@@ -49,9 +50,10 @@ export const KanbanPage: FunctionComponent = () => {
     ticketId?: string
   ) => {
     if (ticketId !== undefined) {
-      const ticket = ticketList.find(
-        (savedTicket) => savedTicket.id === ticketId
-      );
+      const ticket = todoTicketList
+        .concat(inProgressTicketList)
+        .concat(doneTicketList)
+        .find((savedTicket) => savedTicket.id === ticketId);
       if (ticket === undefined) {
         return;
       }
@@ -77,7 +79,7 @@ export const KanbanPage: FunctionComponent = () => {
     dispatchUserList({ type: 'ADD-USER', payload: user });
   };
 
-  const onDeleteUser = (id: number) => {
+  const onDeleteUser = (id: string) => {
     dispatchUserList({ type: 'DELETE-USER', payload: id });
   };
 
@@ -106,8 +108,7 @@ export const KanbanPage: FunctionComponent = () => {
   };
 
   const onEditTicket = (ticket: Ticket) => {
-    console.log(ticket);
-    updateTicket(ticket);
+    dispatchTicketList({ type: 'UPDATE-TICKET', payload: ticket });
     toggleSidePanel(contentID);
   };
 
@@ -177,7 +178,7 @@ export const KanbanPage: FunctionComponent = () => {
     }
 
     let toMoveTicket: Ticket | undefined;
-    let toMoveTicketId: number;
+    let toMoveTicketId: string;
 
     if (sourceColumn === 'todo') {
       toMoveTicket = todoTicketList.at(source.index);
@@ -336,12 +337,14 @@ export const KanbanPage: FunctionComponent = () => {
               assigne={userList.find(
                 (user) => user.id === sidePanelTicket.assigneId
               )}
-              parentTicket={ticketList.find(
-                (ticket) => ticket.id === sidePanelTicket.parentId
-              )}
-              childTicket={ticketList.find(
-                (ticket) => ticket.id === sidePanelTicket.childId
-              )}
+              parentTicket={todoTicketList
+                .concat(inProgressTicketList)
+                .concat(doneTicketList)
+                .find((ticket) => ticket.id === sidePanelTicket.parentId)}
+              childTicket={todoTicketList
+                .concat(inProgressTicketList)
+                .concat(doneTicketList)
+                .find((ticket) => ticket.id === sidePanelTicket.childId)}
               tag={tagList.find((tag) => tag.name === sidePanelTicket.tagName)}
             />
           )}
@@ -350,7 +353,9 @@ export const KanbanPage: FunctionComponent = () => {
               ticket={sidePanelTicket}
               userList={userList}
               tagList={tagList}
-              ticketList={ticketList}
+              ticketList={todoTicketList
+                .concat(inProgressTicketList)
+                .concat(doneTicketList)}
               onEditTicket={onEditTicket}
             />
           )}

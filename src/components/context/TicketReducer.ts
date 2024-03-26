@@ -28,12 +28,12 @@ const updateTicket = (newTicket: Ticket) => {
   return getTicketList();
 };
 
-const deleteTicket = (ticketId: number) => {
+const deleteTicket = (ticketId: string) => {
   LocalStorage.deleteTicket(ticketId);
   return getTicketList();
 };
 
-const setTodoToInProgress = (ticketId: number, destinationIndex: number) => {
+const setTodoToInProgress = (ticketId: string, destinationIndex: number) => {
   LocalStorage.setTodoToInProgress(ticketId);
   const inProgressTicketList = LocalStorage.getInProgressTicketList();
   const sourceIndex = inProgressTicketList.findIndex(
@@ -46,7 +46,7 @@ const setTodoToInProgress = (ticketId: number, destinationIndex: number) => {
   );
 };
 
-const setTodoToDone = (ticketId: number, destinationIndex: number) => {
+const setTodoToDone = (ticketId: string, destinationIndex: number) => {
   LocalStorage.setTodoToDone(ticketId);
   const doneTicketList = LocalStorage.getDoneTicketList();
   const sourceIndex = doneTicketList.findIndex(
@@ -59,7 +59,7 @@ const setTodoToDone = (ticketId: number, destinationIndex: number) => {
   );
 };
 
-const setInProgressToTodo = (ticketId: number, destinationIndex: number) => {
+const setInProgressToTodo = (ticketId: string, destinationIndex: number) => {
   LocalStorage.setInProgressToTodo(ticketId);
   const todoTicketList = LocalStorage.getTodoTicketList();
   const sourceIndex = todoTicketList.findIndex(
@@ -72,7 +72,7 @@ const setInProgressToTodo = (ticketId: number, destinationIndex: number) => {
   );
 };
 
-const setInProgressToDone = (ticketId: number, destinationIndex: number) => {
+const setInProgressToDone = (ticketId: string, destinationIndex: number) => {
   LocalStorage.setInProgressToDone(ticketId);
   const doneTicketList = LocalStorage.getDoneTicketList();
   const sourceIndex = doneTicketList.findIndex(
@@ -85,7 +85,7 @@ const setInProgressToDone = (ticketId: number, destinationIndex: number) => {
   );
 };
 
-const setDoneToTodo = (ticketId: number, destinationIndex: number) => {
+const setDoneToTodo = (ticketId: string, destinationIndex: number) => {
   LocalStorage.setDoneTicketToTodo(ticketId);
   const todoTicketList = LocalStorage.getTodoTicketList();
   const sourceIndex = todoTicketList.findIndex(
@@ -98,7 +98,7 @@ const setDoneToTodo = (ticketId: number, destinationIndex: number) => {
   );
 };
 
-const setDoneToInProgress = (ticketId: number, destinationIndex: number) => {
+const setDoneToInProgress = (ticketId: string, destinationIndex: number) => {
   LocalStorage.setDoneToInProgress(ticketId);
   const inProgressTicketList = LocalStorage.getInProgressTicketList();
   const sourceIndex = inProgressTicketList.findIndex(

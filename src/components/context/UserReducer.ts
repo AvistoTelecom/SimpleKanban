@@ -13,7 +13,7 @@ const updateUser = (newUser: User): User[] => {
   return LocalStorage.getUserList();
 };
 
-const deleteUser = (userId: number): User[] => {
+const deleteUser = (userId: string): User[] => {
   LocalStorage.deleteUser(userId);
   return LocalStorage.getUserList();
 };
