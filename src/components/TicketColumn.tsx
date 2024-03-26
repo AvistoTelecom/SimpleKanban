@@ -12,7 +12,8 @@ type TicketColumnProps = {
   ticketList: Ticket[];
   userList: User[];
   tagList: Tag[];
-  onClick: (id: SidePanelContent, type?: ColumnType, ticketId?: string) => void;
+  onClickOnCard: (id: SidePanelContent, ticketId: string) => void;
+  onClickOnAdd: (id: SidePanelContent, type: ColumnType) => void;
 };
 
 export const TicketColumn: FunctionComponent<TicketColumnProps> = ({
@@ -20,10 +21,11 @@ export const TicketColumn: FunctionComponent<TicketColumnProps> = ({
   ticketList,
   userList,
   tagList,
-  onClick,
+  onClickOnAdd,
+  onClickOnCard,
 }) => {
   const onClickAddTicketButton = () => {
-    onClick('addTicket', type);
+    onClickOnAdd('addTicket', type);
   };
 
   return (
@@ -40,7 +42,7 @@ export const TicketColumn: FunctionComponent<TicketColumnProps> = ({
                 key={'draggable-' + ticket.id}
                 index={index}
                 ticket={ticket}
-                onClick={onClick}
+                onClick={onClickOnCard}
                 assigne={userList.find(
                   (currentUser) => currentUser.id === ticket.assigneId,
                   ticket
