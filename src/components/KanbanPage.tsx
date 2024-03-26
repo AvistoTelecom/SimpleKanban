@@ -104,21 +104,31 @@ export const KanbanPage: FunctionComponent = () => {
 
   const [doneTicketList, setDoneTicketList] = useState<Ticket[]>([]);
 
-  const toggleSidePanel = (
+  const toggleSidePanelWithTicketInfo = (
     id: SidePanelContent,
-    type?: ColumnType,
-    ticketId?: string
+    ticketId: string
   ) => {
-    if (ticketId !== undefined) {
-      const ticket = ticketList.find(
-        (savedTicket) => savedTicket.id === ticketId
-      );
-      if (ticket === undefined) {
-        return;
-      }
-      setSidePanelTicket(ticket);
+    if (sidePanelTicket?.id === ticketId && contentID === id) {
+      setSidePanelOpen(false);
+      setSidePanelTicket(undefined);
+      setContentID('');
+      return;
     }
-    if (type !== undefined) {
+
+    const ticket = ticketList.find(
+      (savedTicket) => savedTicket.id === ticketId
+    );
+    if (!ticket) {
+      return;
+    }
+    setSidePanelTicket(ticket);
+    setSidePanelOpen(true);
+    setContentID(id);
+  };
+
+  const toggleSidePanel = (id: SidePanelContent, type?: ColumnType) => {
+    setSidePanelTicket(undefined);
+    if (type) {
       setNewTicketDefaultType(type);
     }
     if (contentID === '') {
@@ -164,13 +174,12 @@ export const KanbanPage: FunctionComponent = () => {
   };
 
   const onEditTicket = (ticket: Ticket) => {
-    console.log(ticket);
     updateTicket(ticket);
     toggleSidePanel(contentID);
   };
 
   const onClickOnEditTicket = (ticketId: string) => {
-    toggleSidePanel('editTicket', undefined, ticketId);
+    toggleSidePanelWithTicketInfo('editTicket', ticketId);
   };
 
   const reorderTicketColumn = (
@@ -287,28 +296,34 @@ export const KanbanPage: FunctionComponent = () => {
           <DragDropContext onDragEnd={onDragEnd}>
             <TicketColumn
               type="todo"
-              onClick={toggleSidePanel}
+              onClickOnCard={toggleSidePanelWithTicketInfo}
+              onClickOnAdd={toggleSidePanel}
               ticketList={todoTicketList}
               userList={userList}
               tagList={tagList}
             />
             <TicketColumn
               type="inProgress"
-              onClick={toggleSidePanel}
+              onClickOnCard={toggleSidePanelWithTicketInfo}
+              onClickOnAdd={toggleSidePanel}
               ticketList={inProgressTicketList}
               userList={userList}
               tagList={tagList}
             />
             <TicketColumn
               type="done"
-              onClick={toggleSidePanel}
+              onClickOnCard={toggleSidePanelWithTicketInfo}
+              onClickOnAdd={toggleSidePanel}
               ticketList={doneTicketList}
               userList={userList}
               tagList={tagList}
             />
           </DragDropContext>
         </KanbanArea>
-        <SidePanel isOpen={isSidePanelOpen}>
+        <SidePanel
+          isOpen={isSidePanelOpen}
+          closePanel={() => toggleSidePanel(contentID)}
+        >
           {contentID === 'tag' && (
             <TagsTable
               tagList={tagList}
