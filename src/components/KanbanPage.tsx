@@ -108,10 +108,6 @@ export const KanbanPage: FunctionComponent = () => {
     id: SidePanelContent,
     ticketId: string
   ) => {
-    if (ticketId === undefined) {
-      return;
-    }
-
     if (sidePanelTicket?.id === ticketId && contentID === id) {
       setSidePanelOpen(false);
       setSidePanelTicket(undefined);
@@ -122,7 +118,7 @@ export const KanbanPage: FunctionComponent = () => {
     const ticket = ticketList.find(
       (savedTicket) => savedTicket.id === ticketId
     );
-    if (ticket === undefined) {
+    if (!ticket) {
       return;
     }
     setSidePanelTicket(ticket);
@@ -132,7 +128,7 @@ export const KanbanPage: FunctionComponent = () => {
 
   const toggleSidePanel = (id: SidePanelContent, type?: ColumnType) => {
     setSidePanelTicket(undefined);
-    if (type !== undefined) {
+    if (type) {
       setNewTicketDefaultType(type);
     }
     if (contentID === '') {

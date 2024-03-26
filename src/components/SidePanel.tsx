@@ -18,7 +18,7 @@ export const SidePanel: FunctionComponent<
     >
       <button
         type="button"
-        className="p-2 hover:bg-base-200 hover:text-error rounded-lg"
+        className="btn btn-square hover:text-error"
         title="Close"
         onClick={closePanel}
       >
