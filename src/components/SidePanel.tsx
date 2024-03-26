@@ -18,7 +18,9 @@ export const SidePanel: FunctionComponent<
     >
       <button
         type="button"
-        className="btn btn-square hover:text-error"
+        className={
+          'btn btn-square hover:text-error' + (isOpen ? '' : ' hidden')
+        }
         title="Close"
         onClick={closePanel}
       >
