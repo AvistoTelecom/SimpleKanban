@@ -12,7 +12,7 @@ export const SidePanel: FunctionComponent<
   return (
     <div
       className={
-        'transition-width duration-300 ease-out h-full bg-base-100 ' +
+        'flex flex-col transition-width duration-300 ease-out h-full bg-base-100 ' +
         (isOpen ? 'w-full rounded-box p-2' : 'w-0')
       }
     >

@@ -59,7 +59,7 @@ export const TicketCard: FunctionComponent<TicketCardProps> = ({
           {...provided.dragHandleProps}
           {...provided.draggableProps}
           className={
-            'card shadow-xl w-11/12 mt-4 relative transition-colors ease-in-out ' +
+            'card shadow-xl w-11/12 mb-4 relative transition-colors ease-in-out ' +
             backgroundColor
           }
         >
