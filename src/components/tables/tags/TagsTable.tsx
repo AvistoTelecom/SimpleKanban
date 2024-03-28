@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 import { TagsTableHeader } from './TagsTableHeader';
 import { TagsTableEntry } from './TagsTableEntry';
 import { TagsTableCreateRow } from './TagsTableCreateRow';
-import { Tag } from '../../context/TagsContext';
+import { Tag } from '../../../model/Tag';
 
 type TagsTableProps = {
   tagList: Tag[];
