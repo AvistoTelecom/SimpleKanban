@@ -48,9 +48,6 @@ export const TicketColumn: FunctionComponent<TicketColumnProps> = ({
     if (focusedTicket.parentId === ticket.id) {
       return 'focusParent';
     }
-    if (!focusedTicket.parentId && !focusedTicket.childId) {
-      return 'neutral';
-    }
     return 'hide';
   };
 
@@ -63,29 +60,25 @@ export const TicketColumn: FunctionComponent<TicketColumnProps> = ({
             className="w-full h-full flex flex-col items-center overflow-y-auto overflow-x-hidden"
             {...provided.droppableProps}
           >
-            {ticketList.map((ticket: Ticket, index) => {
-              const status: TicketCardStatus = getStatus(ticket);
-
-              return (
-                <TicketCard
-                  key={'draggable-' + ticket.id}
-                  index={index}
-                  ticket={ticket}
-                  status={status}
-                  onClick={onClickOnCard}
-                  onMouseEnter={onMouseEnter}
-                  onMouseLeave={onMouseLeave}
-                  assigne={userList.find(
-                    (currentUser) => currentUser.id === ticket.assigneId,
-                    ticket
-                  )}
-                  tag={tagList.find(
-                    (currentTag) => currentTag.name === ticket.tagName,
-                    ticket
-                  )}
-                />
-              );
-            })}
+            {ticketList.map((ticket: Ticket, index) => (
+              <TicketCard
+                key={'draggable-' + ticket.id}
+                index={index}
+                ticket={ticket}
+                status={getStatus(ticket)}
+                onClick={onClickOnCard}
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
+                assigne={userList.find(
+                  (currentUser) => currentUser.id === ticket.assigneId,
+                  ticket
+                )}
+                tag={tagList.find(
+                  (currentTag) => currentTag.name === ticket.tagName,
+                  ticket
+                )}
+              />
+            ))}
             {provided.placeholder}
           </ul>
         )}
