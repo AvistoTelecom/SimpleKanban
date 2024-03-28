@@ -1,6 +1,7 @@
 import { ChangeEvent, FunctionComponent, KeyboardEvent, useState } from 'react';
-import { DEFAULT_TAG_COLOR, Tag } from '../../context/TagsContext';
+import { DEFAULT_TAG_COLOR } from '../../context/TagContext';
 import { PlusIcon } from '../../icons/PlusIcon';
+import { Tag } from '../../../model/Tag';
 
 type TagsTableCreateRowProps = {
   tagList: Tag[];

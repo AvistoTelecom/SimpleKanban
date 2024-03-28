@@ -47,17 +47,15 @@ export class LocalStorage {
       }
     });
     this.setTicketList(ticketList);
-    const filteredUserList = storedUser.filter((currUser) => {
-      currUser.id !== userId;
-    });
+    const filteredUserList = storedUser.filter(
+      (currUser) => currUser.id !== userId
+    );
     this.setUserList(filteredUserList);
   };
 
   static updateUser = (user: User) => {
     const userList = this.getUserList();
-    const index = userList.findIndex((currUser) => {
-      currUser.id === user.id;
-    });
+    const index = userList.findIndex((currUser) => currUser.id === user.id);
     this.setUserList(userList.with(index, user));
   };
 
@@ -95,24 +93,22 @@ export class LocalStorage {
       }
     });
     this.setTicketList(storedTickets);
-    const filteredTaList = storedUser.filter((currTag: Tag) => {
-      currTag.name !== tagName;
-    });
+    const filteredTaList = storedUser.filter(
+      (currTag: Tag) => currTag.name !== tagName
+    );
     this.setTagList(filteredTaList);
   };
 
-  static updateTag = (oldTag: Tag, newTag: Tag) => {
+  static updateTag = (tagName: string, newTag: Tag) => {
     const tagList = this.getTagList();
     const ticketList = this.getTicketList();
     ticketList.forEach((currentTicket) => {
-      if (currentTicket.tagName === oldTag.name) {
+      if (currentTicket.tagName === tagName) {
         currentTicket.tagName = newTag.name;
       }
     });
     this.setTicketList(ticketList);
-    const tagIndex = tagList.findIndex((currTag) => {
-      currTag.name === oldTag.name;
-    });
+    const tagIndex = tagList.findIndex((currTag) => currTag.name === tagName);
     this.setTagList(tagList.with(tagIndex, newTag));
   };
 
@@ -183,17 +179,17 @@ export class LocalStorage {
         currentTicket.parentId = undefined;
       }
     });
-    const filteredTicketList = ticketList.filter((currentTicket) => {
-      currentTicket.id !== ticketId;
-    });
+    const filteredTicketList = ticketList.filter(
+      (currentTicket) => currentTicket.id !== ticketId
+    );
     this.setTicketList(filteredTicketList);
   };
 
   static updadeTicket = (ticket: Ticket) => {
     const ticketList = this.getTicketList();
-    const index = ticketList.findIndex((currentTicket) => {
-      currentTicket.id === ticket.id;
-    });
+    const index = ticketList.findIndex(
+      (currentTicket) => currentTicket.id === ticket.id
+    );
     this.setTicketList(ticketList.with(index, ticket));
   };
 
@@ -249,7 +245,6 @@ export class LocalStorage {
     if (inProgress === undefined || !isInProgressTicket(inProgress)) {
       return;
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { startDate, ...todo } = inProgress;
     this.updadeTicket(todo);
   };
@@ -272,7 +267,6 @@ export class LocalStorage {
     if (done === undefined || !isDoneTicket(done)) {
       return;
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { endDate, ...inProgress } = done;
     this.updadeTicket(inProgress);
   };
@@ -288,7 +282,6 @@ export class LocalStorage {
       startDate: new Date(),
       endDate: new Date(),
     };
-
     this.updadeTicket(done);
   };
 
@@ -297,9 +290,7 @@ export class LocalStorage {
     if (done === undefined || !isDoneTicket(done)) {
       return;
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { endDate, startDate, ...todo } = done;
-
     this.updadeTicket(todo);
   };
 }

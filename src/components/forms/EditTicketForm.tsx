@@ -1,7 +1,5 @@
 import { FunctionComponent } from 'react';
 import { Ticket } from '../../model/Ticket';
-import { Tag } from '../context/TagsContext';
-import { User } from '../context/UsersContext';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   isDoneTicket,
@@ -11,6 +9,8 @@ import {
 import { ColumnType } from '../KanbanPage';
 import { InProgressTicket } from '../../model/InProgressTicket';
 import { DoneTicket } from '../../model/DoneTicket';
+import { User } from '../../model/User';
+import { Tag } from '../../model/Tag';
 
 type EditTicketFormProps = {
   ticket: Ticket;

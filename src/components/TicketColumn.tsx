@@ -3,10 +3,10 @@ import { AddTicketButton } from './AddTicketButton';
 import { ColumnType, SidePanelContent } from './KanbanPage';
 import { TicketCard } from './TicketCard';
 import { Ticket } from '../model/Ticket';
-import { User } from './context/UsersContext';
-import { Tag } from './context/TagsContext';
 import { Droppable, DroppableProvided } from 'react-beautiful-dnd';
 import { TicketCardStatus } from '../model/TicketCardStatus';
+import { User } from '../model/User';
+import { Tag } from '../model/Tag';
 
 type TicketColumnProps = {
   type: ColumnType;
