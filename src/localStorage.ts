@@ -10,8 +10,8 @@ import {
 } from './model/TicketsFunctions';
 import { TodoTicket } from './model/TodoTicket';
 import { User } from './model/User';
-import { CreateUser } from './components/context/UsersContext';
 import { CreateTicket } from './model/CreateTicket';
+import { CreateUser } from './model/CreateUser';
 
 export class LocalStorage {
   static getUserList = (): User[] => {
