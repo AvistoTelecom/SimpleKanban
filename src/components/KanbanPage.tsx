@@ -37,6 +37,8 @@ export const KanbanPage: FunctionComponent = () => {
 
   const [sidePanelTicket, setSidePanelTicket] = useState<Ticket>();
 
+  const [focusedTicket, setFocusTicket] = useState<Ticket | undefined>();
+
   const { userList, addUser, deleteUser, updateUser } =
     useContext<UsersContextType>(UsersContext);
 
@@ -53,6 +55,8 @@ export const KanbanPage: FunctionComponent = () => {
       creationDate: new Date(),
       storyPoint: 1,
       assigneId: '1',
+      parentId: '3',
+      childId: '2',
       tagName: 'tag1',
       description: '',
       blocked: false,
@@ -63,6 +67,7 @@ export const KanbanPage: FunctionComponent = () => {
       creationDate: new Date(),
       storyPoint: 1,
       assigneId: '1',
+      parentId: '1',
       tagName: 'tag2',
       description: '',
       blocked: false,
@@ -73,6 +78,7 @@ export const KanbanPage: FunctionComponent = () => {
       creationDate: new Date(),
       storyPoint: 1,
       assigneId: '1',
+      childId: '1',
       tagName: 'tag3',
       description: '',
       blocked: false,
@@ -283,6 +289,14 @@ export const KanbanPage: FunctionComponent = () => {
     }
   };
 
+  const onMouseEnterCard = (ticket: Ticket) => {
+    setFocusTicket(ticket);
+  };
+
+  const onMouseLeaveCard = () => {
+    setFocusTicket(undefined);
+  };
+
   return (
     <>
       <NavBar onClick={toggleSidePanel} />
@@ -296,6 +310,9 @@ export const KanbanPage: FunctionComponent = () => {
           <DragDropContext onDragEnd={onDragEnd}>
             <TicketColumn
               type="todo"
+              focusedTicket={focusedTicket}
+              onMouseEnter={onMouseEnterCard}
+              onMouseLeave={onMouseLeaveCard}
               onClickOnCard={toggleSidePanelWithTicketInfo}
               onClickOnAdd={toggleSidePanel}
               ticketList={todoTicketList}
@@ -304,6 +321,9 @@ export const KanbanPage: FunctionComponent = () => {
             />
             <TicketColumn
               type="inProgress"
+              focusedTicket={focusedTicket}
+              onMouseEnter={onMouseEnterCard}
+              onMouseLeave={onMouseLeaveCard}
               onClickOnCard={toggleSidePanelWithTicketInfo}
               onClickOnAdd={toggleSidePanel}
               ticketList={inProgressTicketList}
@@ -312,6 +332,9 @@ export const KanbanPage: FunctionComponent = () => {
             />
             <TicketColumn
               type="done"
+              focusedTicket={focusedTicket}
+              onMouseEnter={onMouseEnterCard}
+              onMouseLeave={onMouseLeaveCard}
               onClickOnCard={toggleSidePanelWithTicketInfo}
               onClickOnAdd={toggleSidePanel}
               ticketList={doneTicketList}

@@ -6,6 +6,7 @@ import { Ticket } from '../model/Ticket';
 import { User } from './context/UsersContext';
 import { Tag } from './context/TagsContext';
 import { Droppable, DroppableProvided } from 'react-beautiful-dnd';
+import { TicketCardStatus } from '../model/TicketCardStatus';
 
 type TicketColumnProps = {
   type: ColumnType;
@@ -14,6 +15,9 @@ type TicketColumnProps = {
   tagList: Tag[];
   onClickOnCard: (id: SidePanelContent, ticketId: string) => void;
   onClickOnAdd: (id: SidePanelContent, type: ColumnType) => void;
+  onMouseEnter: (ticket: Ticket) => void;
+  onMouseLeave: () => void;
+  focusedTicket?: Ticket;
 };
 
 export const TicketColumn: FunctionComponent<TicketColumnProps> = ({
@@ -23,9 +27,31 @@ export const TicketColumn: FunctionComponent<TicketColumnProps> = ({
   tagList,
   onClickOnAdd,
   onClickOnCard,
+  onMouseEnter,
+  onMouseLeave,
+  focusedTicket,
 }) => {
   const onClickAddTicketButton = () => {
     onClickOnAdd('addTicket', type);
+  };
+
+  const getStatus = (ticket: Ticket): TicketCardStatus => {
+    if (!focusedTicket) {
+      return 'neutral';
+    }
+    if (focusedTicket.id === ticket.id) {
+      return 'focus';
+    }
+    if (focusedTicket.childId === ticket.id) {
+      return 'focusChild';
+    }
+    if (focusedTicket.parentId === ticket.id) {
+      return 'focusParent';
+    }
+    if (!focusedTicket.parentId && !focusedTicket.childId) {
+      return 'neutral';
+    }
+    return 'hide';
   };
 
   return (
@@ -37,22 +63,29 @@ export const TicketColumn: FunctionComponent<TicketColumnProps> = ({
             className="w-full h-full flex flex-col items-center overflow-y-auto overflow-x-hidden"
             {...provided.droppableProps}
           >
-            {ticketList.map((ticket: Ticket, index) => (
-              <TicketCard
-                key={'draggable-' + ticket.id}
-                index={index}
-                ticket={ticket}
-                onClick={onClickOnCard}
-                assigne={userList.find(
-                  (currentUser) => currentUser.id === ticket.assigneId,
-                  ticket
-                )}
-                tag={tagList.find(
-                  (currentTag) => currentTag.name === ticket.tagName,
-                  ticket
-                )}
-              />
-            ))}
+            {ticketList.map((ticket: Ticket, index) => {
+              const status: TicketCardStatus = getStatus(ticket);
+
+              return (
+                <TicketCard
+                  key={'draggable-' + ticket.id}
+                  index={index}
+                  ticket={ticket}
+                  status={status}
+                  onClick={onClickOnCard}
+                  onMouseEnter={onMouseEnter}
+                  onMouseLeave={onMouseLeave}
+                  assigne={userList.find(
+                    (currentUser) => currentUser.id === ticket.assigneId,
+                    ticket
+                  )}
+                  tag={tagList.find(
+                    (currentTag) => currentTag.name === ticket.tagName,
+                    ticket
+                  )}
+                />
+              );
+            })}
             {provided.placeholder}
           </ul>
         )}
