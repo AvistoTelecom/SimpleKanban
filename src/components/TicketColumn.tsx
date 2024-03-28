@@ -4,6 +4,7 @@ import { ColumnType, SidePanelContent } from './KanbanPage';
 import { TicketCard } from './TicketCard';
 import { Ticket } from '../model/Ticket';
 import { Droppable, DroppableProvided } from 'react-beautiful-dnd';
+import { TicketCardStatus } from '../model/TicketCardStatus';
 import { User } from '../model/User';
 import { Tag } from '../model/Tag';
 
@@ -14,6 +15,9 @@ type TicketColumnProps = {
   tagList: Tag[];
   onClickOnCard: (id: SidePanelContent, ticketId: string) => void;
   onClickOnAdd: (id: SidePanelContent, type: ColumnType) => void;
+  onMouseEnter: (ticket: Ticket) => void;
+  onMouseLeave: () => void;
+  focusedTicket: Ticket | null;
 };
 
 export const TicketColumn: FunctionComponent<TicketColumnProps> = ({
@@ -23,9 +27,28 @@ export const TicketColumn: FunctionComponent<TicketColumnProps> = ({
   tagList,
   onClickOnAdd,
   onClickOnCard,
+  onMouseEnter,
+  onMouseLeave,
+  focusedTicket,
 }) => {
   const onClickAddTicketButton = () => {
     onClickOnAdd('addTicket', type);
+  };
+
+  const getStatus = (ticket: Ticket): TicketCardStatus => {
+    if (!focusedTicket) {
+      return 'neutral';
+    }
+    if (focusedTicket.id === ticket.id) {
+      return 'focus';
+    }
+    if (focusedTicket.childId === ticket.id) {
+      return 'focusChild';
+    }
+    if (focusedTicket.parentId === ticket.id) {
+      return 'focusParent';
+    }
+    return 'hide';
   };
 
   return (
@@ -42,7 +65,10 @@ export const TicketColumn: FunctionComponent<TicketColumnProps> = ({
                 key={'draggable-' + ticket.id}
                 index={index}
                 ticket={ticket}
+                status={getStatus(ticket)}
                 onClick={onClickOnCard}
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
                 assigne={userList.find(
                   (currentUser) => currentUser.id === ticket.assigneId,
                   ticket

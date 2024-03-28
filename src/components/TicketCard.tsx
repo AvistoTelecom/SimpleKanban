@@ -5,13 +5,17 @@ import { Tag } from '../model/Tag';
 import { getTextColor } from '../utils/color.utils';
 import { Draggable, DraggableProvided } from 'react-beautiful-dnd';
 import { SidePanelContent } from './KanbanPage';
+import { TicketCardStatus } from '../model/TicketCardStatus';
 
 type TicketCardProps = {
   index: number;
   ticket: Ticket;
   assigne?: User;
   tag?: Tag;
+  status: TicketCardStatus;
   onClick: (id: SidePanelContent, ticketId: string) => void;
+  onMouseEnter: (ticket: Ticket) => void;
+  onMouseLeave: () => void;
 };
 
 export const TicketCard: FunctionComponent<TicketCardProps> = ({
@@ -19,7 +23,10 @@ export const TicketCard: FunctionComponent<TicketCardProps> = ({
   ticket,
   assigne,
   tag,
+  status,
   onClick,
+  onMouseEnter,
+  onMouseLeave,
 }) => {
   const tagStyle = {
     backgroundColor: tag?.color,
@@ -33,16 +40,44 @@ export const TicketCard: FunctionComponent<TicketCardProps> = ({
     onClick('viewTicket', ticket.id);
   };
 
+  const getBackgroundColor = () => {
+    if (status === 'focus') {
+      return 'bg-neutral';
+    }
+    if (status === 'focusParent' || status === 'focusChild') {
+      return 'bg-base-100';
+    }
+    return 'bg-base-100';
+  };
+
   return (
     <Draggable draggableId={'draggable-' + ticket.id} index={index}>
       {(provided: DraggableProvided) => (
         <li
+          onMouseEnter={() => onMouseEnter(ticket)}
+          onMouseLeave={() => onMouseLeave()}
           onClick={onClickOnCard}
           ref={provided.innerRef}
           {...provided.dragHandleProps}
           {...provided.draggableProps}
-          className="card bg-base-100 shadow-xl w-11/12 mb-4"
+          className={
+            'card shadow-xl w-11/12 mb-4 relative transition-colors ease-in-out ' +
+            getBackgroundColor()
+          }
         >
+          {status === 'hide' ? (
+            <div className="absolute w-full h-full rounded-box bg-hide"></div>
+          ) : null}
+          {status === 'focusParent' ? (
+            <div className="badge badge-neutral absolute top-2 left-2">
+              Parent
+            </div>
+          ) : null}
+          {status === 'focusChild' ? (
+            <div className="badge badge-neutral absolute top-2 left-2">
+              Child
+            </div>
+          ) : null}
           <div className="card-body">
             <div className="flex">
               <h2 className="card-title flex-auto mr-2 line-clamp-1 break-words">
