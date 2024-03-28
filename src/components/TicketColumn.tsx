@@ -17,7 +17,7 @@ type TicketColumnProps = {
   onClickOnAdd: (id: SidePanelContent, type: ColumnType) => void;
   onMouseEnter: (ticket: Ticket) => void;
   onMouseLeave: () => void;
-  focusedTicket?: Ticket;
+  focusedTicket: Ticket | null;
 };
 
 export const TicketColumn: FunctionComponent<TicketColumnProps> = ({

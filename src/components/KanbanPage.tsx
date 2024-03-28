@@ -34,7 +34,7 @@ export const KanbanPage: FunctionComponent = () => {
     useState<ColumnType>('todo');
   const [sidePanelTicket, setSidePanelTicket] = useState<Ticket>();
 
-  const [focusedTicket, setFocusTicket] = useState<Ticket | undefined>();
+  const [focusedTicket, setFocusTicket] = useState<Ticket | null>(null);
 
   const { userList, dispatchUserList } =
     useContext<UserContextType>(UserContext);
@@ -58,14 +58,14 @@ export const KanbanPage: FunctionComponent = () => {
     }
 
     const ticket = todoTicketList
-        .concat(inProgressTicketList)
-        .concat(doneTicketList)
-        .find((savedTicket) => savedTicket.id === ticketId);
+      .concat(inProgressTicketList)
+      .concat(doneTicketList)
+      .find((savedTicket) => savedTicket.id === ticketId);
 
     if (!ticket) {
       return;
     }
-    
+
     setSidePanelTicket(ticket);
     setSidePanelOpen(true);
     setContentID(id);
@@ -287,7 +287,7 @@ export const KanbanPage: FunctionComponent = () => {
   };
 
   const onMouseLeaveCard = () => {
-    setFocusTicket(undefined);
+    setFocusTicket(null);
   };
 
   return (
