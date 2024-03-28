@@ -41,7 +41,7 @@ export const TicketCard: FunctionComponent<TicketCardProps> = ({
           ref={provided.innerRef}
           {...provided.dragHandleProps}
           {...provided.draggableProps}
-          className="card bg-base-100 shadow-xl w-11/12 mt-4"
+          className="card bg-base-100 shadow-xl w-11/12 mb-4"
         >
           <div className="card-body">
             <div className="flex">
