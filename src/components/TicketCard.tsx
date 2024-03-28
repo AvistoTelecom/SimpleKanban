@@ -40,12 +40,12 @@ export const TicketCard: FunctionComponent<TicketCardProps> = ({
     onClick('viewTicket', ticket.id);
   };
 
-  let backgroundColor: string = ' bg-base-100';
+  let backgroundColor: string = 'bg-base-100';
   if (status === 'focus') {
-    backgroundColor = ' bg-neutral';
+    backgroundColor = 'bg-neutral';
   }
   if (status === 'focusParent' || status === 'focusChild') {
-    backgroundColor = ' bg-base-100';
+    backgroundColor = 'bg-base-100';
   }
 
   return (
@@ -59,7 +59,7 @@ export const TicketCard: FunctionComponent<TicketCardProps> = ({
           {...provided.dragHandleProps}
           {...provided.draggableProps}
           className={
-            'card shadow-xl w-11/12 mt-4 relative transition-colors ease-in-out' +
+            'card shadow-xl w-11/12 mt-4 relative transition-colors ease-in-out ' +
             backgroundColor
           }
         >
