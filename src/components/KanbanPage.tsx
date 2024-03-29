@@ -135,10 +135,6 @@ export const KanbanPage: FunctionComponent = () => {
     toggleSidePanelWithTicketInfo('editTicket', ticketId);
   };
 
-  const onClickOnDeleteTicket = (ticketId: string) => {
-    onDeleteTicket(ticketId);
-  };
-
   const reorderTicketColumn = (
     ticketList: Ticket[],
     sourceIndex: number,
@@ -379,7 +375,7 @@ export const KanbanPage: FunctionComponent = () => {
           {contentID === 'viewTicket' && sidePanelTicket !== undefined && (
             <TicketView
               onClickOnEditButton={onClickOnEditTicket}
-              onClickOnDeleteButton={onClickOnDeleteTicket}
+              onClickOnDeleteButton={onDeleteTicket}
               ticket={sidePanelTicket}
               assigne={userList.find(
                 (user) => user.id === sidePanelTicket.assigneId
