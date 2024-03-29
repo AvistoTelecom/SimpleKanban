@@ -150,11 +150,7 @@ export const KanbanPage: FunctionComponent = () => {
       return;
     }
     const movingTicket = todoTicketList.at(source.index);
-    if (movingTicket?.blocked) {
-      setIsDropDisabled(true);
-      return;
-    }
-    setIsDropDisabled(false);
+    setIsDropDisabled(movingTicket?.blocked ?? false);
   };
 
   const onDragEnd = (result: DropResult) => {
