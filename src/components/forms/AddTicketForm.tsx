@@ -25,6 +25,7 @@ type FormInputs = {
   parentId?: string;
   childId?: string;
   type: string;
+  blocked: boolean;
 };
 
 export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
@@ -44,6 +45,7 @@ export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
       parentId: '',
       childId: '',
       type: defaultType,
+      blocked: false,
     },
   });
 
@@ -58,7 +60,7 @@ export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
       parentId: formData.parentId === '' ? undefined : formData.parentId,
       childId: formData.childId === '' ? undefined : formData.childId,
       creationDate: date,
-      blocked: false,
+      blocked: formData.blocked,
     };
 
     if (formData.type === 'todo') {
@@ -212,6 +214,15 @@ export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
               </option>
             ))}
           </select>
+        </label>
+        <label className="label cursor-pointer form-control mt-2 flex-row">
+          <span className="label-text">Blocked : </span>
+          <input
+            type="checkbox"
+            className="checkbox"
+            disabled={defaultType !== 'todo'}
+            {...register('blocked')}
+          />
         </label>
       </div>
       <input
