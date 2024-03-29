@@ -126,6 +126,11 @@ export const KanbanPage: FunctionComponent = () => {
     toggleSidePanel(contentID);
   };
 
+  const onDeleteTicket = (ticketId: string) => {
+    dispatchTicketList({ type: 'DELETE-TICKET', payload: ticketId });
+    toggleSidePanel(contentID);
+  };
+
   const onClickOnEditTicket = (ticketId: string) => {
     toggleSidePanelWithTicketInfo('editTicket', ticketId);
   };
@@ -369,7 +374,8 @@ export const KanbanPage: FunctionComponent = () => {
           )}
           {contentID === 'viewTicket' && sidePanelTicket !== undefined && (
             <TicketView
-              onClick={onClickOnEditTicket}
+              onClickOnEditButton={onClickOnEditTicket}
+              onClickOnDeleteButton={onDeleteTicket}
               ticket={sidePanelTicket}
               assigne={userList.find(
                 (user) => user.id === sidePanelTicket.assigneId
