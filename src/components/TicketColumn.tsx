@@ -55,6 +55,7 @@ export const TicketColumn: FunctionComponent<TicketColumnProps> = ({
 
   return (
     <div className="flex-1 flex flex-col bg-base-200 place-items-center min-w-60 h-full rounded-box overflow-hidden pt-5">
+      <h1 className="capitalize text-xl font-medium mb-4">{type}</h1>
       <Droppable droppableId={type} isDropDisabled={isDropDisabled}>
         {(provided: DroppableProvided) => (
           <ul
