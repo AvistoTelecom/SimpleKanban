@@ -219,7 +219,7 @@ export const EditTicketForm: FunctionComponent<EditTicketFormProps> = ({
           >
             <option value={''}>None</option>
             {userList.map((user, index) => (
-              <option key={index} value={user.name}>
+              <option key={index} value={user.id}>
                 {user.name}
               </option>
             ))}
@@ -235,11 +235,16 @@ export const EditTicketForm: FunctionComponent<EditTicketFormProps> = ({
             {...register('parentId')}
           >
             <option value={''}>None</option>
-            {ticketList.map((ticket, index) => (
-              <option key={index} value={ticket.id}>
-                {ticket.name}
-              </option>
-            ))}
+            {ticketList.map((currentTicket, index) => {
+              if (ticket.id === currentTicket.id) {
+                return null;
+              }
+              return (
+                <option key={index} value={ticket.id}>
+                  {ticket.name}
+                </option>
+              );
+            })}
           </select>
         </label>
 
@@ -252,11 +257,16 @@ export const EditTicketForm: FunctionComponent<EditTicketFormProps> = ({
             {...register('childId')}
           >
             <option value={''}>None</option>
-            {ticketList.map((ticket, index) => (
-              <option key={index} value={ticket.id}>
-                {ticket.name}
-              </option>
-            ))}
+            {ticketList.map((currentTicket, index) => {
+              if (ticket.id === currentTicket.id) {
+                return null;
+              }
+              return (
+                <option key={index} value={ticket.id}>
+                  {ticket.name}
+                </option>
+              );
+            })}
           </select>
         </label>
         <label className="label cursor-pointer form-control mt-2 flex-row">
