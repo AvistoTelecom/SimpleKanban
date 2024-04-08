@@ -171,11 +171,16 @@ export const EditTicketForm: FunctionComponent<EditTicketFormProps> = ({
             {...register('parentId')}
           >
             <option value={''}>None</option>
-            {ticketList.map((ticket, index) => (
-              <option key={index} value={ticket.id}>
-                {ticket.name}
-              </option>
-            ))}
+            {ticketList.map((currentTicket, index) => {
+              if (ticket.id === currentTicket.id) {
+                return null;
+              }
+              return (
+                <option key={index} value={ticket.id}>
+                  {ticket.name}
+                </option>
+              );
+            })}
           </select>
         </label>
 
@@ -188,11 +193,16 @@ export const EditTicketForm: FunctionComponent<EditTicketFormProps> = ({
             {...register('childId')}
           >
             <option value={''}>None</option>
-            {ticketList.map((ticket, index) => (
-              <option key={index} value={ticket.id}>
-                {ticket.name}
-              </option>
-            ))}
+            {ticketList.map((currentTicket, index) => {
+              if (ticket.id === currentTicket.id) {
+                return null;
+              }
+              return (
+                <option key={index} value={ticket.id}>
+                  {ticket.name}
+                </option>
+              );
+            })}
           </select>
         </label>
 
