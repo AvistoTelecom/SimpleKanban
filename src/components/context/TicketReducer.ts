@@ -24,7 +24,7 @@ const addTicket = (newTicket: CreateTicket) => {
 };
 
 const updateTicket = (newTicket: Ticket) => {
-  LocalStorage.updateTicket(newTicket);
+  LocalStorage.updateTicketAndRelations(newTicket);
   return getTicketList();
 };
 

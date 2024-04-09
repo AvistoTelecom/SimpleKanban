@@ -246,8 +246,12 @@ export class LocalStorage {
       newTicketId = this.addDoneTicket(ticketToAdd);
     }
 
-    // TODO : update child & parent id
-
+    if (ticketToAdd.childId) {
+      this.updateChildRelation(newTicketId, ticketToAdd.childId);
+    }
+    if (ticketToAdd.parentId) {
+      this.updateParentRelation(newTicketId, ticketToAdd.parentId);
+    }
     return newTicketId;
   };
 
@@ -292,39 +296,15 @@ export class LocalStorage {
     return uuid;
   };
 
-  /*static updateChildRelation = (ticketId: string, parentTicketId: string) => {
-    const ticket = this.getTicket(ticketId);
-    const parentTicket = this.getTicket(parentTicketId);
-    if (!ticket || !parentTicket) {
-      return;
-    }
-
-    if(parentTicket.childId){
-      ticket
-      return;
-    }
-
-    parentTicket.childId = ticketId;
-
-    // Update parent ticket
-    if (isTodoTicket(parentTicket)) {
-      this.updateTodoTicket(parentTicket);
-    }
-
-    if (isInProgressTicket(parentTicket)) {
-      this.updateInProgessTicket(parentTicket);
-    }
-
-    if (isDoneTicket(parentTicket)) {
-      this.updateDoneTicket(parentTicket);
-    }
-  };*/
-
   static deleteTicket = (ticketId: string) => {
     const ticket = this.getTicket(ticketId);
     if (!ticket) {
       return;
     }
+
+    this.clearParentsRelation(ticket);
+    this.clearChildsRelation(ticket);
+
     if (isTodoTicket(ticket)) {
       this.deleteTodoTicket(ticketId);
     }
@@ -334,8 +314,61 @@ export class LocalStorage {
     if (isDoneTicket(ticket)) {
       this.deleteDoneTicket(ticketId);
     }
+  };
 
-    // TODO : update child & parentid
+  private static clearParentsRelation = (ticket: Ticket) => {
+    if (!ticket.parentId) {
+      return;
+    }
+    const previousParent = this.getTicket(ticket.parentId);
+    if (!previousParent) {
+      return;
+    }
+    previousParent.childId = undefined;
+    this.updateTicket(previousParent);
+  };
+
+  private static clearChildsRelation = (ticket: Ticket) => {
+    if (!ticket.childId) {
+      return;
+    }
+    const previousChild = this.getTicket(ticket.childId);
+    if (!previousChild) {
+      return;
+    }
+    previousChild.parentId = undefined;
+    this.updateTicket(previousChild);
+  };
+
+  private static updateParentRelation = (
+    ticketId: string,
+    parentId: string
+  ) => {
+    const ticket = this.getTicket(ticketId);
+    const parentTicket = this.getTicket(parentId);
+    if (!ticket || !parentTicket) {
+      return;
+    }
+    this.clearChildsRelation(parentTicket);
+    this.clearParentsRelation(ticket);
+    ticket.parentId = parentId;
+    parentTicket.childId = ticket.id;
+    this.updateTicket(parentTicket);
+    this.updateTicket(ticket);
+  };
+
+  private static updateChildRelation = (ticketId: string, childId: string) => {
+    const ticket = this.getTicket(ticketId);
+    const childTicket = this.getTicket(childId);
+    if (!ticket || !childTicket) {
+      return;
+    }
+    this.clearParentsRelation(childTicket);
+    this.clearChildsRelation(ticket);
+    ticket.childId = childTicket.id;
+    childTicket.parentId = ticket.id;
+    this.updateTicket(childTicket);
+    this.updateTicket(ticket);
   };
 
   static deleteTodoTicket = (ticketId: string) => {
@@ -362,6 +395,27 @@ export class LocalStorage {
     this.setDoneTicketList(updatedTicketList);
   };
 
+  static updateTicketAndRelations = (ticket: Ticket) => {
+    const ticketFromStorage = this.getTicket(ticket.id);
+    if (!ticketFromStorage) {
+      return;
+    }
+    if (ticket.childId) {
+      console.log('updating child relation');
+      this.updateChildRelation(ticket.id, ticket.childId);
+    } else {
+      this.clearChildsRelation(ticketFromStorage);
+    }
+
+    if (ticket.parentId) {
+      console.log('updating parent relation');
+      this.updateParentRelation(ticket.id, ticket.parentId);
+    } else {
+      this.clearParentsRelation(ticketFromStorage);
+    }
+    this.updateTicket(ticket);
+  };
+
   static updateTicket = (ticket: Ticket) => {
     if (isTodoTicket(ticket)) {
       this.updateTodoTicket(ticket);
@@ -374,8 +428,6 @@ export class LocalStorage {
     if (isDoneTicket(ticket)) {
       this.updateDoneTicket(ticket);
     }
-
-    // TODO : update child & parentid
   };
 
   static updateTodoTicket = (ticket: TodoTicket) => {
