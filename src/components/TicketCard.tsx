@@ -6,6 +6,7 @@ import { getTextColor } from '../utils/color.utils';
 import { Draggable, DraggableProvided } from 'react-beautiful-dnd';
 import { SidePanelContent } from './KanbanPage';
 import { TicketCardStatus } from '../model/TicketCardStatus';
+import { BlockedIcon } from './icons/BlockedIcon';
 
 type TicketCardProps = {
   index: number;
@@ -83,11 +84,12 @@ export const TicketCard: FunctionComponent<TicketCardProps> = ({
               <h2 className="card-title flex-auto mr-2 line-clamp-1 break-words">
                 {ticket.name}
               </h2>
+              {ticket.blocked && <BlockedIcon />}
               {tag && (
                 <div
                   style={tagStyle}
                   className={
-                    'width-full badge badge-lg line-clamp-1 break-words leading-tight'
+                    'width-full badge badge-lg line-clamp-1 break-words leading-tight ml-2'
                   }
                 >
                   <p style={textTagStyle}>{tag.name}</p>

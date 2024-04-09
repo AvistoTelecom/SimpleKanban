@@ -8,7 +8,7 @@ import { TicketColumn } from './TicketColumn';
 import { AddTicketForm } from './forms/AddTicketForm';
 import { TicketContext, TicketContextType } from './context/TicketContext';
 import { CreateTicket } from '../model/CreateTicket';
-import { DragDropContext, DropResult } from 'react-beautiful-dnd';
+import { DragDropContext, DragStart, DropResult } from 'react-beautiful-dnd';
 import { Ticket } from '../model/Ticket';
 import { TicketView } from './TicketDetails';
 import { EditTicketForm } from './forms/EditTicketForm';
@@ -35,6 +35,8 @@ export const KanbanPage: FunctionComponent = () => {
   const [sidePanelTicket, setSidePanelTicket] = useState<Ticket>();
 
   const [focusedTicket, setFocusTicket] = useState<Ticket | null>(null);
+
+  const [isDropDisabled, setIsDropDisabled] = useState<boolean>(false);
 
   const { userList, dispatchUserList } =
     useContext<UserContextType>(UserContext);
@@ -123,6 +125,11 @@ export const KanbanPage: FunctionComponent = () => {
 
   const onEditTicket = (ticket: Ticket) => {
     dispatchTicketList({ type: 'UPDATE-TICKET', payload: ticket });
+    toggleSidePanel(contentID);
+  };
+
+  const onDeleteTicket = (ticketId: string) => {
+    dispatchTicketList({ type: 'DELETE-TICKET', payload: ticketId });
     toggleSidePanel(contentID);
   };
 
@@ -287,7 +294,10 @@ export const KanbanPage: FunctionComponent = () => {
         }
       >
         <KanbanArea>
-          <DragDropContext onDragEnd={onDragEnd}>
+          <DragDropContext
+            onDragEnd={onDragEnd}
+            onBeforeDragStart={onBeforeDragStart}
+          >
             <TicketColumn
               type="todo"
               focusedTicket={focusedTicket}
@@ -309,6 +319,7 @@ export const KanbanPage: FunctionComponent = () => {
               ticketList={inProgressTicketList}
               userList={userList}
               tagList={tagList}
+              isDropDisabled={isDropDisabled}
             />
             <TicketColumn
               type="done"
@@ -320,6 +331,7 @@ export const KanbanPage: FunctionComponent = () => {
               ticketList={doneTicketList}
               userList={userList}
               tagList={tagList}
+              isDropDisabled={isDropDisabled}
             />
           </DragDropContext>
         </KanbanArea>
@@ -356,7 +368,8 @@ export const KanbanPage: FunctionComponent = () => {
           )}
           {contentID === 'viewTicket' && sidePanelTicket !== undefined && (
             <TicketView
-              onClick={onClickOnEditTicket}
+              onClickOnEditButton={onClickOnEditTicket}
+              onClickOnDeleteButton={onDeleteTicket}
               ticket={sidePanelTicket}
               assigne={userList.find(
                 (user) => user.id === sidePanelTicket.assigneId

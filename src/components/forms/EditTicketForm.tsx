@@ -6,7 +6,6 @@ import {
   isInProgressTicket,
   isTodoTicket,
 } from '../../model/TicketsFunctions';
-import { ColumnType } from '../KanbanPage';
 import { InProgressTicket } from '../../model/InProgressTicket';
 import { DoneTicket } from '../../model/DoneTicket';
 import { User } from '../../model/User';
@@ -28,7 +27,6 @@ type FormInputs = {
   description: string;
   parentId?: string;
   childId?: string;
-  type: string;
   blocked: boolean;
 };
 
@@ -39,13 +37,6 @@ export const EditTicketForm: FunctionComponent<EditTicketFormProps> = ({
   ticket,
   onEditTicket,
 }) => {
-  let ticketType: ColumnType = 'todo';
-  if (isDoneTicket(ticket)) {
-    ticketType = 'done';
-  }
-  if (isInProgressTicket(ticket)) {
-    ticketType = 'inProgress';
-  }
   const { register, handleSubmit } = useForm<FormInputs>({
     defaultValues: {
       name: ticket.name,
@@ -55,13 +46,11 @@ export const EditTicketForm: FunctionComponent<EditTicketFormProps> = ({
       description: ticket.description,
       parentId: ticket.parentId,
       childId: ticket.childId,
-      type: ticketType,
       blocked: ticket.blocked,
     },
   });
 
   const onSubmit: SubmitHandler<FormInputs> = (formData) => {
-    const date = new Date();
     const newTicket: Ticket = {
       id: ticket.id,
       name: formData.name,
@@ -75,61 +64,27 @@ export const EditTicketForm: FunctionComponent<EditTicketFormProps> = ({
       blocked: formData.blocked,
     };
 
-    switch (formData.type) {
-      case 'todo':
-        onEditTicket(newTicket);
-        break;
-      case 'inProgress': {
-        if (isDoneTicket(ticket) || isInProgressTicket(ticket)) {
-          const inProgressTicket: InProgressTicket = {
-            ...newTicket,
-            startDate: ticket.startDate,
-            blocked: false,
-          };
-          onEditTicket(inProgressTicket);
-          return;
-        }
-        const inProgressTicket: InProgressTicket = {
-          ...newTicket,
-          startDate: date,
-          blocked: false,
-        };
-        onEditTicket(inProgressTicket);
-        break;
-      }
-      case 'done': {
-        if (isDoneTicket(ticket)) {
-          const doneTicket: DoneTicket = {
-            ...newTicket,
-            startDate: ticket.startDate,
-            endDate: ticket.endDate,
-            blocked: false,
-          };
-          onEditTicket(doneTicket);
-          return;
-        }
-        if (isInProgressTicket(ticket)) {
-          const doneTicket: DoneTicket = {
-            ...newTicket,
-            startDate: ticket.startDate,
-            endDate: date,
-            blocked: false,
-          };
-          onEditTicket(doneTicket);
-          return;
-        }
-        const doneTicket: DoneTicket = {
-          ...newTicket,
-          startDate: date,
-          endDate: date,
-          blocked: false,
-        };
-        onEditTicket(doneTicket);
-        break;
-      }
-      default:
-        return;
+    if (isInProgressTicket(ticket)) {
+      const inProgressTicket: InProgressTicket = {
+        ...newTicket,
+        startDate: ticket.startDate,
+        blocked: false,
+      };
+      onEditTicket(inProgressTicket);
     }
+
+    if (isDoneTicket(ticket)) {
+      const doneTicket: DoneTicket = {
+        ...newTicket,
+        startDate: ticket.startDate,
+        endDate: ticket.endDate,
+        blocked: false,
+      };
+      onEditTicket(doneTicket);
+      return;
+    }
+
+    onEditTicket(newTicket);
   };
 
   return (
@@ -189,25 +144,6 @@ export const EditTicketForm: FunctionComponent<EditTicketFormProps> = ({
             {...register('storyPoint')}
           />
         </label>
-        <label className="form-control w-full">
-          <div className="label">
-            <span className="label-text">Ticket type :</span>
-          </div>
-          <select
-            className="select select-bordered w-full"
-            {...register('type')}
-          >
-            <option key={'todo'} value={'todo'}>
-              Todo
-            </option>
-            <option key={'inProgress'} value={'inProgress'}>
-              In progress
-            </option>
-            <option key={'done'} value={'done'}>
-              Done
-            </option>
-          </select>
-        </label>
 
         <label className="form-control w-full">
           <div className="label">
@@ -219,7 +155,7 @@ export const EditTicketForm: FunctionComponent<EditTicketFormProps> = ({
           >
             <option value={''}>None</option>
             {userList.map((user, index) => (
-              <option key={index} value={user.name}>
+              <option key={index} value={user.id}>
                 {user.name}
               </option>
             ))}
@@ -235,11 +171,16 @@ export const EditTicketForm: FunctionComponent<EditTicketFormProps> = ({
             {...register('parentId')}
           >
             <option value={''}>None</option>
-            {ticketList.map((ticket, index) => (
-              <option key={index} value={ticket.id}>
-                {ticket.name}
-              </option>
-            ))}
+            {ticketList.map((currentTicket, index) => {
+              if (ticket.id === currentTicket.id) {
+                return null;
+              }
+              return (
+                <option key={index} value={ticket.id}>
+                  {ticket.name}
+                </option>
+              );
+            })}
           </select>
         </label>
 
@@ -252,14 +193,20 @@ export const EditTicketForm: FunctionComponent<EditTicketFormProps> = ({
             {...register('childId')}
           >
             <option value={''}>None</option>
-            {ticketList.map((ticket, index) => (
-              <option key={index} value={ticket.id}>
-                {ticket.name}
-              </option>
-            ))}
+            {ticketList.map((currentTicket, index) => {
+              if (ticket.id === currentTicket.id) {
+                return null;
+              }
+              return (
+                <option key={index} value={ticket.id}>
+                  {ticket.name}
+                </option>
+              );
+            })}
           </select>
         </label>
-        <label className="label cursor-pointer form-control mt-2 flex-row">
+
+        <label className="label cursor-pointer form-control mt-9 flex-row">
           <span className="label-text">Blocked : </span>
           <input
             type="checkbox"

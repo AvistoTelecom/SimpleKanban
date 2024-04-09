@@ -5,6 +5,7 @@ import { getTextColor } from '../utils/color.utils';
 import { Tag } from '../model/Tag';
 import { User } from '../model/User';
 import { EditIcon } from './icons/EditIcon';
+import { SmallTrashIcon } from './icons/TrashIcon';
 
 type TicketViewProps = {
   ticket: Ticket;
@@ -12,7 +13,8 @@ type TicketViewProps = {
   assigne?: User;
   childTicket?: Ticket;
   parentTicket?: Ticket;
-  onClick: (ticketId: string) => void;
+  onClickOnEditButton: (ticketId: string) => void;
+  onClickOnDeleteButton: (ticketId: string) => void;
 };
 
 export const TicketView: FunctionComponent<TicketViewProps> = ({
@@ -21,10 +23,15 @@ export const TicketView: FunctionComponent<TicketViewProps> = ({
   assigne,
   parentTicket,
   childTicket,
-  onClick,
+  onClickOnEditButton,
+  onClickOnDeleteButton,
 }) => {
   const onClickOnEditTicket = () => {
-    onClick(ticket.id);
+    onClickOnEditButton(ticket.id);
+  };
+
+  const onClickOnDeleteTicket = () => {
+    onClickOnDeleteButton(ticket.id);
   };
 
   const tagStyle = {
@@ -39,11 +46,20 @@ export const TicketView: FunctionComponent<TicketViewProps> = ({
     <article className="relative flex flex-col gap-4 w-full items-center p-4 overflow-y-auto max-h-full justify-between">
       <button
         type="button"
-        onClick={onClickOnEditTicket}
+        onClick={onClickOnDeleteTicket}
         className="absolute top-2 right-2 hover:text-accent hover:bg-base-200 rounded-box p-4"
+      >
+        <SmallTrashIcon />
+      </button>
+
+      <button
+        type="button"
+        onClick={onClickOnEditTicket}
+        className="absolute top-2 right-16 hover:text-accent hover:bg-base-200 rounded-box p-4"
       >
         <EditIcon />
       </button>
+
       <h2 className="text-xl font-semibold dark:text-white">{ticket.name}</h2>
       {tag && (
         <div

@@ -24,7 +24,7 @@ type FormInputs = {
   description: string;
   parentId?: string;
   childId?: string;
-  type: string;
+  blocked: boolean;
 };
 
 export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
@@ -43,7 +43,7 @@ export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
       description: '',
       parentId: '',
       childId: '',
-      type: defaultType,
+      blocked: false,
     },
   });
 
@@ -58,15 +58,15 @@ export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
       parentId: formData.parentId === '' ? undefined : formData.parentId,
       childId: formData.childId === '' ? undefined : formData.childId,
       creationDate: date,
-      blocked: false,
+      blocked: formData.blocked,
     };
 
-    if (formData.type === 'todo') {
+    if (defaultType === 'todo') {
       onAddTicket(newTicket);
       return;
     }
 
-    if (formData.type === 'inProgress') {
+    if (defaultType === 'inProgress') {
       const inProgressTicket: CreateInProgressTicket = {
         ...newTicket,
         startDate: date,
@@ -76,7 +76,7 @@ export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
       return;
     }
 
-    if (formData.type === 'done') {
+    if (defaultType === 'done') {
       const doneTicket: CreateDoneTicket = {
         ...newTicket,
         startDate: date,
@@ -143,25 +143,6 @@ export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
             {...register('storyPoint')}
           />
         </label>
-        <label className="form-control w-full">
-          <div className="label">
-            <span className="label-text">Ticket type :</span>
-          </div>
-          <select
-            className="select select-bordered w-full"
-            {...register('type')}
-          >
-            <option key={'todo'} value={'todo'}>
-              Todo
-            </option>
-            <option key={'inProgress'} value={'inProgress'}>
-              In progress
-            </option>
-            <option key={'done'} value={'done'}>
-              Done
-            </option>
-          </select>
-        </label>
 
         <label className="form-control w-full">
           <div className="label">
@@ -212,6 +193,15 @@ export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
               </option>
             ))}
           </select>
+        </label>
+        <label className="label cursor-pointer form-control mt-9 flex-row">
+          <span className="label-text">Blocked : </span>
+          <input
+            type="checkbox"
+            className="checkbox"
+            disabled={defaultType !== 'todo'}
+            {...register('blocked')}
+          />
         </label>
       </div>
       <input
