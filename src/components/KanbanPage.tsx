@@ -137,6 +137,17 @@ export const KanbanPage: FunctionComponent = () => {
     toggleSidePanelWithTicketInfo('editTicket', ticketId);
   };
 
+  const onBeforeDragStart = (result: DragStart) => {
+    const { source } = result;
+    const sourceColumn = source.droppableId;
+    if (sourceColumn !== 'todo') {
+      setIsDropDisabled(false);
+      return;
+    }
+    const movingTicket = todoTicketList.at(source.index);
+    setIsDropDisabled(movingTicket?.blocked ?? false);
+  };
+
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
     if (!destination) {

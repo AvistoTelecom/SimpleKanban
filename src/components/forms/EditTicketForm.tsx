@@ -62,6 +62,7 @@ export const EditTicketForm: FunctionComponent<EditTicketFormProps> = ({
       childId: formData.childId === '' ? undefined : formData.childId,
       creationDate: ticket.creationDate,
       blocked: formData.blocked,
+      yIndex: ticket.yIndex,
     };
 
     if (isInProgressTicket(ticket)) {
@@ -176,8 +177,8 @@ export const EditTicketForm: FunctionComponent<EditTicketFormProps> = ({
                 return null;
               }
               return (
-                <option key={index} value={ticket.id}>
-                  {ticket.name}
+                <option key={index} value={currentTicket.id}>
+                  {currentTicket.name}
                 </option>
               );
             })}
@@ -198,8 +199,8 @@ export const EditTicketForm: FunctionComponent<EditTicketFormProps> = ({
                 return null;
               }
               return (
-                <option key={index} value={ticket.id}>
-                  {ticket.name}
+                <option key={index} value={currentTicket.id}>
+                  {currentTicket.name}
                 </option>
               );
             })}

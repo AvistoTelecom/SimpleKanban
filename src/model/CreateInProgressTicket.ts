@@ -1,3 +1,3 @@
 import { InProgressTicket } from './InProgressTicket';
 
-export type CreateInProgressTicket = Omit<InProgressTicket, 'id'>;
+export type CreateInProgressTicket = Omit<InProgressTicket, 'id' | 'yIndex'>;
