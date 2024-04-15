@@ -304,7 +304,6 @@ export class LocalStorage {
 
     this.clearParentsRelation(ticket);
     this.clearChildsRelation(ticket);
-
     if (isTodoTicket(ticket)) {
       this.deleteTodoTicket(ticketId);
     }
@@ -411,7 +410,7 @@ export class LocalStorage {
 
   static readonly deleteDoneTicket = (ticketId: string) => {
     const ticketList = this.getDoneTicketList();
-    const ticket = this.getInProgressTicket(ticketId);
+    const ticket = this.getDoneTicket(ticketId);
     if (!ticket) {
       return;
     }
