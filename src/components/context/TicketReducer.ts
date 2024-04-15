@@ -24,7 +24,8 @@ const addTicket = (newTicket: CreateTicket) => {
 };
 
 const updateTicket = (newTicket: Ticket) => {
-  LocalStorage.updateTicketAndRelations(newTicket);
+  LocalStorage.updateTicket(newTicket);
+  LocalStorage.updateTicketsRelations(newTicket);
   return getTicketList();
 };
 
@@ -64,7 +65,7 @@ const setDoneToInProgress = (ticketId: string, destinationIndex: number) => {
 };
 
 const reorderTodoList = (sourceIndex: number, destinationIndex: number) => {
-  LocalStorage.moveTodoInPlace(sourceIndex, destinationIndex);
+  LocalStorage.changeTodoTicketPosition(sourceIndex, destinationIndex);
   return getTicketList();
 };
 
@@ -72,12 +73,12 @@ const reorderInProgressList = (
   sourceIndex: number,
   destinationIndex: number
 ) => {
-  LocalStorage.moveInProgressInPlace(sourceIndex, destinationIndex);
+  LocalStorage.changeInProgressTicketPosition(sourceIndex, destinationIndex);
   return getTicketList();
 };
 
 const reorderDoneList = (sourceIndex: number, destinationIndex: number) => {
-  LocalStorage.moveDoneInPlace(sourceIndex, destinationIndex);
+  LocalStorage.changeDoneTicketPosition(sourceIndex, destinationIndex);
   return getTicketList();
 };
 

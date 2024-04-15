@@ -72,6 +72,7 @@ export const EditTicketForm: FunctionComponent<EditTicketFormProps> = ({
         blocked: false,
       };
       onEditTicket(inProgressTicket);
+      return;
     }
 
     if (isDoneTicket(ticket)) {

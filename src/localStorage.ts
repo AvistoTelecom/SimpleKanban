@@ -135,10 +135,10 @@ export class LocalStorage {
     });
     this.setDoneTicketList(doneTicketList);
 
-    const filteredTaList = storedUserList.filter(
+    const filteredTagList = storedUserList.filter(
       (currTag: Tag) => currTag.name !== tagName
     );
-    this.setTagList(filteredTaList);
+    this.setTagList(filteredTagList);
   };
 
   static readonly updateTag = (tagName: string, newTag: Tag) => {
@@ -427,11 +427,12 @@ export class LocalStorage {
     );
   };
 
-  static readonly updateTicketAndRelations = (ticket: Ticket) => {
+  static readonly updateTicketsRelations = (ticket: Ticket) => {
     const ticketFromStorage = this.getTicket(ticket.id);
     if (!ticketFromStorage) {
       return;
     }
+
     if (ticket.childId) {
       this.updateChildRelation(ticket.id, ticket.childId);
     } else {
@@ -443,7 +444,6 @@ export class LocalStorage {
     } else {
       this.clearParentsRelation(ticketFromStorage);
     }
-    this.updateTicket(ticket);
   };
 
   static readonly updateTicket = (ticket: Ticket) => {
@@ -521,7 +521,7 @@ export class LocalStorage {
     );
   };
 
-  static readonly moveTodoInPlace = (
+  static readonly changeTodoTicketPosition = (
     sourceIndex: number,
     destinationIndex: number
   ) => {
@@ -539,7 +539,7 @@ export class LocalStorage {
     this.setTodoTicketList(updatedTicketList);
   };
 
-  static readonly moveInProgressInPlace = (
+  static readonly changeInProgressTicketPosition = (
     sourceIndex: number,
     destinationIndex: number
   ) => {
@@ -559,7 +559,7 @@ export class LocalStorage {
     this.setInProgressTicketList(updatedTicketList);
   };
 
-  static readonly moveDoneInPlace = (
+  static readonly changeDoneTicketPosition = (
     sourceIndex: number,
     destinationIndex: number
   ) => {
