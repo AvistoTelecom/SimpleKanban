@@ -13,7 +13,7 @@ import {
 import { CreateTicket } from '../../shared/types/create-ticket.type';
 import { DragDropContext, DragStart, DropResult } from 'react-beautiful-dnd';
 import { Ticket } from '../../shared/types/ticket.type';
-import { TicketView } from './side-panel/ticket-details';
+import { TicketView } from './side-panel/ticket-details/ticket-details';
 import { EditTicketForm } from './side-panel/edit-ticket-form/edit-ticket-form';
 import { UserContext, UserContextType } from './context/user/user-context';
 import { CreateUser } from '../../shared/types/create-user.type';
