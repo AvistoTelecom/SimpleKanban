@@ -1,6 +1,5 @@
 import { FunctionComponent } from 'react';
 import { UsersTableEntry } from './UsersTableEntry';
-import { UsersTableHeader } from './UsersTableHeader';
 import { UsersTableCreateRow } from './UsersTableCreateRow';
 import { User } from '../../../model/User';
 import { CreateUser } from '../../../model/CreateUser';
@@ -21,7 +20,13 @@ export const UsersTable: FunctionComponent<UsersTableProps> = ({
   return (
     <div className="overflow-y-auto h-full">
       <table className="table table-zebra table-pin-rows">
-        <UsersTableHeader />
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Profile Picture</th>
+            <th></th>
+          </tr>
+        </thead>
         <tbody>
           {userList.map((user: User) => (
             <UsersTableEntry

@@ -1,5 +1,4 @@
 import { FunctionComponent } from 'react';
-import { TagsTableHeader } from './TagsTableHeader';
 import { TagsTableEntry } from './TagsTableEntry';
 import { TagsTableCreateRow } from './TagsTableCreateRow';
 import { Tag } from '../../../model/Tag';
@@ -20,7 +19,13 @@ export const TagsTable: FunctionComponent<TagsTableProps> = ({
   return (
     <div className="overflow-y-auto h-full">
       <table className="table table-zebra table-pin-rows">
-        <TagsTableHeader />
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Color</th>
+            <th></th>
+          </tr>
+        </thead>
         <tbody>
           {tagList.map((tag: Tag) => (
             <TagsTableEntry
