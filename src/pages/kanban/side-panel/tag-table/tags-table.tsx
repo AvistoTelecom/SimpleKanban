@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react';
-import { TagsTableEntry } from './tags-table-entry';
-import { TagsTableCreateRow } from './tags-table-create-row';
+import { TagsTableEntry } from './tags-table-entry/tags-table-entry';
+import { TagsTableCreateRow } from './tags-table-create-row/tags-table-create-row';
 import { Tag } from '../../../../shared/types/tag.type';
 
 type TagsTableProps = {

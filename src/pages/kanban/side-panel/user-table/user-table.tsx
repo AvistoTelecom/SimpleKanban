@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react';
-import { UsersTableEntry } from './users-table-entry';
-import { UsersTableCreateRow } from './users-table-create-row';
+import { UsersTableEntry } from './user-table-entry/user-table-entry';
+import { UsersTableCreateRow } from './user-table-create-row/user-table-create-row';
 import { User } from '../../../../shared/types/user.type';
 import { CreateUser } from '../../../../shared/types/create-user.type';
 

@@ -2,8 +2,8 @@ import { FunctionComponent, useState, useContext } from 'react';
 import { KanbanArea } from './kanban-area/kanban-area';
 import { SidePanel } from './side-panel/side-panel';
 import { NavBar } from '../../components/navbar/navbar';
-import { TagsTable } from './side-panel/tags-table/tags-table';
-import { UsersTable } from './side-panel/users-table/users-table';
+import { TagsTable } from './side-panel/tag-table/tags-table';
+import { UsersTable } from './side-panel/user-table/user-table';
 import { TicketColumn } from './kanban-area/ticket-column/ticket-column';
 import { AddTicketForm } from './side-panel/add-ticket-form/add-ticket-form';
 import {
@@ -13,7 +13,7 @@ import {
 import { CreateTicket } from '../../shared/types/create-ticket.type';
 import { DragDropContext, DragStart, DropResult } from 'react-beautiful-dnd';
 import { Ticket } from '../../shared/types/ticket.type';
-import { TicketView } from './side-panel/ticket-details/ticket-details';
+import { TicketView } from './side-panel/ticket-detail/ticket-detail';
 import { EditTicketForm } from './side-panel/edit-ticket-form/edit-ticket-form';
 import { UserContext, UserContextType } from './context/user/user-context';
 import { CreateUser } from '../../shared/types/create-user.type';
