@@ -1,0 +1,32 @@
+import { FunctionComponent, PropsWithChildren } from 'react';
+import { XMarkIcon } from '../../../components/x-mark-icon/x-mark-icon';
+
+type SidePanelProps = {
+  isOpen: boolean;
+  closePanel: () => void;
+};
+
+export const SidePanel: FunctionComponent<
+  PropsWithChildren<SidePanelProps>
+> = ({ children, isOpen, closePanel }) => {
+  return (
+    <div
+      className={
+        'flex flex-col transition-width duration-300 ease-out h-full bg-base-100 ' +
+        (isOpen ? 'w-full rounded-box p-2' : 'w-0')
+      }
+    >
+      <button
+        type="button"
+        className={
+          'btn btn-square hover:text-error' + (isOpen ? '' : ' hidden')
+        }
+        title="Close"
+        onClick={closePanel}
+      >
+        <XMarkIcon />
+      </button>
+      {children}
+    </div>
+  );
+};
