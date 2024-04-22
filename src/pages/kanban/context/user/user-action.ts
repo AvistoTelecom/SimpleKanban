@@ -1,5 +1,5 @@
-import { CreateUser } from '../../../../shared/types/create-user.type';
-import { User } from '../../../../shared/types/user.type';
+import { CreateUser } from '../../../../types/create-user.type';
+import { User } from '../../../../types/user.type';
 
 export type UserAction =
   | { type: 'ADD-USER'; payload: CreateUser }

@@ -1,11 +1,11 @@
 import { FunctionComponent } from 'react';
-import { Ticket } from '../../../../../shared/types/ticket.type';
-import { User } from '../../../../../shared/types/user.type';
-import { Tag } from '../../../../../shared/types/tag.type';
-import { getTextColor } from '../../../../../shared/utils/color.utils';
+import { Ticket } from '../../../../../types/ticket.type';
+import { User } from '../../../../../types/user.type';
+import { Tag } from '../../../../../types/tag.type';
+import { getTextColor } from '../../../../../utils/color.utils';
 import { Draggable, DraggableProvided } from 'react-beautiful-dnd';
 import { SidePanelContent } from '../../../kanban-page';
-import { TicketCardStatus } from '../../../../../shared/types/ticket-card-status.type';
+import { TicketCardStatus } from '../../../../../types/ticket-card-status.type';
 import { BlockedIcon } from '../../../../../components/blocked-icon/blocked-icon';
 
 type TicketCardProps = {

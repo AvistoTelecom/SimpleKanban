@@ -1,12 +1,12 @@
 import { FunctionComponent } from 'react';
-import { CreateTicket } from '../../../../shared/types/create-ticket.type';
-import { User } from '../../../../shared/types/user.type';
-import { Tag } from '../../../../shared/types/tag.type';
+import { CreateTicket } from '../../../../types/create-ticket.type';
+import { User } from '../../../../types/user.type';
+import { Tag } from '../../../../types/tag.type';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { CreateInProgressTicket } from '../../../../shared/types/create-in-progress-ticket.type';
-import { CreateDoneTicket } from '../../../../shared/types/create-done-ticket.type';
-import { Ticket } from '../../../../shared/types/ticket.type';
-import { ColumnType } from '../../../../shared/types/column-type.type';
+import { CreateInProgressTicket } from '../../../../types/create-in-progress-ticket.type';
+import { CreateDoneTicket } from '../../../../types/create-done-ticket.type';
+import { Ticket } from '../../../../types/ticket.type';
+import { ColumnType } from '../../../../types/column-type.type';
 
 type AddTicketFormProps = {
   userList: User[];

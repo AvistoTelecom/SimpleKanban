@@ -1,6 +1,6 @@
-import { LocalStorage } from '../../../../shared/utils/localStorage.utils';
-import { CreateUser } from '../../../../shared/types/create-user.type';
-import { User } from '../../../../shared/types/user.type';
+import { LocalStorage } from '../../../../utils/localStorage.utils';
+import { CreateUser } from '../../../../types/create-user.type';
+import { User } from '../../../../types/user.type';
 import { UserAction } from './user-action';
 
 const addUser = (newUser: CreateUser): User[] => {

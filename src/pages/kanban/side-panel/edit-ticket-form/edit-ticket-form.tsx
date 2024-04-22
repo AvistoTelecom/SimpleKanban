@@ -1,15 +1,15 @@
 import { FunctionComponent } from 'react';
-import { Ticket } from '../../../../shared/types/ticket.type';
+import { Ticket } from '../../../../types/ticket.type';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   isDoneTicket,
   isInProgressTicket,
   isTodoTicket,
-} from '../../../../shared/utils/tickets-functions.utils';
-import { InProgressTicket } from '../../../../shared/types/in-progress-ticket.type';
-import { DoneTicket } from '../../../../shared/types/done-ticket.type';
-import { User } from '../../../../shared/types/user.type';
-import { Tag } from '../../../../shared/types/tag.type';
+} from '../../../../utils/tickets-functions.utils';
+import { InProgressTicket } from '../../../../types/in-progress-ticket.type';
+import { DoneTicket } from '../../../../types/done-ticket.type';
+import { User } from '../../../../types/user.type';
+import { Tag } from '../../../../types/tag.type';
 
 type EditTicketFormProps = {
   ticket: Ticket;

@@ -10,17 +10,17 @@ import {
   TicketContext,
   TicketContextType,
 } from './context/ticket/ticket-context';
-import { CreateTicket } from '../../shared/types/create-ticket.type';
+import { CreateTicket } from '../../types/create-ticket.type';
 import { DragDropContext, DragStart, DropResult } from 'react-beautiful-dnd';
-import { Ticket } from '../../shared/types/ticket.type';
+import { Ticket } from '../../types/ticket.type';
 import { TicketView } from './side-panel/ticket-detail/ticket-detail';
 import { EditTicketForm } from './side-panel/edit-ticket-form/edit-ticket-form';
 import { UserContext, UserContextType } from './context/user/user-context';
-import { CreateUser } from '../../shared/types/create-user.type';
-import { User } from '../../shared/types/user.type';
-import { Tag } from '../../shared/types/tag.type';
+import { CreateUser } from '../../types/create-user.type';
+import { User } from '../../types/user.type';
+import { Tag } from '../../types/tag.type';
 import { TagContext, TagContextType } from './context/tag/tag-context';
-import { ColumnType } from '../../shared/types/column-type.type';
+import { ColumnType } from '../../types/column-type.type';
 
 export type SidePanelContent =
   | 'tag'

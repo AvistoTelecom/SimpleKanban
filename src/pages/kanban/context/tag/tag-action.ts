@@ -1,4 +1,4 @@
-import { Tag } from '../../../../shared/types/tag.type';
+import { Tag } from '../../../../types/tag.type';
 
 export type TagAction =
   | { type: 'ADD-TAG'; payload: Tag }

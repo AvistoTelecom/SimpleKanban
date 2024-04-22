@@ -1,5 +1,5 @@
-import { LocalStorage } from '../../../../shared/utils/localStorage.utils';
-import { Tag } from '../../../../shared/types/tag.type';
+import { LocalStorage } from '../../../../utils/localStorage.utils';
+import { Tag } from '../../../../types/tag.type';
 import { TagAction } from './tag-action';
 
 const addTag = (newTag: Tag): Tag[] => {

@@ -2,11 +2,11 @@ import { FunctionComponent } from 'react';
 import { AddTicketButton } from './add-ticket-button/add-ticket-button';
 import { ColumnType, SidePanelContent } from '../../kanban-page';
 import { TicketCard } from './ticket-card/ticket-card';
-import { Ticket } from '../../../../shared/types/ticket.type';
+import { Ticket } from '../../../../types/ticket.type';
 import { Droppable, DroppableProvided } from 'react-beautiful-dnd';
-import { TicketCardStatus } from '../../../../shared/types/ticket-card-status.type';
-import { User } from '../../../../shared/types/user.type';
-import { Tag } from '../../../../shared/types/tag.type';
+import { TicketCardStatus } from '../../../../types/ticket-card-status.type';
+import { User } from '../../../../types/user.type';
+import { Tag } from '../../../../types/tag.type';
 
 type TicketColumnProps = {
   type: ColumnType;
