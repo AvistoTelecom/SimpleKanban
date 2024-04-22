@@ -208,7 +208,7 @@ export const KanbanPage: FunctionComponent = () => {
 
       if (destinationColumn === 'inProgress') {
         dispatchTicketList({
-          type: 'SET-TODO-TO-INPROGRESS-TICKET',
+          type: 'MOVE-TODO-TO-INPROGRESS-TICKET',
           payload: {
             ticketId: toMoveTicketId,
             destinationIndex: destination.index,
@@ -218,7 +218,7 @@ export const KanbanPage: FunctionComponent = () => {
       }
       if (destinationColumn === 'done') {
         dispatchTicketList({
-          type: 'SET-TODO-TO-DONE-TICKET',
+          type: 'MOVE-TODO-TO-DONE-TICKET',
           payload: {
             ticketId: toMoveTicketId,
             destinationIndex: destination.index,
@@ -237,7 +237,7 @@ export const KanbanPage: FunctionComponent = () => {
 
       if (destinationColumn === 'todo') {
         dispatchTicketList({
-          type: 'SET-INPROGRESS-TO-TODO-TICKET',
+          type: 'MOVE-INPROGRESS-TO-TODO-TICKET',
           payload: {
             ticketId: toMoveTicketId,
             destinationIndex: destination.index,
@@ -247,7 +247,7 @@ export const KanbanPage: FunctionComponent = () => {
       }
       if (destinationColumn === 'done') {
         dispatchTicketList({
-          type: 'SET-INPROGRESS-TO-DONE-TICKET',
+          type: 'MOVE-INPROGRESS-TO-DONE-TICKET',
           payload: {
             ticketId: toMoveTicketId,
             destinationIndex: destination.index,
@@ -266,7 +266,7 @@ export const KanbanPage: FunctionComponent = () => {
 
       if (destinationColumn === 'todo') {
         dispatchTicketList({
-          type: 'SET-DONE-TO-TODO-TICKET',
+          type: 'MOVE-DONE-TO-TODO-TICKET',
           payload: {
             ticketId: toMoveTicketId,
             destinationIndex: destination.index,
@@ -276,7 +276,7 @@ export const KanbanPage: FunctionComponent = () => {
       }
       if (destinationColumn === 'inProgress') {
         dispatchTicketList({
-          type: 'SET-DONE-TO-INPROGRESS-TICKET',
+          type: 'MOVE-DONE-TO-INPROGRESS-TICKET',
           payload: {
             ticketId: toMoveTicketId,
             destinationIndex: destination.index,

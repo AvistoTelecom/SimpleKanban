@@ -6,27 +6,27 @@ export type TicketAction =
   | { type: 'UPDATE-TICKET'; payload: Ticket }
   | { type: 'DELETE-TICKET'; payload: string }
   | {
-      type: 'SET-TODO-TO-INPROGRESS-TICKET';
+      type: 'MOVE-TODO-TO-INPROGRESS-TICKET';
       payload: { ticketId: string; destinationIndex: number };
     }
   | {
-      type: 'SET-TODO-TO-DONE-TICKET';
+      type: 'MOVE-TODO-TO-DONE-TICKET';
       payload: { ticketId: string; destinationIndex: number };
     }
   | {
-      type: 'SET-INPROGRESS-TO-TODO-TICKET';
+      type: 'MOVE-INPROGRESS-TO-TODO-TICKET';
       payload: { ticketId: string; destinationIndex: number };
     }
   | {
-      type: 'SET-INPROGRESS-TO-DONE-TICKET';
+      type: 'MOVE-INPROGRESS-TO-DONE-TICKET';
       payload: { ticketId: string; destinationIndex: number };
     }
   | {
-      type: 'SET-DONE-TO-TODO-TICKET';
+      type: 'MOVE-DONE-TO-TODO-TICKET';
       payload: { ticketId: string; destinationIndex: number };
     }
   | {
-      type: 'SET-DONE-TO-INPROGRESS-TICKET';
+      type: 'MOVE-DONE-TO-INPROGRESS-TICKET';
       payload: { ticketId: string; destinationIndex: number };
     }
   | {

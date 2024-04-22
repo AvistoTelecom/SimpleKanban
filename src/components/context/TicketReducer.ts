@@ -34,32 +34,32 @@ const deleteTicket = (ticketId: string) => {
   return getTicketList();
 };
 
-const setTodoToInProgress = (ticketId: string, destinationIndex: number) => {
+const moveTodoToInProgress = (ticketId: string, destinationIndex: number) => {
   LocalStorage.setTodoToInProgress(ticketId, destinationIndex);
   return getTicketList();
 };
 
-const setTodoToDone = (ticketId: string, destinationIndex: number) => {
+const moveTodoToDone = (ticketId: string, destinationIndex: number) => {
   LocalStorage.setTodoToDone(ticketId, destinationIndex);
   return getTicketList();
 };
 
-const setInProgressToTodo = (ticketId: string, destinationIndex: number) => {
+const moveInProgressToTodo = (ticketId: string, destinationIndex: number) => {
   LocalStorage.setInProgressToTodo(ticketId, destinationIndex);
   return getTicketList();
 };
 
-const setInProgressToDone = (ticketId: string, destinationIndex: number) => {
+const moveInProgressToDone = (ticketId: string, destinationIndex: number) => {
   LocalStorage.setInProgressToDone(ticketId, destinationIndex);
   return getTicketList();
 };
 
-const setDoneToTodo = (ticketId: string, destinationIndex: number) => {
+const moveDoneToTodo = (ticketId: string, destinationIndex: number) => {
   LocalStorage.setDoneTicketToTodo(ticketId, destinationIndex);
   return getTicketList();
 };
 
-const setDoneToInProgress = (ticketId: string, destinationIndex: number) => {
+const moveDoneToInProgress = (ticketId: string, destinationIndex: number) => {
   LocalStorage.setDoneToInProgress(ticketId, destinationIndex);
   return getTicketList();
 };
@@ -101,33 +101,33 @@ export const ticketReducer = (
       return updateTicket(action.payload);
     case 'DELETE-TICKET':
       return deleteTicket(action.payload);
-    case 'SET-TODO-TO-INPROGRESS-TICKET':
-      return setTodoToInProgress(
+    case 'MOVE-TODO-TO-INPROGRESS-TICKET':
+      return moveTodoToInProgress(
         action.payload.ticketId,
         action.payload.destinationIndex
       );
-    case 'SET-TODO-TO-DONE-TICKET':
-      return setTodoToDone(
+    case 'MOVE-TODO-TO-DONE-TICKET':
+      return moveTodoToDone(
         action.payload.ticketId,
         action.payload.destinationIndex
       );
-    case 'SET-INPROGRESS-TO-TODO-TICKET':
-      return setInProgressToTodo(
+    case 'MOVE-INPROGRESS-TO-TODO-TICKET':
+      return moveInProgressToTodo(
         action.payload.ticketId,
         action.payload.destinationIndex
       );
-    case 'SET-INPROGRESS-TO-DONE-TICKET':
-      return setInProgressToDone(
+    case 'MOVE-INPROGRESS-TO-DONE-TICKET':
+      return moveInProgressToDone(
         action.payload.ticketId,
         action.payload.destinationIndex
       );
-    case 'SET-DONE-TO-TODO-TICKET':
-      return setDoneToTodo(
+    case 'MOVE-DONE-TO-TODO-TICKET':
+      return moveDoneToTodo(
         action.payload.ticketId,
         action.payload.destinationIndex
       );
-    case 'SET-DONE-TO-INPROGRESS-TICKET':
-      return setDoneToInProgress(
+    case 'MOVE-DONE-TO-INPROGRESS-TICKET':
+      return moveDoneToInProgress(
         action.payload.ticketId,
         action.payload.destinationIndex
       );
