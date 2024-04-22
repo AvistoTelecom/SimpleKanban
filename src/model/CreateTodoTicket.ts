@@ -1,3 +1,3 @@
 import { TodoTicket } from './TodoTicket';
 
-export type CreateTodoTicket = Omit<TodoTicket, 'id'>;
+export type CreateTodoTicket = Omit<TodoTicket, 'id' | 'yIndex'>;

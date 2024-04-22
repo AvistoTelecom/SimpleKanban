@@ -9,4 +9,5 @@ export type TodoTicket = {
   parentId?: string;
   childId?: string;
   blocked: boolean;
+  yIndex: number;
 };

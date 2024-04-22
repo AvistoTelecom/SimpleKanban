@@ -24,7 +24,8 @@ const addTicket = (newTicket: CreateTicket) => {
 };
 
 const updateTicket = (newTicket: Ticket) => {
-  LocalStorage.updadeTicket(newTicket);
+  LocalStorage.updateTicketsRelations(newTicket);
+  LocalStorage.updateTicket(newTicket);
   return getTicketList();
 };
 
@@ -34,104 +35,50 @@ const deleteTicket = (ticketId: string) => {
 };
 
 const setTodoToInProgress = (ticketId: string, destinationIndex: number) => {
-  LocalStorage.setTodoToInProgress(ticketId);
-  const inProgressTicketList = LocalStorage.getInProgressTicketList();
-  const sourceIndex = inProgressTicketList.findIndex(
-    (currTicket) => currTicket.id === ticketId
-  );
-  return reorderInProgressList(
-    inProgressTicketList
-      .toSpliced(sourceIndex, 1)
-      .toSpliced(destinationIndex, 0, inProgressTicketList[sourceIndex])
-  );
+  LocalStorage.setTodoToInProgress(ticketId, destinationIndex);
+  return getTicketList();
 };
 
 const setTodoToDone = (ticketId: string, destinationIndex: number) => {
-  LocalStorage.setTodoToDone(ticketId);
-  const doneTicketList = LocalStorage.getDoneTicketList();
-  const sourceIndex = doneTicketList.findIndex(
-    (currTicket) => currTicket.id === ticketId
-  );
-  return reorderDoneList(
-    doneTicketList
-      .toSpliced(sourceIndex, 1)
-      .toSpliced(destinationIndex, 0, doneTicketList[sourceIndex])
-  );
+  LocalStorage.setTodoToDone(ticketId, destinationIndex);
+  return getTicketList();
 };
 
 const setInProgressToTodo = (ticketId: string, destinationIndex: number) => {
-  LocalStorage.setInProgressToTodo(ticketId);
-  const todoTicketList = LocalStorage.getTodoTicketList();
-  const sourceIndex = todoTicketList.findIndex(
-    (currTicket) => currTicket.id === ticketId
-  );
-  return reorderTodoList(
-    todoTicketList
-      .toSpliced(sourceIndex, 1)
-      .toSpliced(destinationIndex, 0, todoTicketList[sourceIndex])
-  );
+  LocalStorage.setInProgressToTodo(ticketId, destinationIndex);
+  return getTicketList();
 };
 
 const setInProgressToDone = (ticketId: string, destinationIndex: number) => {
-  LocalStorage.setInProgressToDone(ticketId);
-  const doneTicketList = LocalStorage.getDoneTicketList();
-  const sourceIndex = doneTicketList.findIndex(
-    (currTicket) => currTicket.id === ticketId
-  );
-  return reorderDoneList(
-    doneTicketList
-      .toSpliced(sourceIndex, 1)
-      .toSpliced(destinationIndex, 0, doneTicketList[sourceIndex])
-  );
+  LocalStorage.setInProgressToDone(ticketId, destinationIndex);
+  return getTicketList();
 };
 
 const setDoneToTodo = (ticketId: string, destinationIndex: number) => {
-  LocalStorage.setDoneTicketToTodo(ticketId);
-  const todoTicketList = LocalStorage.getTodoTicketList();
-  const sourceIndex = todoTicketList.findIndex(
-    (currTicket) => currTicket.id === ticketId
-  );
-  return reorderTodoList(
-    todoTicketList
-      .toSpliced(sourceIndex, 1)
-      .toSpliced(destinationIndex, 0, todoTicketList[sourceIndex])
-  );
+  LocalStorage.setDoneTicketToTodo(ticketId, destinationIndex);
+  return getTicketList();
 };
 
 const setDoneToInProgress = (ticketId: string, destinationIndex: number) => {
-  LocalStorage.setDoneToInProgress(ticketId);
-  const inProgressTicketList = LocalStorage.getInProgressTicketList();
-  const sourceIndex = inProgressTicketList.findIndex(
-    (currTicket) => currTicket.id === ticketId
-  );
-  return reorderInProgressList(
-    inProgressTicketList
-      .toSpliced(sourceIndex, 1)
-      .toSpliced(destinationIndex, 0, inProgressTicketList[sourceIndex])
-  );
-};
-
-const reorderTodoList = (todoList: Ticket[]) => {
-  const inProgressList = LocalStorage.getInProgressTicketList();
-  const doneList = LocalStorage.getDoneTicketList();
-  const orderedList = todoList.concat(inProgressList).concat(doneList);
-  LocalStorage.setTicketList(orderedList);
+  LocalStorage.setDoneToInProgress(ticketId, destinationIndex);
   return getTicketList();
 };
 
-const reorderInProgressList = (inProgressList: Ticket[]) => {
-  const todoList = LocalStorage.getTodoTicketList();
-  const doneList = LocalStorage.getDoneTicketList();
-  const orderedList = todoList.concat(inProgressList).concat(doneList);
-  LocalStorage.setTicketList(orderedList);
+const reorderTodoList = (sourceIndex: number, destinationIndex: number) => {
+  LocalStorage.changeTodoTicketPosition(sourceIndex, destinationIndex);
   return getTicketList();
 };
 
-const reorderDoneList = (doneList: Ticket[]) => {
-  const todoList = LocalStorage.getTodoTicketList();
-  const inProgressList = LocalStorage.getInProgressTicketList();
-  const orderedList = todoList.concat(inProgressList).concat(doneList);
-  LocalStorage.setTicketList(orderedList);
+const reorderInProgressList = (
+  sourceIndex: number,
+  destinationIndex: number
+) => {
+  LocalStorage.changeInProgressTicketPosition(sourceIndex, destinationIndex);
+  return getTicketList();
+};
+
+const reorderDoneList = (sourceIndex: number, destinationIndex: number) => {
+  LocalStorage.changeDoneTicketPosition(sourceIndex, destinationIndex);
   return getTicketList();
 };
 
@@ -185,10 +132,19 @@ export const ticketReducer = (
         action.payload.destinationIndex
       );
     case 'REORDER-TODO-LIST-TICKET':
-      return reorderTodoList(action.payload);
+      return reorderTodoList(
+        action.payload.sourceIndex,
+        action.payload.destinationIndex
+      );
     case 'REORDER-INPROGRESS-LIST-TICKET':
-      return reorderInProgressList(action.payload);
+      return reorderInProgressList(
+        action.payload.sourceIndex,
+        action.payload.destinationIndex
+      );
     case 'REORDER-DONE-LIST-TICKET':
-      return reorderDoneList(action.payload);
+      return reorderDoneList(
+        action.payload.sourceIndex,
+        action.payload.destinationIndex
+      );
   }
 };

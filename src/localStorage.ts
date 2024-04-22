@@ -4,6 +4,9 @@ import { InProgressTicket } from './model/InProgressTicket';
 import { Tag } from './model/Tag';
 import { Ticket } from './model/Ticket';
 import {
+  isCreateDoneTicket,
+  isCreateInProgressTicket,
+  isCreateTodoTicket,
   isDoneTicket,
   isInProgressTicket,
   isTodoTicket,
@@ -12,69 +15,90 @@ import { TodoTicket } from './model/TodoTicket';
 import { User } from './model/User';
 import { CreateTicket } from './model/CreateTicket';
 import { CreateUser } from './model/CreateUser';
+import { CreateTodoTicket } from './model/CreateTodoTicket';
+import { CreateInProgressTicket } from './model/CreateInProgressTicket';
+import { CreateDoneTicket } from './model/CreateDoneTicket';
 
 export class LocalStorage {
-  static getUserList = (): User[] => {
+  static readonly getUserList = (): User[] => {
     const userList = localStorage.getItem('userList');
     return userList ? JSON.parse(userList) : [];
   };
 
-  static setUserList = (userList: User[]) => {
+  static readonly setUserList = (userList: User[]) => {
     localStorage.setItem('userList', JSON.stringify(userList));
   };
 
-  static getUser = (userId: string): User | undefined => {
+  static readonly getUser = (userId: string): User | undefined => {
     const storedUsers = this.getUserList();
     const user = storedUsers.find((currUser) => currUser.id === userId);
     return user;
   };
 
-  static addUser = (userToAddInfos: CreateUser): string => {
+  static readonly addUser = (userToAddInfos: CreateUser): string => {
     const storedUsers = this.getUserList();
     const uuid: string = uuidv4();
-    const userToAdd = { ...userToAddInfos, id: uuid };
+    const userToAdd: User = { ...userToAddInfos, id: uuid };
     storedUsers.push(userToAdd);
     this.setUserList(storedUsers);
     return userToAdd.id;
   };
 
-  static deleteUser = (userId: string) => {
-    const ticketList = this.getTicketList();
-    const storedUser = this.getUserList();
-    ticketList.forEach((currentTicket) => {
+  static readonly deleteUser = (userId: string) => {
+    const todoTicketList = this.getTodoTicketList();
+    const inProgressTicketList = this.getInProgressTicketList();
+    const doneTicketList = this.getDoneTicketList();
+    const storedUserList = this.getUserList();
+
+    todoTicketList.forEach((currentTicket) => {
       if (currentTicket.assigneId === userId) {
         currentTicket.assigneId = undefined;
       }
     });
-    this.setTicketList(ticketList);
-    const filteredUserList = storedUser.filter(
+    this.setTodoTicketList(todoTicketList);
+
+    inProgressTicketList.forEach((currentTicket) => {
+      if (currentTicket.assigneId === userId) {
+        currentTicket.assigneId = undefined;
+      }
+    });
+    this.setInProgressTicketList(inProgressTicketList);
+
+    doneTicketList.forEach((currentTicket) => {
+      if (currentTicket.assigneId === userId) {
+        currentTicket.assigneId = undefined;
+      }
+    });
+    this.setDoneTicketList(doneTicketList);
+
+    const filteredUserList = storedUserList.filter(
       (currUser) => currUser.id !== userId
     );
     this.setUserList(filteredUserList);
   };
 
-  static updateUser = (user: User) => {
+  static readonly updateUser = (user: User) => {
     const userList = this.getUserList();
     const index = userList.findIndex((currUser) => currUser.id === user.id);
     this.setUserList(userList.with(index, user));
   };
 
-  static getTagList = (): Tag[] => {
+  static readonly getTagList = (): Tag[] => {
     const tagList = localStorage.getItem('tagList');
     return tagList ? JSON.parse(tagList) : [];
   };
 
-  static setTagList = (tagList: Tag[]) => {
+  static readonly setTagList = (tagList: Tag[]) => {
     localStorage.setItem('tagList', JSON.stringify(tagList));
   };
 
-  static getTag = (tagName: string): Tag | undefined => {
+  static readonly getTag = (tagName: string): Tag | undefined => {
     const storedTags = this.getTagList();
     const tag = storedTags.find((currTag) => currTag.name === tagName);
     return tag;
   };
 
-  static addTag = (tagToAdd: Tag): string | undefined => {
+  static readonly addTag = (tagToAdd: Tag): string | undefined => {
     const tagList = this.getTagList();
     if (tagList.some((tag) => tag.name === tagToAdd.name)) {
       return;
@@ -84,173 +108,541 @@ export class LocalStorage {
     return tagToAdd.name;
   };
 
-  static deleteTag = (tagName: string) => {
-    const storedTickets = this.getTicketList();
-    const storedUser = this.getTagList();
-    storedTickets.forEach((currentTicket) => {
+  static readonly deleteTag = (tagName: string) => {
+    const todoTicketList = this.getTodoTicketList();
+    const inProgressTicketList = this.getInProgressTicketList();
+    const doneTicketList = this.getDoneTicketList();
+    const storedUserList = this.getTagList();
+
+    todoTicketList.forEach((currentTicket) => {
       if (currentTicket.tagName === tagName) {
         currentTicket.tagName = undefined;
       }
     });
-    this.setTicketList(storedTickets);
-    const filteredTaList = storedUser.filter(
+    this.setTodoTicketList(todoTicketList);
+
+    inProgressTicketList.forEach((currentTicket) => {
+      if (currentTicket.tagName === tagName) {
+        currentTicket.tagName = undefined;
+      }
+    });
+    this.setInProgressTicketList(inProgressTicketList);
+
+    doneTicketList.forEach((currentTicket) => {
+      if (currentTicket.tagName === tagName) {
+        currentTicket.tagName = undefined;
+      }
+    });
+    this.setDoneTicketList(doneTicketList);
+
+    const filteredTagList = storedUserList.filter(
       (currTag: Tag) => currTag.name !== tagName
     );
-    this.setTagList(filteredTaList);
+    this.setTagList(filteredTagList);
   };
 
-  static updateTag = (tagName: string, newTag: Tag) => {
+  static readonly updateTag = (tagName: string, newTag: Tag) => {
     const tagList = this.getTagList();
-    const ticketList = this.getTicketList();
-    ticketList.forEach((currentTicket) => {
+    const todoTicketList = this.getTodoTicketList();
+    const inProgressTicketList = this.getInProgressTicketList();
+    const doneTicketList = this.getDoneTicketList();
+
+    todoTicketList.forEach((currentTicket) => {
       if (currentTicket.tagName === tagName) {
         currentTicket.tagName = newTag.name;
       }
     });
-    this.setTicketList(ticketList);
+    this.setTodoTicketList(todoTicketList);
+
+    inProgressTicketList.forEach((currentTicket) => {
+      if (currentTicket.tagName === tagName) {
+        currentTicket.tagName = newTag.name;
+      }
+    });
+    this.setInProgressTicketList(inProgressTicketList);
+
+    doneTicketList.forEach((currentTicket) => {
+      if (currentTicket.tagName === tagName) {
+        currentTicket.tagName = newTag.name;
+      }
+    });
+    this.setDoneTicketList(doneTicketList);
+
     const tagIndex = tagList.findIndex((currTag) => currTag.name === tagName);
     this.setTagList(tagList.with(tagIndex, newTag));
   };
 
-  static getTicketList = (): Ticket[] => {
-    const storedTickets = localStorage.getItem('ticketList');
-    if (storedTickets === null) {
+  static readonly getTodoTicketList = (): TodoTicket[] => {
+    const storedTicketList = localStorage.getItem('todoTicketList');
+    if (!storedTicketList) {
       return [];
     }
-    const storedTicketList: Ticket[] = JSON.parse(storedTickets);
-    return storedTicketList;
-  };
-
-  static getTodoTicketList = (): TodoTicket[] => {
-    const ticketList = this.getTicketList();
-    return ticketList
-      .filter((currentTicket) => isTodoTicket(currentTicket))
+    const parsedTicketList: TodoTicket[] = JSON.parse(storedTicketList);
+    return parsedTicketList
       .map((todoTicket) => {
         todoTicket.creationDate = new Date(todoTicket.creationDate);
         return todoTicket;
-      });
+      })
+      .sort((ticket1, ticket2) => ticket1.yIndex - ticket2.yIndex);
   };
 
-  static getInProgressTicketList = (): InProgressTicket[] => {
-    const ticketList = this.getTicketList();
-    const result = ticketList.filter((currentTicket) =>
-      isInProgressTicket(currentTicket)
-    ) as InProgressTicket[];
-    return result.map((inProgressTicket) => {
-      inProgressTicket.creationDate = new Date(inProgressTicket.creationDate);
-      inProgressTicket.startDate = new Date(inProgressTicket.startDate);
-      return inProgressTicket;
-    });
+  static readonly getInProgressTicketList = (): InProgressTicket[] => {
+    const storedTicketList = localStorage.getItem('inProgressTicketList');
+    if (!storedTicketList) {
+      return [];
+    }
+    const parsedTicketList: InProgressTicket[] = JSON.parse(storedTicketList);
+    return parsedTicketList
+      .map((inProgressTicket) => {
+        inProgressTicket.creationDate = new Date(inProgressTicket.creationDate);
+        inProgressTicket.startDate = new Date(inProgressTicket.startDate);
+        return inProgressTicket;
+      })
+      .sort((ticket1, ticket2) => ticket1.yIndex - ticket2.yIndex);
   };
 
-  static getDoneTicketList = (): DoneTicket[] => {
-    const ticketList = this.getTicketList();
-    const result: DoneTicket[] = ticketList.filter((currentTicket) =>
-      isDoneTicket(currentTicket)
-    ) as DoneTicket[];
-    return result.map((doneTicket) => {
-      doneTicket.creationDate = new Date(doneTicket.creationDate);
-      doneTicket.startDate = new Date(doneTicket.startDate);
-      doneTicket.endDate = new Date(doneTicket.endDate);
-      return doneTicket;
-    });
+  static readonly getDoneTicketList = (): DoneTicket[] => {
+    const storedTicketList = localStorage.getItem('doneTicketList');
+    if (!storedTicketList) {
+      return [];
+    }
+    const parsedTicketList: DoneTicket[] = JSON.parse(storedTicketList);
+    return parsedTicketList
+      .map((doneTicket) => {
+        doneTicket.creationDate = new Date(doneTicket.creationDate);
+        doneTicket.startDate = new Date(doneTicket.startDate);
+        doneTicket.endDate = new Date(doneTicket.endDate);
+        return doneTicket;
+      })
+      .sort((ticket1, ticket2) => ticket1.yIndex - ticket2.yIndex);
   };
 
-  static setTicketList = (ticketList: Ticket[]) => {
-    localStorage.setItem('ticketList', JSON.stringify(ticketList));
+  static readonly setTodoTicketList = (todoTicketList: TodoTicket[]) => {
+    localStorage.setItem('todoTicketList', JSON.stringify(todoTicketList));
   };
 
-  static addTicket = (ticketToAddInfos: CreateTicket): string => {
-    const storedTickets = this.getTicketList();
-    const uuid: string = uuidv4();
-    const ticketToAdd = { ...ticketToAddInfos, id: uuid };
-    storedTickets.push(ticketToAdd);
-    this.setTicketList(storedTickets);
-    return ticketToAdd.id;
-  };
-
-  static deleteTicket = (ticketId: string) => {
-    const ticketList = this.getTicketList();
-    ticketList.forEach((currentTicket) => {
-      if (currentTicket.childId === ticketId) {
-        currentTicket.childId = undefined;
-      }
-      if (currentTicket.parentId === ticketId) {
-        currentTicket.parentId = undefined;
-      }
-    });
-    const filteredTicketList = ticketList.filter(
-      (currentTicket) => currentTicket.id !== ticketId
+  static readonly setInProgressTicketList = (
+    inProgressTicketList: InProgressTicket[]
+  ) => {
+    localStorage.setItem(
+      'inProgressTicketList',
+      JSON.stringify(inProgressTicketList)
     );
-    this.setTicketList(filteredTicketList);
   };
 
-  static updadeTicket = (ticket: Ticket) => {
-    const ticketList = this.getTicketList();
-    const index = ticketList.findIndex(
+  static readonly setDoneTicketList = (doneTicketList: DoneTicket[]) => {
+    localStorage.setItem('doneTicketList', JSON.stringify(doneTicketList));
+  };
+
+  static readonly addTicket = (ticketToAdd: CreateTicket): string => {
+    let newTicketId: string = '';
+    if (isCreateTodoTicket(ticketToAdd)) {
+      newTicketId = this.addTodoTicket(ticketToAdd);
+    }
+    if (isCreateInProgressTicket(ticketToAdd)) {
+      newTicketId = this.addInProgressTicket(ticketToAdd);
+    }
+    if (isCreateDoneTicket(ticketToAdd)) {
+      newTicketId = this.addDoneTicket(ticketToAdd);
+    }
+
+    if (ticketToAdd.childId) {
+      this.updateChildRelation(newTicketId, ticketToAdd.childId);
+    }
+    if (ticketToAdd.parentId) {
+      this.updateParentRelation(newTicketId, ticketToAdd.parentId);
+    }
+    return newTicketId;
+  };
+
+  static readonly addTodoTicket = (ticketToAdd: CreateTodoTicket): string => {
+    const uuid: string = uuidv4();
+    const todoTicketList = this.getTodoTicketList();
+    const newTicket: TodoTicket = {
+      ...ticketToAdd,
+      id: uuid,
+      yIndex: todoTicketList.length,
+    };
+    todoTicketList.push(newTicket);
+    this.setTodoTicketList(todoTicketList);
+    return uuid;
+  };
+
+  static readonly addInProgressTicket = (
+    ticketToAdd: CreateInProgressTicket
+  ): string => {
+    const uuid: string = uuidv4();
+    const inProgressTicketList = this.getInProgressTicketList();
+    const newTicket: InProgressTicket = {
+      ...ticketToAdd,
+      id: uuid,
+      yIndex: inProgressTicketList.length,
+    };
+    inProgressTicketList.push(newTicket);
+    this.setInProgressTicketList(inProgressTicketList);
+    return uuid;
+  };
+
+  static readonly addDoneTicket = (ticketToAdd: CreateDoneTicket): string => {
+    const uuid: string = uuidv4();
+    const doneTicketList = this.getDoneTicketList();
+    const newTicket: DoneTicket = {
+      ...ticketToAdd,
+      id: uuid,
+      yIndex: doneTicketList.length,
+    };
+    doneTicketList.push(newTicket);
+    this.setDoneTicketList(doneTicketList);
+    return uuid;
+  };
+
+  static readonly deleteTicket = (ticketId: string) => {
+    const ticket = this.getTicket(ticketId);
+    if (!ticket) {
+      return;
+    }
+
+    this.clearParentsRelation(ticket);
+    this.clearChildsRelation(ticket);
+    if (isTodoTicket(ticket)) {
+      this.deleteTodoTicket(ticketId);
+    }
+    if (isInProgressTicket(ticket)) {
+      this.deleteInProgressTicket(ticketId);
+    }
+    if (isDoneTicket(ticket)) {
+      this.deleteDoneTicket(ticketId);
+    }
+  };
+
+  private static clearParentsRelation = (ticket: Ticket) => {
+    if (!ticket.parentId) {
+      return;
+    }
+    const previousParent = this.getTicket(ticket.parentId);
+    if (!previousParent) {
+      return;
+    }
+    previousParent.childId = undefined;
+    this.updateTicket(previousParent);
+  };
+
+  private static clearChildsRelation = (ticket: Ticket) => {
+    if (!ticket.childId) {
+      return;
+    }
+    const previousChild = this.getTicket(ticket.childId);
+    if (!previousChild) {
+      return;
+    }
+    previousChild.parentId = undefined;
+    this.updateTicket(previousChild);
+  };
+
+  private static updateParentRelation = (
+    ticketId: string,
+    parentId: string
+  ) => {
+    const ticket = this.getTicket(ticketId);
+    const parentTicket = this.getTicket(parentId);
+    if (!ticket || !parentTicket) {
+      return;
+    }
+    this.clearChildsRelation(parentTicket);
+    this.clearParentsRelation(ticket);
+    ticket.parentId = parentId;
+    parentTicket.childId = ticket.id;
+    this.updateTicket(parentTicket);
+    this.updateTicket(ticket);
+  };
+
+  private static updateChildRelation = (ticketId: string, childId: string) => {
+    const ticket = this.getTicket(ticketId);
+    const childTicket = this.getTicket(childId);
+    if (!ticket || !childTicket) {
+      return;
+    }
+    this.clearParentsRelation(childTicket);
+    this.clearChildsRelation(ticket);
+    ticket.childId = childTicket.id;
+    childTicket.parentId = ticket.id;
+    this.updateTicket(childTicket);
+    this.updateTicket(ticket);
+  };
+
+  static readonly deleteTodoTicket = (ticketId: string) => {
+    const ticketList = this.getTodoTicketList();
+    const ticket = this.getTodoTicket(ticketId);
+    if (!ticket) {
+      return;
+    }
+    this.setTodoTicketList(
+      ticketList
+        .map((currentTicket: TodoTicket) => {
+          if (currentTicket.yIndex > ticket.yIndex) {
+            currentTicket.yIndex++;
+          }
+          return currentTicket;
+        })
+        .filter((currentTicket: TodoTicket) => currentTicket.id !== ticketId)
+    );
+  };
+
+  static readonly deleteInProgressTicket = (ticketId: string) => {
+    const ticketList = this.getInProgressTicketList();
+    const ticket = this.getInProgressTicket(ticketId);
+    if (!ticket) {
+      return;
+    }
+    this.setInProgressTicketList(
+      ticketList
+        .map((currentTicket: InProgressTicket) => {
+          if (currentTicket.yIndex > ticket.yIndex) {
+            currentTicket.yIndex++;
+          }
+          return currentTicket;
+        })
+        .filter(
+          (currentTicket: InProgressTicket) => currentTicket.id !== ticketId
+        )
+    );
+  };
+
+  static readonly deleteDoneTicket = (ticketId: string) => {
+    const ticketList = this.getDoneTicketList();
+    const ticket = this.getDoneTicket(ticketId);
+    if (!ticket) {
+      return;
+    }
+    this.setDoneTicketList(
+      ticketList
+        .map((currentTicket: DoneTicket) => {
+          if (currentTicket.yIndex > ticket.yIndex) {
+            currentTicket.yIndex++;
+          }
+          return currentTicket;
+        })
+        .filter((currentTicket: DoneTicket) => currentTicket.id !== ticketId)
+    );
+  };
+
+  static readonly updateTicketsRelations = (ticket: Ticket) => {
+    const ticketFromStorage = this.getTicket(ticket.id);
+    if (!ticketFromStorage) {
+      return;
+    }
+
+    if (ticket.childId) {
+      this.updateChildRelation(ticket.id, ticket.childId);
+    } else {
+      this.clearChildsRelation(ticketFromStorage);
+    }
+
+    if (ticket.parentId) {
+      this.updateParentRelation(ticket.id, ticket.parentId);
+    } else {
+      this.clearParentsRelation(ticketFromStorage);
+    }
+  };
+
+  static readonly updateTicket = (ticket: Ticket) => {
+    if (isTodoTicket(ticket)) {
+      this.updateTodoTicket(ticket);
+    }
+
+    if (isInProgressTicket(ticket)) {
+      this.updateInProgessTicket(ticket);
+    }
+
+    if (isDoneTicket(ticket)) {
+      this.updateDoneTicket(ticket);
+    }
+  };
+
+  static readonly updateTodoTicket = (ticket: TodoTicket) => {
+    const todoTicketList = this.getTodoTicketList();
+    const index = todoTicketList.findIndex(
       (currentTicket) => currentTicket.id === ticket.id
     );
-    this.setTicketList(ticketList.with(index, ticket));
+    this.setTodoTicketList(todoTicketList.with(index, ticket));
   };
 
-  static getTicket = (ticketId: string): Ticket | undefined => {
-    const storedTickets = this.getTicketList();
-    const ticket = storedTickets.find(
+  static readonly updateInProgessTicket = (ticket: InProgressTicket) => {
+    const inProgressTicketList = this.getInProgressTicketList();
+    const index = inProgressTicketList.findIndex(
+      (currentTicket) => currentTicket.id === ticket.id
+    );
+    this.setInProgressTicketList(inProgressTicketList.with(index, ticket));
+  };
+
+  static readonly updateDoneTicket = (ticket: DoneTicket) => {
+    const doneTicketList = this.getDoneTicketList();
+    const index = doneTicketList.findIndex(
+      (currentTicket) => currentTicket.id === ticket.id
+    );
+    this.setDoneTicketList(doneTicketList.with(index, ticket));
+  };
+
+  static readonly getTicket = (ticketId: string): Ticket | undefined => {
+    const storedTicketList = this.getTodoTicketList().concat(
+      this.getInProgressTicketList(),
+      this.getDoneTicketList()
+    );
+    return storedTicketList.find(
       (currentTicket) => currentTicket.id === ticketId
     );
-    return ticket;
   };
 
-  static getTodoTicket = (todoTicketId: string): TodoTicket | undefined => {
-    const storedTodoTickets = this.getTodoTicketList();
-    const todoTicket = storedTodoTickets.find(
-      (currTodoTicket) => currTodoTicket.id === todoTicketId
+  static readonly getTodoTicket = (
+    ticketId: string
+  ): TodoTicket | undefined => {
+    const storedTicketList = this.getTodoTicketList();
+    return storedTicketList.find(
+      (currentTicket) => currentTicket.id === ticketId
     );
-    return todoTicket;
   };
 
-  static getInProgressTicket = (
-    inProgressTicketId: string
+  static readonly getInProgressTicket = (
+    ticketId: string
   ): InProgressTicket | undefined => {
-    const storedInProgressTickets = this.getInProgressTicketList();
-    const inProgressTicket = storedInProgressTickets.find(
-      (currInProgressTicket) => currInProgressTicket.id === inProgressTicketId
+    const storedTicketList = this.getInProgressTicketList();
+    return storedTicketList.find(
+      (currentTicket) => currentTicket.id === ticketId
     );
-    return inProgressTicket;
   };
 
-  static getDoneTicket = (doneTicketId: string): DoneTicket | undefined => {
-    const storedDoneTickets = this.getDoneTicketList();
-    const doneTicket = storedDoneTickets.find(
-      (currDoneTicket) => currDoneTicket.id === doneTicketId
+  static readonly getDoneTicket = (
+    ticketId: string
+  ): DoneTicket | undefined => {
+    const storedTicketList = this.getDoneTicketList();
+    return storedTicketList.find(
+      (currentTicket) => currentTicket.id === ticketId
     );
-    return doneTicket;
   };
 
-  static setTodoToInProgress = (ticketId: string) => {
-    const ticket = this.getTicket(ticketId);
+  static readonly changeTodoTicketPosition = (
+    sourceIndex: number,
+    destinationIndex: number
+  ) => {
+    const todoTicketList = this.getTodoTicketList();
+    todoTicketList.sort((ticket1, ticket2) => ticket1.yIndex - ticket2.yIndex);
+    const movedTicket = todoTicketList.splice(sourceIndex, 1)[0];
+    const updatedTicketList = todoTicketList.toSpliced(
+      destinationIndex,
+      0,
+      movedTicket
+    );
+    updatedTicketList.forEach(
+      (currentTiket, index) => (currentTiket.yIndex = index)
+    );
+    this.setTodoTicketList(updatedTicketList);
+  };
+
+  static readonly changeInProgressTicketPosition = (
+    sourceIndex: number,
+    destinationIndex: number
+  ) => {
+    const inProgressTicketList = this.getInProgressTicketList();
+    inProgressTicketList.sort(
+      (ticket1, ticket2) => ticket1.yIndex - ticket2.yIndex
+    );
+    const movedTicket = inProgressTicketList.splice(sourceIndex, 1)[0];
+    const updatedTicketList = inProgressTicketList.toSpliced(
+      destinationIndex,
+      0,
+      movedTicket
+    );
+    updatedTicketList.forEach(
+      (currentTiket, index) => (currentTiket.yIndex = index)
+    );
+    this.setInProgressTicketList(updatedTicketList);
+  };
+
+  static readonly changeDoneTicketPosition = (
+    sourceIndex: number,
+    destinationIndex: number
+  ) => {
+    const doneTicketList = this.getDoneTicketList();
+    doneTicketList.sort((ticket1, ticket2) => ticket1.yIndex - ticket2.yIndex);
+    const movedTicket = doneTicketList.splice(sourceIndex, 1)[0];
+    const updatedTicketList = doneTicketList.toSpliced(
+      destinationIndex,
+      0,
+      movedTicket
+    );
+    updatedTicketList.forEach(
+      (currentTiket, index) => (currentTiket.yIndex = index)
+    );
+    this.setDoneTicketList(updatedTicketList);
+  };
+
+  static readonly setTodoToInProgress = (
+    ticketId: string,
+    destinationIndex: number
+  ) => {
+    const ticket = this.getTodoTicket(ticketId);
+
     if (ticket === undefined || ticket.blocked) {
       return;
     }
+
     const inProgress = {
       ...ticket,
       blocked: ticket.blocked,
       startDate: new Date(),
     };
-    this.updadeTicket(inProgress);
+    inProgress.yIndex = destinationIndex;
+
+    const todoTicketList = this.getTodoTicketList();
+    this.setTodoTicketList(
+      todoTicketList.filter((currentTicket) => currentTicket.id !== ticketId)
+    );
+
+    let inProgressTicketList = this.getInProgressTicketList();
+    inProgressTicketList = inProgressTicketList.map((currentTicket) => {
+      if (currentTicket.yIndex >= destinationIndex) {
+        currentTicket.yIndex++;
+      }
+      return currentTicket;
+    });
+    this.setInProgressTicketList(
+      inProgressTicketList.toSpliced(destinationIndex, 0, inProgress)
+    );
   };
 
-  static setInProgressToTodo = (ticketId: string) => {
-    const inProgress = this.getTicket(ticketId);
+  static readonly setInProgressToTodo = (
+    ticketId: string,
+    destinationIndex: number
+  ) => {
+    const inProgress = this.getInProgressTicket(ticketId);
     if (inProgress === undefined || !isInProgressTicket(inProgress)) {
       return;
     }
     const { startDate, ...todo } = inProgress;
-    this.updadeTicket(todo);
+    todo.yIndex = destinationIndex;
+
+    const inProgressTicketList = this.getInProgressTicketList();
+    this.setInProgressTicketList(
+      inProgressTicketList.filter(
+        (currentTicket) => currentTicket.id !== ticketId
+      )
+    );
+
+    let todoTicketList = this.getTodoTicketList();
+    todoTicketList = todoTicketList.map((currentTicket) => {
+      if (currentTicket.yIndex >= destinationIndex) {
+        currentTicket.yIndex++;
+      }
+      return currentTicket;
+    });
+    this.setTodoTicketList(todoTicketList.toSpliced(destinationIndex, 0, todo));
   };
 
-  static setInProgressToDone = (ticketId: string) => {
-    const inProgress = this.getTicket(ticketId);
+  static readonly setInProgressToDone = (
+    ticketId: string,
+    destinationIndex: number
+  ) => {
+    const inProgress = this.getInProgressTicket(ticketId);
     if (inProgress === undefined || !isInProgressTicket(inProgress)) {
       return;
     }
@@ -259,20 +651,58 @@ export class LocalStorage {
       startDate: inProgress.startDate,
       endDate: new Date(),
     };
-    this.updadeTicket(done);
+    done.yIndex = destinationIndex;
+
+    const inProgressTicketList = this.getInProgressTicketList();
+    this.setInProgressTicketList(
+      inProgressTicketList.filter(
+        (currentTicket) => currentTicket.id !== ticketId
+      )
+    );
+
+    let doneTicketList = this.getDoneTicketList();
+    doneTicketList = doneTicketList.map((currentTicket) => {
+      if (currentTicket.yIndex >= destinationIndex) {
+        currentTicket.yIndex++;
+      }
+      return currentTicket;
+    });
+    this.setDoneTicketList(doneTicketList.toSpliced(destinationIndex, 0, done));
   };
 
-  static setDoneToInProgress = (ticketId: string) => {
-    const done = this.getTicket(ticketId);
+  static readonly setDoneToInProgress = (
+    ticketId: string,
+    destinationIndex: number
+  ) => {
+    const done = this.getDoneTicket(ticketId);
     if (done === undefined || !isDoneTicket(done)) {
       return;
     }
     const { endDate, ...inProgress } = done;
-    this.updadeTicket(inProgress);
+    inProgress.yIndex = destinationIndex;
+
+    const doneTicketList = this.getDoneTicketList();
+    this.setDoneTicketList(
+      doneTicketList.filter((currentTicket) => currentTicket.id !== ticketId)
+    );
+
+    let inProgressTicketList = this.getInProgressTicketList();
+    inProgressTicketList = inProgressTicketList.map((currentTicket) => {
+      if (currentTicket.yIndex >= destinationIndex) {
+        currentTicket.yIndex++;
+      }
+      return currentTicket;
+    });
+    this.setInProgressTicketList(
+      inProgressTicketList.toSpliced(destinationIndex, 0, inProgress)
+    );
   };
 
-  static setTodoToDone = (ticketId: string) => {
-    const ticket = this.getTicket(ticketId);
+  static readonly setTodoToDone = (
+    ticketId: string,
+    destinationIndex: number
+  ) => {
+    const ticket = this.getTodoTicket(ticketId);
     if (ticket === undefined || ticket.blocked) {
       return;
     }
@@ -282,15 +712,46 @@ export class LocalStorage {
       startDate: new Date(),
       endDate: new Date(),
     };
-    this.updadeTicket(done);
+    done.yIndex = destinationIndex;
+
+    const todoTicketList = this.getTodoTicketList();
+    this.setTodoTicketList(
+      todoTicketList.filter((currentTicket) => currentTicket.id !== ticketId)
+    );
+
+    let doneTicketList = this.getDoneTicketList();
+    doneTicketList = doneTicketList.map((currentTicket) => {
+      if (currentTicket.yIndex >= destinationIndex) {
+        currentTicket.yIndex++;
+      }
+      return currentTicket;
+    });
+    this.setDoneTicketList(doneTicketList.toSpliced(destinationIndex, 0, done));
   };
 
-  static setDoneTicketToTodo = (ticketId: string) => {
-    const done = this.getTicket(ticketId);
+  static readonly setDoneTicketToTodo = (
+    ticketId: string,
+    destinationIndex: number
+  ) => {
+    const done = this.getDoneTicket(ticketId);
     if (done === undefined || !isDoneTicket(done)) {
       return;
     }
     const { endDate, startDate, ...todo } = done;
-    this.updadeTicket(todo);
+    todo.yIndex = destinationIndex;
+
+    const doneTicketList = this.getDoneTicketList();
+    this.setDoneTicketList(
+      doneTicketList.filter((currentTicket) => currentTicket.id !== ticketId)
+    );
+
+    let todoTicketList = this.getTodoTicketList();
+    todoTicketList = todoTicketList.map((currentTicket) => {
+      if (currentTicket.yIndex >= destinationIndex) {
+        currentTicket.yIndex++;
+      }
+      return currentTicket;
+    });
+    this.setTodoTicketList(todoTicketList.toSpliced(destinationIndex, 0, todo));
   };
 }

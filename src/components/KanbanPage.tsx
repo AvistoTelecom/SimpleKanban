@@ -137,16 +137,6 @@ export const KanbanPage: FunctionComponent = () => {
     toggleSidePanelWithTicketInfo('editTicket', ticketId);
   };
 
-  const reorderTicketColumn = (
-    ticketList: Ticket[],
-    sourceIndex: number,
-    destinationIndex: number
-  ): Ticket[] => {
-    return ticketList
-      .toSpliced(sourceIndex, 1)
-      .toSpliced(destinationIndex, 0, ticketList[sourceIndex]);
-  };
-
   const onBeforeDragStart = (result: DragStart) => {
     const { source } = result;
     const sourceColumn = source.droppableId;
@@ -172,33 +162,30 @@ export const KanbanPage: FunctionComponent = () => {
         case 'todo': {
           dispatchTicketList({
             type: 'REORDER-TODO-LIST-TICKET',
-            payload: reorderTicketColumn(
-              todoTicketList,
-              source.index,
-              destination.index
-            ),
+            payload: {
+              sourceIndex: source.index,
+              destinationIndex: destination.index,
+            },
           });
           break;
         }
         case 'inProgress': {
           dispatchTicketList({
             type: 'REORDER-INPROGRESS-LIST-TICKET',
-            payload: reorderTicketColumn(
-              inProgressTicketList,
-              source.index,
-              destination.index
-            ),
+            payload: {
+              sourceIndex: source.index,
+              destinationIndex: destination.index,
+            },
           });
           break;
         }
         case 'done': {
           dispatchTicketList({
             type: 'REORDER-DONE-LIST-TICKET',
-            payload: reorderTicketColumn(
-              doneTicketList,
-              source.index,
-              destination.index
-            ),
+            payload: {
+              sourceIndex: source.index,
+              destinationIndex: destination.index,
+            },
           });
           break;
         }

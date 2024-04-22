@@ -29,6 +29,15 @@ export type TicketAction =
       type: 'SET-DONE-TO-INPROGRESS-TICKET';
       payload: { ticketId: string; destinationIndex: number };
     }
-  | { type: 'REORDER-TODO-LIST-TICKET'; payload: Ticket[] }
-  | { type: 'REORDER-INPROGRESS-LIST-TICKET'; payload: Ticket[] }
-  | { type: 'REORDER-DONE-LIST-TICKET'; payload: Ticket[] };
+  | {
+      type: 'REORDER-TODO-LIST-TICKET';
+      payload: { sourceIndex: number; destinationIndex: number };
+    }
+  | {
+      type: 'REORDER-INPROGRESS-LIST-TICKET';
+      payload: { sourceIndex: number; destinationIndex: number };
+    }
+  | {
+      type: 'REORDER-DONE-LIST-TICKET';
+      payload: { sourceIndex: number; destinationIndex: number };
+    };

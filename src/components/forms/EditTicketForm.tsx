@@ -62,6 +62,7 @@ export const EditTicketForm: FunctionComponent<EditTicketFormProps> = ({
       childId: formData.childId === '' ? undefined : formData.childId,
       creationDate: ticket.creationDate,
       blocked: formData.blocked,
+      yIndex: ticket.yIndex,
     };
 
     if (isInProgressTicket(ticket)) {
@@ -71,6 +72,7 @@ export const EditTicketForm: FunctionComponent<EditTicketFormProps> = ({
         blocked: false,
       };
       onEditTicket(inProgressTicket);
+      return;
     }
 
     if (isDoneTicket(ticket)) {
