@@ -37,7 +37,7 @@ export const EditTicketForm: FunctionComponent<EditTicketFormProps> = ({
   ticket,
   onEditTicket,
 }) => {
-  const { register, handleSubmit } = useForm<FormInputs>({
+  const { register, watch, handleSubmit } = useForm<FormInputs>({
     defaultValues: {
       name: ticket.name,
       storyPoint: ticket.storyPoint,
@@ -175,9 +175,12 @@ export const EditTicketForm: FunctionComponent<EditTicketFormProps> = ({
               if (ticket.id === currentTicket.id) {
                 return null;
               }
+              if (watch('childId') === currentTicket.id) {
+                return;
+              }
               return (
-                <option key={index} value={ticket.id}>
-                  {ticket.name}
+                <option key={index} value={currentTicket.id}>
+                  {currentTicket.name}
                 </option>
               );
             })}
@@ -197,9 +200,12 @@ export const EditTicketForm: FunctionComponent<EditTicketFormProps> = ({
               if (ticket.id === currentTicket.id) {
                 return null;
               }
+              if (watch('parentId') === currentTicket.id) {
+                return;
+              }
               return (
-                <option key={index} value={ticket.id}>
-                  {ticket.name}
+                <option key={index} value={currentTicket.id}>
+                  {currentTicket.name}
                 </option>
               );
             })}

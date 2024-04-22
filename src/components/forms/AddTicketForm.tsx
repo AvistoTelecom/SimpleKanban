@@ -34,7 +34,7 @@ export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
   defaultType,
   onAddTicket,
 }) => {
-  const { register, handleSubmit } = useForm<FormInputs>({
+  const { register, watch, handleSubmit } = useForm<FormInputs>({
     defaultValues: {
       name: '',
       storyPoint: 0,
@@ -170,11 +170,16 @@ export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
             {...register('parentId')}
           >
             <option value={''}>None</option>
-            {ticketList.map((ticket, index) => (
-              <option key={index} value={ticket.id}>
-                {ticket.name}
-              </option>
-            ))}
+            {ticketList.map((ticket, index) => {
+              if (watch('childId') === ticket.id) {
+                return;
+              }
+              return (
+                <option key={index} value={ticket.id}>
+                  {ticket.name}
+                </option>
+              );
+            })}
           </select>
         </label>
 
@@ -187,11 +192,16 @@ export const AddTicketForm: FunctionComponent<AddTicketFormProps> = ({
             {...register('childId')}
           >
             <option value={''}>None</option>
-            {ticketList.map((ticket, index) => (
-              <option key={index} value={ticket.id}>
-                {ticket.name}
-              </option>
-            ))}
+            {ticketList.map((ticket, index) => {
+              if (watch('parentId') === ticket.id) {
+                return;
+              }
+              return (
+                <option key={index} value={ticket.id}>
+                  {ticket.name}
+                </option>
+              );
+            })}
           </select>
         </label>
         <label className="label cursor-pointer form-control mt-9 flex-row">
