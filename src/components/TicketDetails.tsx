@@ -90,7 +90,11 @@ export const TicketView: FunctionComponent<TicketViewProps> = ({
           <h3 className="mt-3 text-lg font-semibold dark:text-white">
             Description :
           </h3>
-          <p>{ticket.description}</p>
+          <textarea
+            className="w-full textarea resize-none mt-4"
+            value={ticket.description}
+            readOnly
+          ></textarea>
         </div>
         <div className="bg-neutral h-max rounded-box p-4 lg:w-1/3 mt-4 lg:mt-0 flex flex-col gap-2">
           <p>
