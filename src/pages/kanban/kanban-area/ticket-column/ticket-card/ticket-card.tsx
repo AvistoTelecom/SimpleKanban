@@ -1,6 +1,5 @@
 import { BlockedIcon } from '@components/blocked-icon/blocked-icon';
 import { TicketCardStatus } from '@model/column/ticket-card-status.type';
-import { SidePanelContent } from '@model/sidepanel/sidepanel-content.type';
 import { Tag } from '@model/tag/tag.type';
 import { Ticket } from '@model/ticket/ticket.type';
 import { User } from '@model/user/user.type';
@@ -14,7 +13,7 @@ type TicketCardProps = {
   assigne?: User;
   tag?: Tag;
   status: TicketCardStatus;
-  onClick: (id: SidePanelContent, ticketId: string) => void;
+  onClick: (ticket: Ticket) => void;
   onMouseEnter: (ticket: Ticket) => void;
   onMouseLeave: () => void;
 };
@@ -38,7 +37,7 @@ export const TicketCard: FunctionComponent<TicketCardProps> = ({
   };
 
   const onClickOnCard = () => {
-    onClick('viewTicket', ticket.id);
+    onClick(ticket);
   };
 
   const getBackgroundColor = () => {

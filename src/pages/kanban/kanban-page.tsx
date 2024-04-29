@@ -24,19 +24,17 @@ import { SidePanelContent } from '@model/sidepanel/sidepanel-content.type';
 import { NavBar } from '@components/navbar/navbar';
 
 export const KanbanPage: FunctionComponent = () => {
-  const [isSidePanelOpen, setSidePanelOpen] = useState<boolean>(false);
-  const [contentID, setContentID] = useState<SidePanelContent>('');
+  const [isSidePanelOpen, setIsSidePanelOpen] = useState<boolean>(false);
+  const [sidePanelContentId, setSidePanelContentId] =
+    useState<SidePanelContent>('');
   const [newTicketDefaultType, setNewTicketDefaultType] =
     useState<ColumnType>('todo');
   const [sidePanelTicket, setSidePanelTicket] = useState<Ticket>();
-
-  const [focusedTicket, setFocusTicket] = useState<Ticket | null>(null);
-
+  const [focusedTicket, setFocusedTicket] = useState<Ticket | null>(null);
   const [isDropDisabled, setIsDropDisabled] = useState<boolean>(false);
-
   const { userList, dispatchUserList } =
     useContext<UserContextType>(UserContext);
-  const { tagList, dispatchTagList } = useContext<TagContextType>(TagContext)!;
+  const { tagList, dispatchTagList } = useContext<TagContextType>(TagContext);
   const {
     todoTicketList,
     inProgressTicketList,
@@ -44,47 +42,46 @@ export const KanbanPage: FunctionComponent = () => {
     dispatchTicketList,
   } = useContext<TicketContextType>(TicketContext);
 
-  const toggleSidePanelWithTicketInfo = (
-    id: SidePanelContent,
-    ticketId: string
-  ) => {
-    if (sidePanelTicket?.id === ticketId && contentID === id) {
-      setSidePanelOpen(false);
-      setSidePanelTicket(undefined);
-      setContentID('');
+  const toggleSidePanelTagTable = () => {
+    if (!isSidePanelOpen || sidePanelContentId !== 'tag') {
+      setIsSidePanelOpen(true);
+      setSidePanelContentId('tag');
       return;
     }
-
-    const ticket = todoTicketList
-      .concat(inProgressTicketList)
-      .concat(doneTicketList)
-      .find((savedTicket) => savedTicket.id === ticketId);
-
-    if (!ticket) {
-      return;
-    }
-
-    setSidePanelTicket(ticket);
-    setSidePanelOpen(true);
-    setContentID(id);
+    setIsSidePanelOpen(false);
   };
 
-  const toggleSidePanel = (id: SidePanelContent, type?: ColumnType) => {
-    setSidePanelTicket(undefined);
-    if (type) {
-      setNewTicketDefaultType(type);
-    }
-    if (contentID === '') {
-      setSidePanelOpen(!isSidePanelOpen);
-      setContentID(id);
+  const toggleSidePanelUserTable = () => {
+    if (!isSidePanelOpen || sidePanelContentId !== 'user') {
+      setIsSidePanelOpen(true);
+      setSidePanelContentId('user');
       return;
     }
-    if (contentID === id) {
-      setSidePanelOpen(!isSidePanelOpen);
-      setContentID('');
-    } else {
-      setContentID(id);
+    setIsSidePanelOpen(false);
+  };
+
+  const toggleSidePanelAddTicket = (ticketType: ColumnType) => {
+    if (!isSidePanelOpen || sidePanelContentId !== 'addTicket') {
+      setIsSidePanelOpen(true);
+      setSidePanelContentId('addTicket');
+      setNewTicketDefaultType(ticketType);
+      return;
     }
+    setIsSidePanelOpen(false);
+  };
+
+  const toggleSidePanelViewTicket = (ticket: Ticket) => {
+    if (
+      !isSidePanelOpen ||
+      sidePanelContentId !== 'viewTicket' ||
+      (sidePanelContentId === 'viewTicket' && ticket.id !== sidePanelTicket?.id)
+    ) {
+      setIsSidePanelOpen(true);
+      setSidePanelContentId('viewTicket');
+      setSidePanelTicket(ticket);
+      return;
+    }
+    setIsSidePanelOpen(false);
   };
 
   const onAddUser = (user: CreateUser) => {
@@ -116,21 +113,23 @@ export const KanbanPage: FunctionComponent = () => {
 
   const onAddTicket = (ticket: CreateTicket) => {
     dispatchTicketList({ type: 'ADD-TICKET', payload: ticket });
-    toggleSidePanel(contentID);
+    setIsSidePanelOpen(false);
   };
 
   const onEditTicket = (ticket: Ticket) => {
     dispatchTicketList({ type: 'UPDATE-TICKET', payload: ticket });
-    toggleSidePanel(contentID);
+    setIsSidePanelOpen(false);
   };
 
   const onDeleteTicket = (ticketId: string) => {
     dispatchTicketList({ type: 'DELETE-TICKET', payload: ticketId });
-    toggleSidePanel(contentID);
+    setIsSidePanelOpen(false);
   };
 
-  const onClickOnEditTicket = (ticketId: string) => {
-    toggleSidePanelWithTicketInfo('editTicket', ticketId);
+  const onClickOnEditTicket = (ticket: Ticket) => {
+    setSidePanelTicket(ticket);
+    setIsSidePanelOpen(true);
+    setSidePanelContentId('editTicket');
   };
 
   const onBeforeDragStart = (result: DragStart) => {
@@ -284,16 +283,19 @@ export const KanbanPage: FunctionComponent = () => {
   };
 
   const onMouseEnterCard = (ticket: Ticket) => {
-    setFocusTicket(ticket);
+    setFocusedTicket(ticket);
   };
 
   const onMouseLeaveCard = () => {
-    setFocusTicket(null);
+    setFocusedTicket(null);
   };
 
   return (
     <>
-      <NavBar onClick={toggleSidePanel} />
+      <NavBar
+        toggleTagTable={toggleSidePanelTagTable}
+        toggleUserTable={toggleSidePanelUserTable}
+      />
       <main
         className={
           'flex-grow h-1 flex w-full p-2 bg-base-300' +
@@ -310,8 +312,8 @@ export const KanbanPage: FunctionComponent = () => {
               focusedTicket={focusedTicket}
               onMouseEnter={onMouseEnterCard}
               onMouseLeave={onMouseLeaveCard}
-              onClickOnCard={toggleSidePanelWithTicketInfo}
-              onClickOnAdd={toggleSidePanel}
+              onClickOnCard={toggleSidePanelViewTicket}
+              onClickOnAdd={toggleSidePanelAddTicket}
               ticketList={todoTicketList}
               userList={userList}
               tagList={tagList}
@@ -321,8 +323,8 @@ export const KanbanPage: FunctionComponent = () => {
               focusedTicket={focusedTicket}
               onMouseEnter={onMouseEnterCard}
               onMouseLeave={onMouseLeaveCard}
-              onClickOnCard={toggleSidePanelWithTicketInfo}
-              onClickOnAdd={toggleSidePanel}
+              onClickOnCard={toggleSidePanelViewTicket}
+              onClickOnAdd={toggleSidePanelAddTicket}
               ticketList={inProgressTicketList}
               userList={userList}
               tagList={tagList}
@@ -333,8 +335,8 @@ export const KanbanPage: FunctionComponent = () => {
               focusedTicket={focusedTicket}
               onMouseEnter={onMouseEnterCard}
               onMouseLeave={onMouseLeaveCard}
-              onClickOnCard={toggleSidePanelWithTicketInfo}
-              onClickOnAdd={toggleSidePanel}
+              onClickOnCard={toggleSidePanelViewTicket}
+              onClickOnAdd={toggleSidePanelAddTicket}
               ticketList={doneTicketList}
               userList={userList}
               tagList={tagList}
@@ -344,9 +346,9 @@ export const KanbanPage: FunctionComponent = () => {
         </KanbanArea>
         <SidePanel
           isOpen={isSidePanelOpen}
-          closePanel={() => toggleSidePanel(contentID)}
+          closePanel={() => setIsSidePanelOpen(false)}
         >
-          {contentID === 'tag' && (
+          {sidePanelContentId === 'tag' && (
             <TagsTable
               tagList={tagList}
               onAddTag={onAddTag}
@@ -354,7 +356,7 @@ export const KanbanPage: FunctionComponent = () => {
               onUpdateTag={onUpdateTag}
             />
           )}
-          {contentID === 'user' && (
+          {sidePanelContentId === 'user' && (
             <UsersTable
               userList={userList}
               onAddUser={onAddUser}
@@ -362,7 +364,7 @@ export const KanbanPage: FunctionComponent = () => {
               onUpdateUser={onUpdateUser}
             />
           )}
-          {contentID === 'addTicket' && (
+          {sidePanelContentId === 'addTicket' && (
             <AddTicketForm
               defaultType={newTicketDefaultType}
               userList={userList}
@@ -373,36 +375,40 @@ export const KanbanPage: FunctionComponent = () => {
               onAddTicket={onAddTicket}
             />
           )}
-          {contentID === 'viewTicket' && sidePanelTicket !== undefined && (
-            <TicketView
-              onClickOnEditButton={onClickOnEditTicket}
-              onClickOnDeleteButton={onDeleteTicket}
-              ticket={sidePanelTicket}
-              assigne={userList.find(
-                (user) => user.id === sidePanelTicket.assigneId
-              )}
-              parentTicket={todoTicketList
-                .concat(inProgressTicketList)
-                .concat(doneTicketList)
-                .find((ticket) => ticket.id === sidePanelTicket.parentId)}
-              childTicket={todoTicketList
-                .concat(inProgressTicketList)
-                .concat(doneTicketList)
-                .find((ticket) => ticket.id === sidePanelTicket.childId)}
-              tag={tagList.find((tag) => tag.name === sidePanelTicket.tagName)}
-            />
-          )}
-          {contentID === 'editTicket' && sidePanelTicket !== undefined && (
-            <EditTicketForm
-              ticket={sidePanelTicket}
-              userList={userList}
-              tagList={tagList}
-              ticketList={todoTicketList
-                .concat(inProgressTicketList)
-                .concat(doneTicketList)}
-              onEditTicket={onEditTicket}
-            />
-          )}
+          {sidePanelContentId === 'viewTicket' &&
+            sidePanelTicket !== undefined && (
+              <TicketView
+                onClickOnEditButton={onClickOnEditTicket}
+                onClickOnDeleteButton={onDeleteTicket}
+                ticket={sidePanelTicket}
+                assigne={userList.find(
+                  (user) => user.id === sidePanelTicket.assigneId
+                )}
+                parentTicket={todoTicketList
+                  .concat(inProgressTicketList)
+                  .concat(doneTicketList)
+                  .find((ticket) => ticket.id === sidePanelTicket.parentId)}
+                childTicket={todoTicketList
+                  .concat(inProgressTicketList)
+                  .concat(doneTicketList)
+                  .find((ticket) => ticket.id === sidePanelTicket.childId)}
+                tag={tagList.find(
+                  (tag) => tag.name === sidePanelTicket.tagName
+                )}
+              />
+            )}
+          {sidePanelContentId === 'editTicket' &&
+            sidePanelTicket !== undefined && (
+              <EditTicketForm
+                ticket={sidePanelTicket}
+                userList={userList}
+                tagList={tagList}
+                ticketList={todoTicketList
+                  .concat(inProgressTicketList)
+                  .concat(doneTicketList)}
+                onEditTicket={onEditTicket}
+              />
+            )}
         </SidePanel>
       </main>
     </>

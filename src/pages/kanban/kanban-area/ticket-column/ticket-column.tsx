@@ -6,7 +6,6 @@ import { ColumnType } from '@model/column/column-type.type';
 import { Tag } from '@model/tag/tag.type';
 import { User } from '@model/user/user.type';
 import { TicketCardStatus } from '@model/column/ticket-card-status.type';
-import { SidePanelContent } from '@model/sidepanel/sidepanel-content.type';
 import { AddTicketButton } from './add-ticket-button/add-ticket-button';
 
 type TicketColumnProps = {
@@ -14,8 +13,8 @@ type TicketColumnProps = {
   ticketList: Ticket[];
   userList: User[];
   tagList: Tag[];
-  onClickOnCard: (id: SidePanelContent, ticketId: string) => void;
-  onClickOnAdd: (id: SidePanelContent, type: ColumnType) => void;
+  onClickOnCard: (ticket: Ticket) => void;
+  onClickOnAdd: (type: ColumnType) => void;
   onMouseEnter: (ticket: Ticket) => void;
   onMouseLeave: () => void;
   focusedTicket: Ticket | null;
@@ -35,7 +34,7 @@ export const TicketColumn: FunctionComponent<TicketColumnProps> = ({
   isDropDisabled,
 }) => {
   const onClickAddTicketButton = () => {
-    onClickOnAdd('addTicket', type);
+    onClickOnAdd(type);
   };
 
   const getStatus = (ticket: Ticket): TicketCardStatus => {
