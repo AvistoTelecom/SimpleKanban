@@ -1,12 +1,13 @@
+import { ColumnType } from '@model/column/column-type.type';
+import { Tag } from '@model/tag/tag.type';
+import { CreateDoneTicket } from '@model/ticket/create-ticket/create-done-ticket.type';
+import { CreateInProgressTicket } from '@model/ticket/create-ticket/create-in-progress-ticket.type';
+import { CreateTicket } from '@model/ticket/create-ticket/create-ticket.type';
+import { Ticket } from '@model/ticket/ticket.type';
+import { User } from '@model/user/user.type';
 import { FunctionComponent } from 'react';
-import { CreateTicket } from '../../../../types/create-ticket.type';
-import { User } from '../../../../types/user.type';
-import { Tag } from '../../../../types/tag.type';
+
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { CreateInProgressTicket } from '../../../../types/create-in-progress-ticket.type';
-import { CreateDoneTicket } from '../../../../types/create-done-ticket.type';
-import { Ticket } from '../../../../types/ticket.type';
-import { ColumnType } from '../../../../types/column-type.type';
 
 type AddTicketFormProps = {
   userList: User[];

@@ -1,10 +1,10 @@
-import { LocalStorage } from '../../../../utils/localStorage.utils';
-import { CreateTicket } from '../../../../types/create-ticket.type';
-import { DoneTicket } from '../../../../types/done-ticket.type';
-import { InProgressTicket } from '../../../../types/in-progress-ticket.type';
-import { Ticket } from '../../../../types/ticket.type';
-import { TodoTicket } from '../../../../types/todo-ticket.type';
+import { InProgressTicket } from '@model/ticket/in-progress-ticket.type';
 import { TicketAction } from './ticket-action';
+import { TodoTicket } from '@model/ticket/todo-ticket.type';
+import { DoneTicket } from '@model/ticket/done-ticket.type';
+import { LocalStorage } from '@utils/localStorage.utils';
+import { CreateTicket } from '@model/ticket/create-ticket/create-ticket.type';
+import { Ticket } from '@model/ticket/ticket.type';
 
 const getTicketList = (): {
   todoList: TodoTicket[];

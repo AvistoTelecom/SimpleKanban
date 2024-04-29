@@ -5,10 +5,10 @@ import {
   createContext,
   useReducer,
 } from 'react';
-import { Tag } from '../../../../types/tag.type';
 import { tagReducer } from './tag-reducer';
 import { TagAction } from './tag-action';
-import { LocalStorage } from '../../../../utils/localStorage.utils';
+import { LocalStorage } from '@utils/localStorage.utils';
+import { Tag } from '@model/tag/tag.type';
 
 export type TagContextType = {
   tagList: Tag[];

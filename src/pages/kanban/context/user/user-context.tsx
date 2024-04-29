@@ -5,10 +5,10 @@ import {
   createContext,
   useReducer,
 } from 'react';
-import { User } from '../../../../types/user.type';
 import { UserAction } from './user-action';
 import { userReducer } from './user-reducer';
-import { LocalStorage } from '../../../../utils/localStorage.utils';
+import { User } from '@model/user/user.type';
+import { LocalStorage } from '@utils/localStorage.utils';
 
 export type UserContextType = {
   userList: User[];

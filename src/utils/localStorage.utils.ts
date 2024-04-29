@@ -1,8 +1,4 @@
 import { v4 as uuidv4 } from 'uuid';
-import { DoneTicket } from '../types/done-ticket.type';
-import { InProgressTicket } from '../types/in-progress-ticket.type';
-import { Tag } from '../types/tag.type';
-import { Ticket } from '../types/ticket.type';
 import {
   isCreateDoneTicket,
   isCreateInProgressTicket,
@@ -11,13 +7,17 @@ import {
   isInProgressTicket,
   isTodoTicket,
 } from './tickets-functions.utils';
-import { TodoTicket } from '../types/todo-ticket.type';
-import { User } from '../types/user.type';
-import { CreateTicket } from '../types/create-ticket.type';
-import { CreateUser } from '../types/create-user.type';
-import { CreateTodoTicket } from '../types/create-todo-ticket.type';
-import { CreateInProgressTicket } from '../types/create-in-progress-ticket.type';
-import { CreateDoneTicket } from '../types/create-done-ticket.type';
+import { User } from '@model/user/user.type';
+import { CreateUser } from '@model/user/create-user/create-user.type';
+import { Tag } from '@model/tag/tag.type';
+import { TodoTicket } from '@model/ticket/todo-ticket.type';
+import { InProgressTicket } from '@model/ticket/in-progress-ticket.type';
+import { DoneTicket } from '@model/ticket/done-ticket.type';
+import { CreateTicket } from '@model/ticket/create-ticket/create-ticket.type';
+import { CreateTodoTicket } from '@model/ticket/create-ticket/create-todo-ticket.type';
+import { CreateInProgressTicket } from '@model/ticket/create-ticket/create-in-progress-ticket.type';
+import { CreateDoneTicket } from '@model/ticket/create-ticket/create-done-ticket.type';
+import { Ticket } from '@model/ticket/ticket.type';
 
 export class LocalStorage {
   static readonly getUserList = (): User[] => {

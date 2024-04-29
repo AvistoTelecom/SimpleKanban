@@ -1,7 +1,6 @@
 import { FunctionComponent, useState, useContext } from 'react';
 import { KanbanArea } from './kanban-area/kanban-area';
 import { SidePanel } from './side-panel/side-panel';
-import { NavBar } from '../../components/navbar/navbar';
 import { TagsTable } from './side-panel/tag-table/tags-table';
 import { UsersTable } from './side-panel/user-table/user-table';
 import { TicketColumn } from './kanban-area/ticket-column/ticket-column';
@@ -10,25 +9,19 @@ import {
   TicketContext,
   TicketContextType,
 } from './context/ticket/ticket-context';
-import { CreateTicket } from '../../types/create-ticket.type';
+import { CreateTicket } from '@model/ticket/create-ticket/create-ticket.type';
 import { DragDropContext, DragStart, DropResult } from 'react-beautiful-dnd';
-import { Ticket } from '../../types/ticket.type';
+import { Ticket } from '@model/ticket/ticket.type';
 import { TicketView } from './side-panel/ticket-detail/ticket-detail';
 import { EditTicketForm } from './side-panel/edit-ticket-form/edit-ticket-form';
 import { UserContext, UserContextType } from './context/user/user-context';
-import { CreateUser } from '../../types/create-user.type';
-import { User } from '../../types/user.type';
-import { Tag } from '../../types/tag.type';
+import { CreateUser } from '@model/user/create-user/create-user.type';
+import { User } from '@model/user/user.type';
+import { Tag } from '@model/tag/tag.type';
 import { TagContext, TagContextType } from './context/tag/tag-context';
-import { ColumnType } from '../../types/column-type.type';
-
-export type SidePanelContent =
-  | 'tag'
-  | 'user'
-  | 'addTicket'
-  | 'viewTicket'
-  | 'editTicket'
-  | '';
+import { ColumnType } from '@model/column/column-type.type';
+import { SidePanelContent } from '@model/sidepanel/sidepanel-content.type';
+import { NavBar } from '@components/navbar/navbar';
 
 export const KanbanPage: FunctionComponent = () => {
   const [isSidePanelOpen, setSidePanelOpen] = useState<boolean>(false);

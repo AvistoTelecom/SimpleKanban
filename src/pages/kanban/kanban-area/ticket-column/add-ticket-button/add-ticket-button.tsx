@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react';
-import { PlusIcon } from '../../../../../components/plus-icon/plus-icon';
+import { PlusIcon } from '@components/plus-icon/plus-icon';
 
 type AddTicketButtonProps = {
   onClick: () => void;

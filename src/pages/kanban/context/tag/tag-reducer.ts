@@ -1,6 +1,6 @@
-import { LocalStorage } from '../../../../utils/localStorage.utils';
-import { Tag } from '../../../../types/tag.type';
+import { LocalStorage } from '@utils/localStorage.utils';
 import { TagAction } from './tag-action';
+import { Tag } from '@model/tag/tag.type';
 
 const addTag = (newTag: Tag): Tag[] => {
   LocalStorage.addTag(newTag);

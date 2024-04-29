@@ -1,12 +1,12 @@
+import { BlockedIcon } from '@components/blocked-icon/blocked-icon';
+import { TicketCardStatus } from '@model/column/ticket-card-status.type';
+import { SidePanelContent } from '@model/sidepanel/sidepanel-content.type';
+import { Tag } from '@model/tag/tag.type';
+import { Ticket } from '@model/ticket/ticket.type';
+import { User } from '@model/user/user.type';
+import { getTextColor } from '@utils/color.utils';
 import { FunctionComponent } from 'react';
-import { Ticket } from '../../../../../types/ticket.type';
-import { User } from '../../../../../types/user.type';
-import { Tag } from '../../../../../types/tag.type';
-import { getTextColor } from '../../../../../utils/color.utils';
 import { Draggable, DraggableProvided } from 'react-beautiful-dnd';
-import { SidePanelContent } from '../../../kanban-page';
-import { TicketCardStatus } from '../../../../../types/ticket-card-status.type';
-import { BlockedIcon } from '../../../../../components/blocked-icon/blocked-icon';
 
 type TicketCardProps = {
   index: number;

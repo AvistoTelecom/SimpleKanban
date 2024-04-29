@@ -1,5 +1,5 @@
+import { SmallEditIcon } from '@components/edit-icon/edit-icon';
 import { ChangeEvent, FunctionComponent } from 'react';
-import { SmallEditIcon } from '../../../../../components/edit-icon/edit-icon';
 
 type ImageInputProps = {
   image: string;

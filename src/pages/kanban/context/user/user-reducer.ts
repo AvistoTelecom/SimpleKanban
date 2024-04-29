@@ -1,7 +1,7 @@
-import { LocalStorage } from '../../../../utils/localStorage.utils';
-import { CreateUser } from '../../../../types/create-user.type';
-import { User } from '../../../../types/user.type';
+import { CreateUser } from '@model/user/create-user/create-user.type';
 import { UserAction } from './user-action';
+import { User } from '@model/user/user.type';
+import { LocalStorage } from '@utils/localStorage.utils';
 
 const addUser = (newUser: CreateUser): User[] => {
   LocalStorage.addUser(newUser);

@@ -1,9 +1,9 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { KanbanPage } from './pages/kanban/kanban-page';
 import { FunctionComponent } from 'react';
 import { UserContextProvider } from './pages/kanban/context/user/user-context';
 import { TagContextProvider } from './pages/kanban/context/tag/tag-context';
 import { TicketContextProvider } from './pages/kanban/context/ticket/ticket-context';
+import { KanbanPage } from './pages/kanban/kanban-page';
 
 export const App: FunctionComponent = () => {
   return (
