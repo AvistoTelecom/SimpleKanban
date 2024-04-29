@@ -5,12 +5,13 @@ import {
   createContext,
   useReducer,
 } from 'react';
-import { TodoTicket } from '../../../../types/todo-ticket.type';
-import { InProgressTicket } from '../../../../types/in-progress-ticket.type';
-import { DoneTicket } from '../../../../types/done-ticket.type';
+
 import { TicketAction } from './ticket-action';
 import { ticketReducer } from './ticket-reducer';
-import { LocalStorage } from '../../../../utils/localStorage.utils';
+import { InProgressTicket } from '@model/ticket/in-progress-ticket.type';
+import { TodoTicket } from '@model/ticket/todo-ticket.type';
+import { DoneTicket } from '@model/ticket/done-ticket.type';
+import { LocalStorage } from '@utils/localStorage.utils';
 
 export type TicketContextType = {
   todoTicketList: TodoTicket[];

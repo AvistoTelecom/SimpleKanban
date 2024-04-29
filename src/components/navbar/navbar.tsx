@@ -1,5 +1,5 @@
+import { SidePanelContent } from '@model/sidepanel/sidepanel-content.type';
 import { FunctionComponent } from 'react';
-import { SidePanelContent } from '../../pages/kanban/kanban-page';
 
 type NavBarProps = {
   onClick: (id: SidePanelContent) => void;

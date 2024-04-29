@@ -1,14 +1,14 @@
-import { FunctionComponent } from 'react';
-import { Ticket } from '../../../../types/ticket.type';
+import { EditIcon } from '@components/edit-icon/edit-icon';
+import { SmallTrashIcon } from '@components/trash-icon/trash-icon';
+import { Tag } from '@model/tag/tag.type';
+import { Ticket } from '@model/ticket/ticket.type';
+import { User } from '@model/user/user.type';
+import { getTextColor } from '@utils/color.utils';
 import {
   isDoneTicket,
   isInProgressTicket,
-} from '../../../../utils/tickets-functions.utils';
-import { getTextColor } from '../../../../utils/color.utils';
-import { Tag } from '../../../../types/tag.type';
-import { User } from '../../../../types/user.type';
-import { EditIcon } from '../../../../components/edit-icon/edit-icon';
-import { SmallTrashIcon } from '../../../../components/trash-icon/trash-icon';
+} from '@utils/tickets-functions.utils';
+import { FunctionComponent } from 'react';
 
 type TicketViewProps = {
   ticket: Ticket;

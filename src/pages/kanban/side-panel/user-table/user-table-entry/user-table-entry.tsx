@@ -1,7 +1,7 @@
 import { ChangeEvent, KeyboardEvent, FunctionComponent, useState } from 'react';
+import { User } from '@model/user/user.type';
+import { TrashIcon } from '@components/trash-icon/trash-icon';
 import { ImageInput } from '../image-input/image-input';
-import { TrashIcon } from '../../../../../components/trash-icon/trash-icon';
-import { User } from '../../../../../types/user.type';
 
 type UserEntryProps = {
   user: User;

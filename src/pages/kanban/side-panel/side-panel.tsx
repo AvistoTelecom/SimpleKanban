@@ -1,5 +1,5 @@
+import { XMarkIcon } from '@components/x-mark-icon/x-mark-icon';
 import { FunctionComponent, PropsWithChildren } from 'react';
-import { XMarkIcon } from '../../../components/x-mark-icon/x-mark-icon';
 
 type SidePanelProps = {
   isOpen: boolean;

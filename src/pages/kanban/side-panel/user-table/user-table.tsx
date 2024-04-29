@@ -1,8 +1,8 @@
 import { FunctionComponent } from 'react';
 import { UsersTableEntry } from './user-table-entry/user-table-entry';
+import { User } from '@model/user/user.type';
+import { CreateUser } from '@model/user/create-user/create-user.type';
 import { UsersTableCreateRow } from './user-table-create-row/user-table-create-row';
-import { User } from '../../../../types/user.type';
-import { CreateUser } from '../../../../types/create-user.type';
 
 type UsersTableProps = {
   userList: User[];

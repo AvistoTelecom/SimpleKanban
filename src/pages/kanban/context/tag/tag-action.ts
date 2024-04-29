@@ -1,4 +1,4 @@
-import { Tag } from '../../../../types/tag.type';
+import { Tag } from '@model/tag/tag.type';
 
 export type TagAction =
   | { type: 'ADD-TAG'; payload: Tag }

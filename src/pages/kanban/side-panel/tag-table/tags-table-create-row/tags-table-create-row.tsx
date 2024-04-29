@@ -1,7 +1,7 @@
+import { PlusIcon } from '@components/plus-icon/plus-icon';
+import { Tag } from '@model/tag/tag.type';
+import { DEFAULT_TAG_COLOR } from '@pages/kanban/context/tag/tag-context';
 import { ChangeEvent, FunctionComponent, KeyboardEvent, useState } from 'react';
-import { DEFAULT_TAG_COLOR } from '../../../context/tag/tag-context';
-import { PlusIcon } from '../../../../../components/plus-icon/plus-icon';
-import { Tag } from '../../../../../types/tag.type';
 
 type TagsTableCreateRowProps = {
   tagList: Tag[];

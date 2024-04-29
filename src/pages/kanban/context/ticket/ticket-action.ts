@@ -1,5 +1,5 @@
-import { CreateTicket } from '../../../../types/create-ticket.type';
-import { Ticket } from '../../../../types/ticket.type';
+import { CreateTicket } from '@model/ticket/create-ticket/create-ticket.type';
+import { Ticket } from '@model/ticket/ticket.type';
 
 export type TicketAction =
   | { type: 'ADD-TICKET'; payload: CreateTicket }

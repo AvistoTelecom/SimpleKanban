@@ -1,12 +1,13 @@
 import { FunctionComponent } from 'react';
-import { AddTicketButton } from './add-ticket-button/add-ticket-button';
-import { ColumnType, SidePanelContent } from '../../kanban-page';
 import { TicketCard } from './ticket-card/ticket-card';
-import { Ticket } from '../../../../types/ticket.type';
 import { Droppable, DroppableProvided } from 'react-beautiful-dnd';
-import { TicketCardStatus } from '../../../../types/ticket-card-status.type';
-import { User } from '../../../../types/user.type';
-import { Tag } from '../../../../types/tag.type';
+import { Ticket } from '@model/ticket/ticket.type';
+import { ColumnType } from '@model/column/column-type.type';
+import { Tag } from '@model/tag/tag.type';
+import { User } from '@model/user/user.type';
+import { TicketCardStatus } from '@model/column/ticket-card-status.type';
+import { SidePanelContent } from '@model/sidepanel/sidepanel-content.type';
+import { AddTicketButton } from './add-ticket-button/add-ticket-button';
 
 type TicketColumnProps = {
   type: ColumnType;
