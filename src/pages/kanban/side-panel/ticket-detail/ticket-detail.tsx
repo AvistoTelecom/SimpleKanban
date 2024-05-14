@@ -16,7 +16,7 @@ type TicketViewProps = {
   assigne?: User;
   childTicket?: Ticket;
   parentTicket?: Ticket;
-  onClickOnEditButton: (ticketId: string) => void;
+  onClickOnEditButton: (ticket: Ticket) => void;
   onClickOnDeleteButton: (ticketId: string) => void;
 };
 
@@ -30,7 +30,7 @@ export const TicketView: FunctionComponent<TicketViewProps> = ({
   onClickOnDeleteButton,
 }) => {
   const onClickOnEditTicket = () => {
-    onClickOnEditButton(ticket.id);
+    onClickOnEditButton(ticket);
   };
 
   const onClickOnDeleteTicket = () => {

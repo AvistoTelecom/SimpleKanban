@@ -1,17 +1,20 @@
-import { SidePanelContent } from '@model/sidepanel/sidepanel-content.type';
 import { FunctionComponent } from 'react';
 
 type NavBarProps = {
-  onClick: (id: SidePanelContent) => void;
+  toggleTagTable: () => void;
+  toggleUserTable: () => void;
 };
 
-export const NavBar: FunctionComponent<NavBarProps> = ({ onClick }) => {
+export const NavBar: FunctionComponent<NavBarProps> = ({
+  toggleTagTable,
+  toggleUserTable,
+}) => {
   const onClickUserButton = () => {
-    onClick('user');
+    toggleUserTable();
   };
 
   const onClickTagButton = () => {
-    onClick('tag');
+    toggleTagTable();
   };
 
   return (
