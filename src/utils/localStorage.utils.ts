@@ -18,8 +18,53 @@ import { CreateTodoTicket } from '@model/ticket/create-ticket/create-todo-ticket
 import { CreateInProgressTicket } from '@model/ticket/create-ticket/create-in-progress-ticket.type';
 import { CreateDoneTicket } from '@model/ticket/create-ticket/create-done-ticket.type';
 import { Ticket } from '@model/ticket/ticket.type';
+import { Image } from '@model/image/image.type';
+import { ImageCreate } from '@model/image/create-image/create-image.type';
 
 export class LocalStorage {
+  static readonly getImageList = (): Image[] => {
+    const imageList = localStorage.getItem('imageList');
+    return imageList ? JSON.parse(imageList) : [];
+  };
+
+  static readonly setImageList = (imageList: Image[]): void => {
+    localStorage.setItem('imageList', JSON.stringify(imageList));
+  };
+
+  static readonly addImage = (image: ImageCreate): string => {
+    const storedImageList = this.getImageList();
+    const imageToAdd = {
+      id: uuidv4(),
+      ...image,
+    };
+    storedImageList.push(imageToAdd);
+    this.setImageList(storedImageList);
+    return imageToAdd.id;
+  };
+
+  static readonly deleteImage = (id: string): void => {
+    this.setImageList(this.getImageList().filter((image) => image.id !== id));
+    this.setUserList(
+      this.getUserList().map((user) => {
+        if (user.imageId === id) {
+          user.imageId = undefined;
+        }
+        return user;
+      })
+    );
+  };
+
+  static readonly updateImage = (updatedImage: Image): void => {
+    const storedImageList = this.getImageList();
+    const imageIndex = storedImageList.findIndex(
+      (image) => image.id === updatedImage.id
+    );
+    if (imageIndex < 0) {
+      return;
+    }
+    this.setImageList(storedImageList.with(imageIndex, updatedImage));
+  };
+
   static readonly getUserList = (): User[] => {
     const userList = localStorage.getItem('userList');
     return userList ? JSON.parse(userList) : [];
