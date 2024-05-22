@@ -7,12 +7,14 @@ import { Tag } from '@model/tag/tag.type';
 import { User } from '@model/user/user.type';
 import { TicketCardStatus } from '@model/column/ticket-card-status.type';
 import { AddTicketButton } from './add-ticket-button/add-ticket-button';
+import { Image } from '@model/image/image.type';
 
 type TicketColumnProps = {
   type: ColumnType;
   ticketList: Ticket[];
   userList: User[];
   tagList: Tag[];
+  imageList: Image[];
   onClickOnCard: (ticket: Ticket) => void;
   onClickOnAdd: (type: ColumnType) => void;
   onMouseEnter: (ticket: Ticket) => void;
@@ -26,6 +28,7 @@ export const TicketColumn: FunctionComponent<TicketColumnProps> = ({
   ticketList,
   userList,
   tagList,
+  imageList,
   onClickOnAdd,
   onClickOnCard,
   onMouseEnter,
@@ -76,6 +79,13 @@ export const TicketColumn: FunctionComponent<TicketColumnProps> = ({
                   (currentUser) => currentUser.id === ticket.assigneId,
                   ticket
                 )}
+                assigneImage={((): Image | undefined => {
+                  const user = userList.find(
+                    (currentUser) => currentUser.id === ticket.assigneId,
+                    ticket
+                  );
+                  return imageList.find((image) => image.id === user?.imageId);
+                })()}
                 tag={tagList.find(
                   (currentTag) => currentTag.name === ticket.tagName,
                   ticket

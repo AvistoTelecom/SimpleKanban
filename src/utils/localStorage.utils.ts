@@ -94,6 +94,14 @@ export class LocalStorage {
     const inProgressTicketList = this.getInProgressTicketList();
     const doneTicketList = this.getDoneTicketList();
     const storedUserList = this.getUserList();
+    const imageList = this.getImageList();
+    const user = storedUserList.find((storedUser) => storedUser.id === userId);
+
+    if (!user) {
+      return;
+    }
+
+    this.setImageList(imageList.filter((image) => image.id !== user.imageId));
 
     todoTicketList.forEach((currentTicket) => {
       if (currentTicket.assigneId === userId) {

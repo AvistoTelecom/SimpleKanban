@@ -2,23 +2,38 @@ import { ImageCreate } from '@model/image/create-image/create-image.type';
 import { Image } from '@model/image/image.type';
 import { LocalStorage } from '@utils/localStorage.utils';
 import { ImageAction } from './image-action';
+import { Reducer } from 'react';
+import { ImageReducerState } from './image-context';
 
-const addImage = (newImage: ImageCreate): Image[] => {
-  LocalStorage.addImage(newImage);
-  return LocalStorage.getImageList();
+const addImage = (newImage: ImageCreate): ImageReducerState => {
+  const newImageId = LocalStorage.addImage(newImage);
+  return {
+    imageList: LocalStorage.getImageList(),
+    lastAddedImageId: newImageId,
+  };
 };
 
-const updateImage = (updatedImage: Image): Image[] => {
+const updateImage = (updatedImage: Image): ImageReducerState => {
   LocalStorage.updateImage(updatedImage);
-  return LocalStorage.getImageList();
+  return {
+    imageList: LocalStorage.getImageList(),
+  };
 };
 
-const deleteImage = (id: string): Image[] => {
+const deleteImage = (id: string): ImageReducerState => {
   LocalStorage.deleteImage(id);
-  return LocalStorage.getImageList();
+  return {
+    imageList: LocalStorage.getImageList(),
+  };
 };
 
-export const imageReducer = (_state: Image[], action: ImageAction): Image[] => {
+export const imageReducer: Reducer<ImageReducerState, ImageAction> = (
+  _state: {
+    imageList: Image[];
+    lastAddedImageId?: string;
+  },
+  action: ImageAction
+): ImageReducerState => {
   switch (action.type) {
     case 'ADD-IMAGE':
       return addImage(action.payload);

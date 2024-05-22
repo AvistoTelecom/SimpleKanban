@@ -2,17 +2,26 @@ import { ChangeEvent, KeyboardEvent, FunctionComponent, useState } from 'react';
 import { User } from '@model/user/user.type';
 import { TrashIcon } from '@components/trash-icon/trash-icon';
 import { ImageInput } from '../image-input/image-input';
+import { Image } from '@model/image/image.type';
+import { DEFAULT_PROFILE_PICTURE } from '@pages/kanban/context/image/image-context';
+import { ImageCreate } from '@model/image/create-image/create-image.type';
 
 type UserEntryProps = {
   user: User;
+  image?: Image;
   onDeleteUser: (id: string) => void;
   onUpdateUser: (user: User) => void;
+  onUpdateImage: (image: Image) => void;
+  onAddImageToUser: (image: ImageCreate, userId: string) => void;
 };
 
 export const UsersTableEntry: FunctionComponent<UserEntryProps> = ({
   user,
+  image,
   onDeleteUser,
   onUpdateUser,
+  onUpdateImage,
+  onAddImageToUser,
 }) => {
   const [name, setName] = useState<string>(user.name);
   const [nameError, setNameError] = useState<string>('');
@@ -36,7 +45,7 @@ export const UsersTableEntry: FunctionComponent<UserEntryProps> = ({
     if (!isValidUserName(name)) {
       return;
     }
-    const newUser: User = { id: user.id, name: name, image: user.image };
+    const newUser: User = { ...user, name };
     onUpdateUser(newUser);
   };
 
@@ -47,9 +56,21 @@ export const UsersTableEntry: FunctionComponent<UserEntryProps> = ({
     }
   };
 
-  const onChangeImage = (image: string) => {
-    const newUser: User = { id: user.id, name: user.name, image };
-    onUpdateUser(newUser);
+  const onChangeImage = (newImage: string) => {
+    if (!image) {
+      onAddImageToUser(
+        {
+          data: newImage,
+        },
+        user.id
+      );
+      return;
+    }
+    const updatedImage: Image = {
+      ...image,
+      data: newImage,
+    };
+    onUpdateImage(updatedImage);
   };
 
   return (
@@ -74,7 +95,10 @@ export const UsersTableEntry: FunctionComponent<UserEntryProps> = ({
         </label>
       </td>
       <td>
-        <ImageInput image={user.image} onChange={onChangeImage} />
+        <ImageInput
+          image={image ?? DEFAULT_PROFILE_PICTURE}
+          onChange={onChangeImage}
+        />
       </td>
       <td>
         <button

@@ -12,8 +12,8 @@ export const SidePanel: FunctionComponent<
   return (
     <div
       className={
-        'flex flex-col transition-width duration-300 ease-out h-full bg-base-100 ' +
-        (isOpen ? 'w-full rounded-box p-2' : 'w-0')
+        'flex flex-col transition-width duration-300 ease-out h-full bg-base-100 overflow-x-hidden rounded-box ' +
+        (isOpen ? 'w-full p-2' : 'w-0')
       }
     >
       <button

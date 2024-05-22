@@ -11,28 +11,36 @@ import { imageReducer } from './image-reducer';
 import { LocalStorage } from '@utils/localStorage.utils';
 
 export type ImageContextType = {
-  imageList: Image[];
+  imageReducerState: ImageReducerState;
   dispatchImageList: Dispatch<ImageAction>;
 };
 
-export const DEFAULT_PROFILE_PICTURE: string =
-  'https://docs.material-tailwind.com/img/face-2.jpg';
+export type ImageReducerState = {
+  imageList: Image[];
+  lastAddedImageId?: string;
+};
+
+export const DEFAULT_PROFILE_PICTURE: Image = {
+  id: 'default',
+  data: 'https://docs.material-tailwind.com/img/face-2.jpg',
+};
 
 export const ImageContext = createContext<ImageContextType>({
-  imageList: [],
+  imageReducerState: {
+    imageList: [],
+  },
   dispatchImageList: () => {},
 });
 
 export const ImageContextProvider: FunctionComponent<{
   children: ReactNode;
 }> = ({ children }) => {
-  const [imageList, dispatchImageList] = useReducer(
-    imageReducer,
-    LocalStorage.getImageList()
-  );
+  const [imageReducerState, dispatchImageList] = useReducer(imageReducer, {
+    imageList: LocalStorage.getImageList(),
+  });
 
   return (
-    <ImageContext.Provider value={{ imageList, dispatchImageList }}>
+    <ImageContext.Provider value={{ imageReducerState, dispatchImageList }}>
       {children}
     </ImageContext.Provider>
   );

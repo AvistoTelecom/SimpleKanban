@@ -1,4 +1,4 @@
-import { FunctionComponent, useState, useContext } from 'react';
+import { FunctionComponent, useState, useContext, useEffect } from 'react';
 import { KanbanArea } from './kanban-area/kanban-area';
 import { SidePanel } from './side-panel/side-panel';
 import { TagsTable } from './side-panel/tag-table/tags-table';
@@ -22,6 +22,9 @@ import { TagContext, TagContextType } from './context/tag/tag-context';
 import { ColumnType } from '@model/column/column-type.type';
 import { SidePanelContent } from '@model/sidepanel/sidepanel-content.type';
 import { NavBar } from '@components/navbar/navbar';
+import { ImageContext, ImageContextType } from './context/image/image-context';
+import { Image } from '@model/image/image.type';
+import { ImageCreate } from '@model/image/create-image/create-image.type';
 
 export const KanbanPage: FunctionComponent = () => {
   const [isSidePanelOpen, setIsSidePanelOpen] = useState<boolean>(false);
@@ -41,6 +44,25 @@ export const KanbanPage: FunctionComponent = () => {
     doneTicketList,
     dispatchTicketList,
   } = useContext<TicketContextType>(TicketContext);
+  const { imageReducerState, dispatchImageList } =
+    useContext<ImageContextType>(ImageContext);
+  const [userIdImageUpdate, setUserIdImageUpdate] = useState<
+    string | undefined
+  >();
+
+  useEffect(() => {
+    const storedUser = userList.find((user) => user.id === userIdImageUpdate);
+    if (!storedUser) {
+      return;
+    }
+    const newImageId: string | undefined = imageReducerState.lastAddedImageId;
+    if (newImageId) {
+      dispatchUserList({
+        type: 'UPDATE-USER',
+        payload: { ...storedUser, imageId: newImageId },
+      });
+    }
+  }, [imageReducerState.lastAddedImageId]);
 
   const toggleSidePanelTagTable = () => {
     if (!isSidePanelOpen || sidePanelContentId !== 'tag') {
@@ -70,6 +92,8 @@ export const KanbanPage: FunctionComponent = () => {
     setIsSidePanelOpen(false);
   };
 
+  // TODO : fix local storage reorder function
+
   const toggleSidePanelViewTicket = (ticket: Ticket) => {
     if (
       !isSidePanelOpen ||
@@ -82,6 +106,18 @@ export const KanbanPage: FunctionComponent = () => {
       return;
     }
     setIsSidePanelOpen(false);
+  };
+
+  const onAddImageToUser = (image: ImageCreate, userId: string): void => {
+    dispatchImageList({
+      type: 'ADD-IMAGE',
+      payload: image,
+    });
+    setUserIdImageUpdate(userId);
+  };
+
+  const onUpdateImage = (image: Image): void => {
+    dispatchImageList({ type: 'UPDATE-IMAGE', payload: image });
   };
 
   const onAddUser = (user: CreateUser) => {
@@ -317,6 +353,7 @@ export const KanbanPage: FunctionComponent = () => {
               ticketList={todoTicketList}
               userList={userList}
               tagList={tagList}
+              imageList={imageReducerState.imageList}
             />
             <TicketColumn
               type="inProgress"
@@ -328,6 +365,7 @@ export const KanbanPage: FunctionComponent = () => {
               ticketList={inProgressTicketList}
               userList={userList}
               tagList={tagList}
+              imageList={imageReducerState.imageList}
               isDropDisabled={isDropDisabled}
             />
             <TicketColumn
@@ -340,6 +378,7 @@ export const KanbanPage: FunctionComponent = () => {
               ticketList={doneTicketList}
               userList={userList}
               tagList={tagList}
+              imageList={imageReducerState.imageList}
               isDropDisabled={isDropDisabled}
             />
           </DragDropContext>
@@ -359,9 +398,12 @@ export const KanbanPage: FunctionComponent = () => {
           {sidePanelContentId === 'user' && (
             <UsersTable
               userList={userList}
+              imageList={imageReducerState.imageList}
               onAddUser={onAddUser}
               onDeleteUser={onDeleteUser}
               onUpdateUser={onUpdateUser}
+              onAddImageToUser={onAddImageToUser}
+              onUpdateImage={onUpdateImage}
             />
           )}
           {sidePanelContentId === 'addTicket' && (
@@ -384,6 +426,15 @@ export const KanbanPage: FunctionComponent = () => {
                 assigne={userList.find(
                   (user) => user.id === sidePanelTicket.assigneId
                 )}
+                assigneImage={((): Image | undefined => {
+                  const user = userList.find(
+                    (currentUser) =>
+                      currentUser.id === sidePanelTicket.assigneId
+                  );
+                  return imageReducerState.imageList.find(
+                    (image) => image.id === user?.imageId
+                  );
+                })()}
                 parentTicket={todoTicketList
                   .concat(inProgressTicketList)
                   .concat(doneTicketList)

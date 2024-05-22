@@ -1,8 +1,7 @@
 import { CreateUser } from '@model/user/create-user/create-user.type';
-import { DEFAULT_PROFILE_PICTURE } from '@pages/kanban/context/user/user-context';
 import { ChangeEvent, FunctionComponent, KeyboardEvent, useState } from 'react';
-import { ImageInput } from '../image-input/image-input';
 import { PlusIcon } from '@components/plus-icon/plus-icon';
+import { DEFAULT_PROFILE_PICTURE } from '@pages/kanban/context/image/image-context';
 
 type UsersTableCreateRowProps = {
   onAddUser: (user: CreateUser) => void;
@@ -12,7 +11,6 @@ export const UsersTableCreateRow: FunctionComponent<
   UsersTableCreateRowProps
 > = ({ onAddUser }) => {
   const [username, setUsername] = useState<string>('');
-  const [image, setImage] = useState<string>(DEFAULT_PROFILE_PICTURE);
   const [nameError, setNameError] = useState<string>('');
 
   const isValidUserName = (newName: string): boolean => {
@@ -22,10 +20,6 @@ export const UsersTableCreateRow: FunctionComponent<
     }
     setNameError('');
     return true;
-  };
-
-  const onChangeImage = (newImage: string) => {
-    setImage(newImage);
   };
 
   const onChangeUsername = (event: ChangeEvent<HTMLInputElement>) => {
@@ -38,8 +32,7 @@ export const UsersTableCreateRow: FunctionComponent<
     if (!isValidUserName(username)) {
       return;
     }
-    onAddUser({ name: username, image: image });
-    setImage(DEFAULT_PROFILE_PICTURE);
+    onAddUser({ name: username });
     setUsername('');
   };
 
@@ -72,7 +65,9 @@ export const UsersTableCreateRow: FunctionComponent<
           </label>
         </th>
         <th>
-          <ImageInput image={image} onChange={onChangeImage} />
+          <div className="mask mask-squircle avatar w-12 h-12">
+            <img src={DEFAULT_PROFILE_PICTURE.data} alt="Avatar" />
+          </div>
         </th>
         <th>
           <button
