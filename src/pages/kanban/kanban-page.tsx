@@ -92,8 +92,6 @@ export const KanbanPage: FunctionComponent = () => {
     setIsSidePanelOpen(false);
   };
 
-  // TODO : fix local storage reorder function
-
   const toggleSidePanelViewTicket = (ticket: Ticket) => {
     if (
       !isSidePanelOpen ||

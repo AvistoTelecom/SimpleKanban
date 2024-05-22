@@ -652,14 +652,17 @@ export class LocalStorage {
     );
 
     let inProgressTicketList = this.getInProgressTicketList();
-    inProgressTicketList = inProgressTicketList.map((currentTicket) => {
+    inProgressTicketList = inProgressTicketList.map((currentTicket, index) => {
+      currentTicket.yIndex = index;
       if (currentTicket.yIndex >= destinationIndex) {
-        currentTicket.yIndex++;
+        currentTicket.yIndex = index + 1;
       }
       return currentTicket;
     });
     this.setInProgressTicketList(
-      inProgressTicketList.toSpliced(destinationIndex, 0, inProgress)
+      inProgressTicketList
+        .concat(inProgress)
+        .toSorted((a, b) => a.yIndex - b.yIndex)
     );
   };
 
@@ -682,13 +685,16 @@ export class LocalStorage {
     );
 
     let todoTicketList = this.getTodoTicketList();
-    todoTicketList = todoTicketList.map((currentTicket) => {
+    todoTicketList = todoTicketList.map((currentTicket, index) => {
+      currentTicket.yIndex = index;
       if (currentTicket.yIndex >= destinationIndex) {
-        currentTicket.yIndex++;
+        currentTicket.yIndex = index + 1;
       }
       return currentTicket;
     });
-    this.setTodoTicketList(todoTicketList.toSpliced(destinationIndex, 0, todo));
+    this.setTodoTicketList(
+      todoTicketList.concat(todo).toSorted((a, b) => a.yIndex - b.yIndex)
+    );
   };
 
   static readonly setInProgressToDone = (
@@ -714,13 +720,16 @@ export class LocalStorage {
     );
 
     let doneTicketList = this.getDoneTicketList();
-    doneTicketList = doneTicketList.map((currentTicket) => {
+    doneTicketList = doneTicketList.map((currentTicket, index) => {
+      currentTicket.yIndex = index;
       if (currentTicket.yIndex >= destinationIndex) {
-        currentTicket.yIndex++;
+        currentTicket.yIndex = index + 1;
       }
       return currentTicket;
     });
-    this.setDoneTicketList(doneTicketList.toSpliced(destinationIndex, 0, done));
+    this.setDoneTicketList(
+      doneTicketList.concat(done).toSorted((a, b) => a.yIndex - b.yIndex)
+    );
   };
 
   static readonly setDoneToInProgress = (
@@ -740,14 +749,17 @@ export class LocalStorage {
     );
 
     let inProgressTicketList = this.getInProgressTicketList();
-    inProgressTicketList = inProgressTicketList.map((currentTicket) => {
+    inProgressTicketList = inProgressTicketList.map((currentTicket, index) => {
+      currentTicket.yIndex = index;
       if (currentTicket.yIndex >= destinationIndex) {
-        currentTicket.yIndex++;
+        currentTicket.yIndex = index + 1;
       }
       return currentTicket;
     });
     this.setInProgressTicketList(
-      inProgressTicketList.toSpliced(destinationIndex, 0, inProgress)
+      inProgressTicketList
+        .concat(inProgress)
+        .toSorted((a, b) => a.yIndex - b.yIndex)
     );
   };
 
@@ -773,13 +785,16 @@ export class LocalStorage {
     );
 
     let doneTicketList = this.getDoneTicketList();
-    doneTicketList = doneTicketList.map((currentTicket) => {
+    doneTicketList = doneTicketList.map((currentTicket, index) => {
+      currentTicket.yIndex = index;
       if (currentTicket.yIndex >= destinationIndex) {
-        currentTicket.yIndex++;
+        currentTicket.yIndex = index + 1;
       }
       return currentTicket;
     });
-    this.setDoneTicketList(doneTicketList.toSpliced(destinationIndex, 0, done));
+    this.setDoneTicketList(
+      doneTicketList.concat(done).toSorted((a, b) => a.yIndex - b.yIndex)
+    );
   };
 
   static readonly setDoneTicketToTodo = (
@@ -799,12 +814,15 @@ export class LocalStorage {
     );
 
     let todoTicketList = this.getTodoTicketList();
-    todoTicketList = todoTicketList.map((currentTicket) => {
+    todoTicketList = todoTicketList.map((currentTicket, index) => {
+      currentTicket.yIndex = index;
       if (currentTicket.yIndex >= destinationIndex) {
-        currentTicket.yIndex++;
+        currentTicket.yIndex = index + 1;
       }
       return currentTicket;
     });
-    this.setTodoTicketList(todoTicketList.toSpliced(destinationIndex, 0, todo));
+    this.setTodoTicketList(
+      todoTicketList.concat(todo).toSorted((a, b) => a.yIndex - b.yIndex)
+    );
   };
 }
