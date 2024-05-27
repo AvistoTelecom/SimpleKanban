@@ -1,8 +1,9 @@
 import { SmallEditIcon } from '@components/edit-icon/edit-icon';
+import { Image } from '@model/image/image.type';
 import { ChangeEvent, FunctionComponent } from 'react';
 
 type ImageInputProps = {
-  image: string;
+  image: Image;
   onChange: (image: string) => void;
 };
 
@@ -25,7 +26,7 @@ export const ImageInput: FunctionComponent<ImageInputProps> = ({
   return (
     <label className="avatar w-12 h-12 cursor-pointer hover:text-accent">
       <div className="mask mask-squircle">
-        <img src={image} alt="Avatar" />
+        <img src={image.src} alt="Avatar" />
       </div>
       <input
         type="file"

@@ -15,9 +15,6 @@ export type UserContextType = {
   dispatchUserList: Dispatch<UserAction>;
 };
 
-export const DEFAULT_PROFILE_PICTURE: string =
-  'https://docs.material-tailwind.com/img/face-2.jpg';
-
 export const UserContext = createContext<UserContextType>({
   userList: [],
   dispatchUserList: () => {},

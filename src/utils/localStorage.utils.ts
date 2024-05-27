@@ -18,8 +18,53 @@ import { CreateTodoTicket } from '@model/ticket/create-ticket/create-todo-ticket
 import { CreateInProgressTicket } from '@model/ticket/create-ticket/create-in-progress-ticket.type';
 import { CreateDoneTicket } from '@model/ticket/create-ticket/create-done-ticket.type';
 import { Ticket } from '@model/ticket/ticket.type';
+import { Image } from '@model/image/image.type';
+import { CreateImage } from '@model/image/create-image/create-image.type';
 
 export class LocalStorage {
+  static readonly getImageList = (): Image[] => {
+    const imageList = localStorage.getItem('imageList');
+    return imageList ? JSON.parse(imageList) : [];
+  };
+
+  static readonly setImageList = (imageList: Image[]): void => {
+    localStorage.setItem('imageList', JSON.stringify(imageList));
+  };
+
+  static readonly addImage = (image: CreateImage): string => {
+    const storedImageList = this.getImageList();
+    const imageToAdd = {
+      id: uuidv4(),
+      ...image,
+    };
+    storedImageList.push(imageToAdd);
+    this.setImageList(storedImageList);
+    return imageToAdd.id;
+  };
+
+  static readonly deleteImage = (id: string): void => {
+    this.setImageList(this.getImageList().filter((image) => image.id !== id));
+    this.setUserList(
+      this.getUserList().map((user) => {
+        if (user.imageId === id) {
+          user.imageId = undefined;
+        }
+        return user;
+      })
+    );
+  };
+
+  static readonly updateImage = (updatedImage: Image): void => {
+    const storedImageList = this.getImageList();
+    const imageIndex = storedImageList.findIndex(
+      (image) => image.id === updatedImage.id
+    );
+    if (imageIndex < 0) {
+      return;
+    }
+    this.setImageList(storedImageList.with(imageIndex, updatedImage));
+  };
+
   static readonly getUserList = (): User[] => {
     const userList = localStorage.getItem('userList');
     return userList ? JSON.parse(userList) : [];
@@ -49,6 +94,14 @@ export class LocalStorage {
     const inProgressTicketList = this.getInProgressTicketList();
     const doneTicketList = this.getDoneTicketList();
     const storedUserList = this.getUserList();
+    const imageList = this.getImageList();
+    const user = storedUserList.find((storedUser) => storedUser.id === userId);
+
+    if (!user) {
+      return;
+    }
+
+    this.setImageList(imageList.filter((image) => image.id !== user.imageId));
 
     todoTicketList.forEach((currentTicket) => {
       if (currentTicket.assigneId === userId) {
@@ -599,14 +652,17 @@ export class LocalStorage {
     );
 
     let inProgressTicketList = this.getInProgressTicketList();
-    inProgressTicketList = inProgressTicketList.map((currentTicket) => {
+    inProgressTicketList = inProgressTicketList.map((currentTicket, index) => {
+      currentTicket.yIndex = index;
       if (currentTicket.yIndex >= destinationIndex) {
-        currentTicket.yIndex++;
+        currentTicket.yIndex = index + 1;
       }
       return currentTicket;
     });
     this.setInProgressTicketList(
-      inProgressTicketList.toSpliced(destinationIndex, 0, inProgress)
+      inProgressTicketList
+        .concat(inProgress)
+        .toSorted((a, b) => a.yIndex - b.yIndex)
     );
   };
 
@@ -629,13 +685,16 @@ export class LocalStorage {
     );
 
     let todoTicketList = this.getTodoTicketList();
-    todoTicketList = todoTicketList.map((currentTicket) => {
+    todoTicketList = todoTicketList.map((currentTicket, index) => {
+      currentTicket.yIndex = index;
       if (currentTicket.yIndex >= destinationIndex) {
-        currentTicket.yIndex++;
+        currentTicket.yIndex = index + 1;
       }
       return currentTicket;
     });
-    this.setTodoTicketList(todoTicketList.toSpliced(destinationIndex, 0, todo));
+    this.setTodoTicketList(
+      todoTicketList.concat(todo).toSorted((a, b) => a.yIndex - b.yIndex)
+    );
   };
 
   static readonly setInProgressToDone = (
@@ -661,13 +720,16 @@ export class LocalStorage {
     );
 
     let doneTicketList = this.getDoneTicketList();
-    doneTicketList = doneTicketList.map((currentTicket) => {
+    doneTicketList = doneTicketList.map((currentTicket, index) => {
+      currentTicket.yIndex = index;
       if (currentTicket.yIndex >= destinationIndex) {
-        currentTicket.yIndex++;
+        currentTicket.yIndex = index + 1;
       }
       return currentTicket;
     });
-    this.setDoneTicketList(doneTicketList.toSpliced(destinationIndex, 0, done));
+    this.setDoneTicketList(
+      doneTicketList.concat(done).toSorted((a, b) => a.yIndex - b.yIndex)
+    );
   };
 
   static readonly setDoneToInProgress = (
@@ -687,14 +749,17 @@ export class LocalStorage {
     );
 
     let inProgressTicketList = this.getInProgressTicketList();
-    inProgressTicketList = inProgressTicketList.map((currentTicket) => {
+    inProgressTicketList = inProgressTicketList.map((currentTicket, index) => {
+      currentTicket.yIndex = index;
       if (currentTicket.yIndex >= destinationIndex) {
-        currentTicket.yIndex++;
+        currentTicket.yIndex = index + 1;
       }
       return currentTicket;
     });
     this.setInProgressTicketList(
-      inProgressTicketList.toSpliced(destinationIndex, 0, inProgress)
+      inProgressTicketList
+        .concat(inProgress)
+        .toSorted((a, b) => a.yIndex - b.yIndex)
     );
   };
 
@@ -720,13 +785,16 @@ export class LocalStorage {
     );
 
     let doneTicketList = this.getDoneTicketList();
-    doneTicketList = doneTicketList.map((currentTicket) => {
+    doneTicketList = doneTicketList.map((currentTicket, index) => {
+      currentTicket.yIndex = index;
       if (currentTicket.yIndex >= destinationIndex) {
-        currentTicket.yIndex++;
+        currentTicket.yIndex = index + 1;
       }
       return currentTicket;
     });
-    this.setDoneTicketList(doneTicketList.toSpliced(destinationIndex, 0, done));
+    this.setDoneTicketList(
+      doneTicketList.concat(done).toSorted((a, b) => a.yIndex - b.yIndex)
+    );
   };
 
   static readonly setDoneTicketToTodo = (
@@ -746,12 +814,15 @@ export class LocalStorage {
     );
 
     let todoTicketList = this.getTodoTicketList();
-    todoTicketList = todoTicketList.map((currentTicket) => {
+    todoTicketList = todoTicketList.map((currentTicket, index) => {
+      currentTicket.yIndex = index;
       if (currentTicket.yIndex >= destinationIndex) {
-        currentTicket.yIndex++;
+        currentTicket.yIndex = index + 1;
       }
       return currentTicket;
     });
-    this.setTodoTicketList(todoTicketList.toSpliced(destinationIndex, 0, todo));
+    this.setTodoTicketList(
+      todoTicketList.concat(todo).toSorted((a, b) => a.yIndex - b.yIndex)
+    );
   };
 }

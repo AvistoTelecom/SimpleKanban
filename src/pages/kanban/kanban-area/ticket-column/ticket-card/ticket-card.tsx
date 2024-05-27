@@ -1,8 +1,10 @@
 import { BlockedIcon } from '@components/blocked-icon/blocked-icon';
 import { TicketCardStatus } from '@model/column/ticket-card-status.type';
+import { Image } from '@model/image/image.type';
 import { Tag } from '@model/tag/tag.type';
 import { Ticket } from '@model/ticket/ticket.type';
 import { User } from '@model/user/user.type';
+import { DEFAULT_PROFILE_PICTURE } from '@pages/kanban/context/image/image-context';
 import { getTextColor } from '@utils/color.utils';
 import { FunctionComponent } from 'react';
 import { Draggable, DraggableProvided } from 'react-beautiful-dnd';
@@ -11,6 +13,7 @@ type TicketCardProps = {
   index: number;
   ticket: Ticket;
   assigne?: User;
+  assigneImage?: Image;
   tag?: Tag;
   status: TicketCardStatus;
   onClick: (ticket: Ticket) => void;
@@ -22,6 +25,7 @@ export const TicketCard: FunctionComponent<TicketCardProps> = ({
   index,
   ticket,
   assigne,
+  assigneImage,
   tag,
   status,
   onClick,
@@ -110,7 +114,7 @@ export const TicketCard: FunctionComponent<TicketCardProps> = ({
                 <div className="flex tooltip" data-tip={assigne.name}>
                   <img
                     className="mask mask-squircle w-12 h-12"
-                    src={assigne.image}
+                    src={assigneImage?.src ?? DEFAULT_PROFILE_PICTURE.src}
                     alt="Avatar"
                   />
                 </div>

@@ -1,4 +1,3 @@
-export type CreateUser = {
-  name: string;
-  image: string;
-};
+import { User } from '../user.type';
+
+export type CreateUser = Omit<User, 'id'>;

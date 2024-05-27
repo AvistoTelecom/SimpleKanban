@@ -1,8 +1,10 @@
 import { EditIcon } from '@components/edit-icon/edit-icon';
 import { SmallTrashIcon } from '@components/trash-icon/trash-icon';
+import { Image } from '@model/image/image.type';
 import { Tag } from '@model/tag/tag.type';
 import { Ticket } from '@model/ticket/ticket.type';
 import { User } from '@model/user/user.type';
+import { DEFAULT_PROFILE_PICTURE } from '@pages/kanban/context/image/image-context';
 import { getTextColor } from '@utils/color.utils';
 import {
   isDoneTicket,
@@ -14,6 +16,7 @@ type TicketViewProps = {
   ticket: Ticket;
   tag?: Tag;
   assigne?: User;
+  assigneImage?: Image;
   childTicket?: Ticket;
   parentTicket?: Ticket;
   onClickOnEditButton: (ticket: Ticket) => void;
@@ -24,6 +27,7 @@ export const TicketView: FunctionComponent<TicketViewProps> = ({
   ticket,
   tag,
   assigne,
+  assigneImage,
   parentTicket,
   childTicket,
   onClickOnEditButton,
@@ -80,13 +84,13 @@ export const TicketView: FunctionComponent<TicketViewProps> = ({
           </p>
           {isInProgressTicket(ticket) && (
             <p className="text-neutral-content">
-              <strong>Stated at : </strong>
+              <strong>Started at : </strong>
               {ticket.startDate.toLocaleDateString()}
             </p>
           )}
           {isDoneTicket(ticket) && (
             <p className="text-neutral-content">
-              <strong>Stated at : </strong>
+              <strong>Started at : </strong>
               {ticket.endDate.toLocaleDateString()}
             </p>
           )}
@@ -116,7 +120,7 @@ export const TicketView: FunctionComponent<TicketViewProps> = ({
               <div className="flex tooltip" data-tip={assigne.name}>
                 <img
                   className="mask mask-squircle w-12 h-12"
-                  src={assigne.image}
+                  src={assigneImage?.src ?? DEFAULT_PROFILE_PICTURE.src}
                   alt="Avatar"
                 />
               </div>
