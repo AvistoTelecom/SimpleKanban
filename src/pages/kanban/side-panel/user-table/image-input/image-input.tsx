@@ -26,7 +26,7 @@ export const ImageInput: FunctionComponent<ImageInputProps> = ({
   return (
     <label className="avatar w-12 h-12 cursor-pointer hover:text-accent">
       <div className="mask mask-squircle">
-        <img src={image.data} alt="Avatar" />
+        <img src={image.src} alt="Avatar" />
       </div>
       <input
         type="file"

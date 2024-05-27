@@ -1,4 +1,4 @@
 export type Image = {
   id: string;
-  data: string;
+  src: string;
 };

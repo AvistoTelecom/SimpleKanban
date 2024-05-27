@@ -19,7 +19,7 @@ import { CreateInProgressTicket } from '@model/ticket/create-ticket/create-in-pr
 import { CreateDoneTicket } from '@model/ticket/create-ticket/create-done-ticket.type';
 import { Ticket } from '@model/ticket/ticket.type';
 import { Image } from '@model/image/image.type';
-import { ImageCreate } from '@model/image/create-image/create-image.type';
+import { CreateImage } from '@model/image/create-image/create-image.type';
 
 export class LocalStorage {
   static readonly getImageList = (): Image[] => {
@@ -31,7 +31,7 @@ export class LocalStorage {
     localStorage.setItem('imageList', JSON.stringify(imageList));
   };
 
-  static readonly addImage = (image: ImageCreate): string => {
+  static readonly addImage = (image: CreateImage): string => {
     const storedImageList = this.getImageList();
     const imageToAdd = {
       id: uuidv4(),

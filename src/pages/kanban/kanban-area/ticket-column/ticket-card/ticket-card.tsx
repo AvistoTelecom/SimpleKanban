@@ -114,7 +114,7 @@ export const TicketCard: FunctionComponent<TicketCardProps> = ({
                 <div className="flex tooltip" data-tip={assigne.name}>
                   <img
                     className="mask mask-squircle w-12 h-12"
-                    src={assigneImage?.data ?? DEFAULT_PROFILE_PICTURE.data}
+                    src={assigneImage?.src ?? DEFAULT_PROFILE_PICTURE.src}
                     alt="Avatar"
                   />
                 </div>

@@ -4,7 +4,7 @@ import { TrashIcon } from '@components/trash-icon/trash-icon';
 import { ImageInput } from '../image-input/image-input';
 import { Image } from '@model/image/image.type';
 import { DEFAULT_PROFILE_PICTURE } from '@pages/kanban/context/image/image-context';
-import { ImageCreate } from '@model/image/create-image/create-image.type';
+import { CreateImage } from '@model/image/create-image/create-image.type';
 
 type UserEntryProps = {
   user: User;
@@ -12,7 +12,7 @@ type UserEntryProps = {
   onDeleteUser: (id: string) => void;
   onUpdateUser: (user: User) => void;
   onUpdateImage: (image: Image) => void;
-  onAddImageToUser: (image: ImageCreate, userId: string) => void;
+  onAddImageToUser: (image: CreateImage, userId: string) => void;
 };
 
 export const UsersTableEntry: FunctionComponent<UserEntryProps> = ({
@@ -60,7 +60,7 @@ export const UsersTableEntry: FunctionComponent<UserEntryProps> = ({
     if (!image) {
       onAddImageToUser(
         {
-          data: newImage,
+          src: newImage,
         },
         user.id
       );
@@ -68,7 +68,7 @@ export const UsersTableEntry: FunctionComponent<UserEntryProps> = ({
     }
     const updatedImage: Image = {
       ...image,
-      data: newImage,
+      src: newImage,
     };
     onUpdateImage(updatedImage);
   };

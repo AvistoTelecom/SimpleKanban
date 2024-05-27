@@ -4,7 +4,7 @@ import { User } from '@model/user/user.type';
 import { CreateUser } from '@model/user/create-user/create-user.type';
 import { UsersTableCreateRow } from './user-table-create-row/user-table-create-row';
 import { Image } from '@model/image/image.type';
-import { ImageCreate } from '@model/image/create-image/create-image.type';
+import { CreateImage } from '@model/image/create-image/create-image.type';
 
 type UsersTableProps = {
   userList: User[];
@@ -13,7 +13,7 @@ type UsersTableProps = {
   onDeleteUser: (id: string) => void;
   onUpdateUser: (user: User) => void;
   onUpdateImage: (image: Image) => void;
-  onAddImageToUser: (image: ImageCreate, userId: string) => void;
+  onAddImageToUser: (image: CreateImage, userId: string) => void;
 };
 
 export const UsersTable: FunctionComponent<UsersTableProps> = ({

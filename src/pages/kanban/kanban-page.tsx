@@ -24,7 +24,7 @@ import { SidePanelContent } from '@model/sidepanel/sidepanel-content.type';
 import { NavBar } from '@components/navbar/navbar';
 import { ImageContext, ImageContextType } from './context/image/image-context';
 import { Image } from '@model/image/image.type';
-import { ImageCreate } from '@model/image/create-image/create-image.type';
+import { CreateImage } from '@model/image/create-image/create-image.type';
 
 export const KanbanPage: FunctionComponent = () => {
   const [isSidePanelOpen, setIsSidePanelOpen] = useState<boolean>(false);
@@ -106,7 +106,7 @@ export const KanbanPage: FunctionComponent = () => {
     setIsSidePanelOpen(false);
   };
 
-  const onAddImageToUser = (image: ImageCreate, userId: string): void => {
+  const onAddImageToUser = (image: CreateImage, userId: string): void => {
     dispatchImageList({
       type: 'ADD-IMAGE',
       payload: image,

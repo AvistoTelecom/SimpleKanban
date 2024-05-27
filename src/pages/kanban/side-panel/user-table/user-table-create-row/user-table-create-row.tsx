@@ -66,7 +66,7 @@ export const UsersTableCreateRow: FunctionComponent<
         </th>
         <th>
           <div className="mask mask-squircle avatar w-12 h-12">
-            <img src={DEFAULT_PROFILE_PICTURE.data} alt="Avatar" />
+            <img src={DEFAULT_PROFILE_PICTURE.src} alt="Avatar" />
           </div>
         </th>
         <th>

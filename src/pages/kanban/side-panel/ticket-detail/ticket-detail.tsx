@@ -84,13 +84,13 @@ export const TicketView: FunctionComponent<TicketViewProps> = ({
           </p>
           {isInProgressTicket(ticket) && (
             <p className="text-neutral-content">
-              <strong>Stated at : </strong>
+              <strong>Started at : </strong>
               {ticket.startDate.toLocaleDateString()}
             </p>
           )}
           {isDoneTicket(ticket) && (
             <p className="text-neutral-content">
-              <strong>Stated at : </strong>
+              <strong>Started at : </strong>
               {ticket.endDate.toLocaleDateString()}
             </p>
           )}
@@ -120,7 +120,7 @@ export const TicketView: FunctionComponent<TicketViewProps> = ({
               <div className="flex tooltip" data-tip={assigne.name}>
                 <img
                   className="mask mask-squircle w-12 h-12"
-                  src={assigneImage?.data ?? DEFAULT_PROFILE_PICTURE.data}
+                  src={assigneImage?.src ?? DEFAULT_PROFILE_PICTURE.src}
                   alt="Avatar"
                 />
               </div>

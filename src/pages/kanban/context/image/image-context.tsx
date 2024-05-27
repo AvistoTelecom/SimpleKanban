@@ -22,7 +22,7 @@ export type ImageReducerState = {
 
 export const DEFAULT_PROFILE_PICTURE: Image = {
   id: 'default',
-  data: 'https://docs.material-tailwind.com/img/face-2.jpg',
+  src: 'https://docs.material-tailwind.com/img/face-2.jpg',
 };
 
 export const ImageContext = createContext<ImageContextType>({
