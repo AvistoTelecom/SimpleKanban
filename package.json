@@ -3,19 +3,18 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "main": "dist/simple-kanban.umd.js",
+  "module": "dist/simple-kanban.es.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "dev": "vite",
     "style": "npx tailwindcss -i ./src/index.css -o ./src/output.css --watch",
-    "build": "tsc && vite build",
+    "build": "vite build && tsc",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
-    "path": "^0.12.7",
-    "react": "^18.2.0",
-    "react-beautiful-dnd": "^13.1.1",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.22.2"
+    "path": "^0.12.7"
   },
   "devDependencies": {
     "@types/node": "^20.11.25",
@@ -40,5 +39,11 @@
     "typescript": "^5.2.2",
     "uuid": "^9.0.1",
     "vite": "^5.1.4"
+  },
+  "peerDependencies": {
+    "react": "^17.0.0 || ^18.0.0",
+    "react-dom": "^17.0.0 || ^18.0.0",
+    "react-beautiful-dnd": "^13.1.1",
+    "react-router-dom": "^6.22.2"
   }
 }
