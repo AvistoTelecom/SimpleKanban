@@ -8,7 +8,7 @@ import {
 import { UserAction } from './user-action';
 import { userReducer } from './user-reducer';
 import { User } from '@model/user/user.type';
-import { LocalStorage } from '@utils/localStorage.utils';
+import { LocalStorage } from '@utils/local-storage.utils';
 
 export type UserContextType = {
   userList: User[];

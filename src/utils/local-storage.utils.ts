@@ -21,14 +21,21 @@ import { Ticket } from '@model/ticket/ticket.type';
 import { Image } from '@model/image/image.type';
 import { CreateImage } from '@model/image/create-image/create-image.type';
 
+const IMAGE_TABLE_NAME = 'kanban-image-list';
+const USER_TABLE_NAME = 'kanban-user-list';
+const TAG_TABLE_NAME = 'kanban-tag-list';
+const TODO_TICKET_TABLE_NAME = 'kanban-todo-ticket-list';
+const INPROGRESS_TICKET_TABLE_NAME = 'kanban-in-progress-ticket-list';
+const DONE_TICKET_TABLE_NAME = 'kanban-done-ticket-list';
+
 export class LocalStorage {
   static readonly getImageList = (): Image[] => {
-    const imageList = localStorage.getItem('imageList');
+    const imageList = localStorage.getItem(IMAGE_TABLE_NAME);
     return imageList ? JSON.parse(imageList) : [];
   };
 
   static readonly setImageList = (imageList: Image[]): void => {
-    localStorage.setItem('imageList', JSON.stringify(imageList));
+    localStorage.setItem(IMAGE_TABLE_NAME, JSON.stringify(imageList));
   };
 
   static readonly addImage = (image: CreateImage): string => {
@@ -66,12 +73,12 @@ export class LocalStorage {
   };
 
   static readonly getUserList = (): User[] => {
-    const userList = localStorage.getItem('userList');
+    const userList = localStorage.getItem(USER_TABLE_NAME);
     return userList ? JSON.parse(userList) : [];
   };
 
   static readonly setUserList = (userList: User[]) => {
-    localStorage.setItem('userList', JSON.stringify(userList));
+    localStorage.setItem(USER_TABLE_NAME, JSON.stringify(userList));
   };
 
   static readonly getUser = (userId: string): User | undefined => {
@@ -137,12 +144,12 @@ export class LocalStorage {
   };
 
   static readonly getTagList = (): Tag[] => {
-    const tagList = localStorage.getItem('tagList');
+    const tagList = localStorage.getItem(TAG_TABLE_NAME);
     return tagList ? JSON.parse(tagList) : [];
   };
 
   static readonly setTagList = (tagList: Tag[]) => {
-    localStorage.setItem('tagList', JSON.stringify(tagList));
+    localStorage.setItem(TAG_TABLE_NAME, JSON.stringify(tagList));
   };
 
   static readonly getTag = (tagName: string): Tag | undefined => {
@@ -226,7 +233,7 @@ export class LocalStorage {
   };
 
   static readonly getTodoTicketList = (): TodoTicket[] => {
-    const storedTicketList = localStorage.getItem('todoTicketList');
+    const storedTicketList = localStorage.getItem(TODO_TICKET_TABLE_NAME);
     if (!storedTicketList) {
       return [];
     }
@@ -240,7 +247,7 @@ export class LocalStorage {
   };
 
   static readonly getInProgressTicketList = (): InProgressTicket[] => {
-    const storedTicketList = localStorage.getItem('inProgressTicketList');
+    const storedTicketList = localStorage.getItem(INPROGRESS_TICKET_TABLE_NAME);
     if (!storedTicketList) {
       return [];
     }
@@ -255,7 +262,7 @@ export class LocalStorage {
   };
 
   static readonly getDoneTicketList = (): DoneTicket[] => {
-    const storedTicketList = localStorage.getItem('doneTicketList');
+    const storedTicketList = localStorage.getItem(DONE_TICKET_TABLE_NAME);
     if (!storedTicketList) {
       return [];
     }
@@ -271,20 +278,26 @@ export class LocalStorage {
   };
 
   static readonly setTodoTicketList = (todoTicketList: TodoTicket[]) => {
-    localStorage.setItem('todoTicketList', JSON.stringify(todoTicketList));
+    localStorage.setItem(
+      TODO_TICKET_TABLE_NAME,
+      JSON.stringify(todoTicketList)
+    );
   };
 
   static readonly setInProgressTicketList = (
     inProgressTicketList: InProgressTicket[]
   ) => {
     localStorage.setItem(
-      'inProgressTicketList',
+      INPROGRESS_TICKET_TABLE_NAME,
       JSON.stringify(inProgressTicketList)
     );
   };
 
   static readonly setDoneTicketList = (doneTicketList: DoneTicket[]) => {
-    localStorage.setItem('doneTicketList', JSON.stringify(doneTicketList));
+    localStorage.setItem(
+      DONE_TICKET_TABLE_NAME,
+      JSON.stringify(doneTicketList)
+    );
   };
 
   static readonly addTicket = (ticketToAdd: CreateTicket): string => {

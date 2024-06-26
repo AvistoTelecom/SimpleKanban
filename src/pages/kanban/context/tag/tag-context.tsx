@@ -7,7 +7,7 @@ import {
 } from 'react';
 import { tagReducer } from './tag-reducer';
 import { TagAction } from './tag-action';
-import { LocalStorage } from '@utils/localStorage.utils';
+import { LocalStorage } from '@utils/local-storage.utils';
 import { Tag } from '@model/tag/tag.type';
 
 export type TagContextType = {

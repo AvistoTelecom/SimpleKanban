@@ -11,7 +11,7 @@ import { ticketReducer } from './ticket-reducer';
 import { InProgressTicket } from '@model/ticket/in-progress-ticket.type';
 import { TodoTicket } from '@model/ticket/todo-ticket.type';
 import { DoneTicket } from '@model/ticket/done-ticket.type';
-import { LocalStorage } from '@utils/localStorage.utils';
+import { LocalStorage } from '@utils/local-storage.utils';
 
 export type TicketContextType = {
   todoTicketList: TodoTicket[];

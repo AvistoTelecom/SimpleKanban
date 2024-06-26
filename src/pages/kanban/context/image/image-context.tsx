@@ -8,7 +8,7 @@ import {
 } from 'react';
 import { ImageAction } from './image-action';
 import { imageReducer } from './image-reducer';
-import { LocalStorage } from '@utils/localStorage.utils';
+import { LocalStorage } from '@utils/local-storage.utils';
 
 export type ImageContextType = {
   imageReducerState: ImageReducerState;
