@@ -64,11 +64,7 @@ The structure of the stored data is as follow:
 
 ## License
 
-TODO
-
-## Contributing
-
-TODO
+Licensed under the [MIT](https://github.com/microsoft/monaco-editor/blob/main/LICENSE.txt) License.
 
 ## Contact
 
