@@ -2,7 +2,7 @@
   "name": "simple_kanban",
   "private": true,
   "version": "0.0.0",
-  "description": "TODO",
+  "description": "A simplified Kanban board React component to organize your projects.",
   "keywords": [
     "kamban",
     "react",
