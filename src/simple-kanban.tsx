@@ -6,7 +6,7 @@ import { TicketContextProvider } from './pages/kanban/context/ticket/ticket-cont
 import { KanbanPage } from './pages/kanban/kanban-page';
 import { ImageContextProvider } from '@pages/kanban/context/image/image-context';
 
-export const App: FunctionComponent = () => {
+export const SimpleKanban: FunctionComponent = () => {
   return (
     <ImageContextProvider>
       <UserContextProvider>
