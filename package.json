@@ -2,7 +2,24 @@
   "name": "simple_kanban",
   "private": true,
   "version": "0.0.0",
+  "description": "TODO",
+  "keywords": [
+    "kamban",
+    "react",
+    "localstorage",
+    "drag",
+    "drop"
+  ],
   "type": "module",
+  "contributors": [
+    {
+      "name": "Marie-Almina GINDRE"
+    },
+    {
+      "name": "Tayeb HAKKAR",
+      "url": "https://www.tayebhakkar.fr/"
+    }
+  ],
   "main": "dist/simple-kanban.umd.js",
   "module": "dist/simple-kanban.es.js",
   "types": "dist/index.d.ts",
@@ -45,5 +62,6 @@
     "react-dom": "^17.0.0 || ^18.0.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-router-dom": "^6.22.2"
-  }
+  },
+  "license": "MIT"
 }
