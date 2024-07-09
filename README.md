@@ -64,8 +64,8 @@ The structure of the stored data is as follow:
 
 ## License
 
-Licensed under the [MIT](https://github.com/microsoft/monaco-editor/blob/main/LICENSE.txt) License.
+Licensed under the [Apache 2.0](https://github.com/IQAndreas/markdown-licenses/blob/master/apache-v2.0.md) License.
 
 ## Contact
 
-TODO
+Contact us at [community@avisto.com](mailto:community@avisto.com) or create an issue on our GitHub repository if you have any suggestion or encounter any problem using Simple Kanban.
