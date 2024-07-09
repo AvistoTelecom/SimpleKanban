@@ -2,7 +2,7 @@ import { InProgressTicket } from '@model/ticket/in-progress-ticket.type';
 import { TicketAction } from './ticket-action';
 import { TodoTicket } from '@model/ticket/todo-ticket.type';
 import { DoneTicket } from '@model/ticket/done-ticket.type';
-import { LocalStorage } from '@utils/localStorage.utils';
+import { LocalStorage } from '@utils/local-storage.utils';
 import { CreateTicket } from '@model/ticket/create-ticket/create-ticket.type';
 import { Ticket } from '@model/ticket/ticket.type';
 

@@ -1,6 +1,6 @@
 import { CreateImage } from '@model/image/create-image/create-image.type';
 import { Image } from '@model/image/image.type';
-import { LocalStorage } from '@utils/localStorage.utils';
+import { LocalStorage } from '@utils/local-storage.utils';
 import { ImageAction } from './image-action';
 import { Reducer } from 'react';
 import { ImageReducerState } from './image-context';

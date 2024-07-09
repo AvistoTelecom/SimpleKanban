@@ -1,4 +1,4 @@
-import { LocalStorage } from '@utils/localStorage.utils';
+import { LocalStorage } from '@utils/local-storage.utils';
 import { TagAction } from './tag-action';
 import { Tag } from '@model/tag/tag.type';
 
