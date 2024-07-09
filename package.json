@@ -1,6 +1,6 @@
 {
   "name": "simple_kanban",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "A simplified Kanban board React component to organize your projects.",
   "keywords": [
     "kamban",
